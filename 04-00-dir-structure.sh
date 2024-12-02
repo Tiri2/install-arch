@@ -1,9 +1,9 @@
 # Following directory structure will be created
-mkdir /var/system
-mkdir /var/system/tools
-mkdir /var/system/scripts
-mkdir /var/system/certs
-mkdir /var/system/backup
+mkdir -p /var/system
+mkdir -p /var/system/tools
+mkdir -p /var/system/scripts
+mkdir -p /var/system/certs
+mkdir -p /var/system/backup
 
 chmod 775 /var/system
 chmod 775 /var/system/*
@@ -21,10 +21,10 @@ mkdir -p /srv/smb/backup
 chmod 775 /srv/smb/*
 
 # Creating tasks specifc folders
-mkdir /srv/tasks/CORE-2.0.0-SNAPSHOT/
+mkdir -p /srv/tasks/CORE-2.0.0-SNAPSHOT/
 ln -sf /srv/tasks/CORE-2.0.0-SNAPSHOT/ /srv/tasks/CURRENT
 
-mkdir /srv/tasks/CURRENT/{default,libs}
+mkdir -p /srv/tasks/CURRENT/{default,libs}
 ln -sf /var/system/certs/ /srv/tasks/CURRENT/default/certs
 ln -sf /srv/tasks/CURRENT/libs/ /srv/tasks/CURRENT/default/libs
 
