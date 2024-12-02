@@ -12,7 +12,13 @@ read -p "Disk: " DISK
 echo "Before writing on ${DSIK} please provide the second partition to chroot into"
 read "the second partiton (/dev/sda2): " PART2
 
-ssh root@10.1.1.70 "dd if=/dev/sda bs=64M | gzip" | pv | gunzip | dd of=$DISK bs=64M
+read -p "Have you already installed a the master on this system? (y/n): " INSTALLED
+
+if [[ $INSTALLED == "n" ]]; then
+    echo "okay - installing system from master now..."
+    echo "Take around 15 minutes"
+    ssh root@10.1.1.70 "dd if=/dev/sda bs=64M | gzip" | pv | gunzip | dd of=$DISK bs=64M
+fi
 
 echo "Resizing partiton 2 to maximum"
 parted $DISK resizepart 2 100%
