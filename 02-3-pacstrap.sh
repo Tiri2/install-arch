@@ -44,17 +44,14 @@ if [ -z "$kernel" ]; then
             ;;
         4 ) kernel=linux-zen
             ;;
-        * ) echo "You did not enter a valid selection."
-            kernel_selector
+        * ) echo "You did not enter a valid selection. Please try again"
+            exit 1
     esac
 fi
 
-echo "Installing curl, which is needed in some of the steps."
-pacman -Sy curl
-
 # Pacstrap (setting up a base sytem onto the new root).
 echo "Installing the base system (it may take a while)."
-pacstrap /mnt base base-devel "${kernel}" linux-firmware "${microcode}" grub grub-btrfs snapper efibootmgr sudo nano firewalld snap-pac snap-sync git rsync zsh zsh-completions lsd fzf zoxide
+pacstrap /mnt base base-devel "${kernel}" linux-firmware "${microcode}" efibootmgr grub grub-btrfs inotify-tools snapper snap-pac snap-sync git sudo nano firewalld rsync openssh zsh zsh-completions lsd fzf zoxide
 
 # Generating /etc/fstab.
 echo "Generating a new fstab."
