@@ -1,0 +1,15 @@
+[Match]
+Name=en*
+Name=eth*
+
+
+# Default is dhcp enabled - but if there is no dhcp server, you can comment these below out
+# But don't forget to change the Address!!
+[Network]
+DHCP=yes
+
+
+#Address=10.200.x.x/16
+#Gateway=10.200.0.1
+#NTP=10.200.0.1
+#DNS=10.2.1.11
