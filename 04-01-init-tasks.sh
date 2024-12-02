@@ -48,10 +48,13 @@ echo "installing and setuping up mosquitto"
 pacman -S --noconfirm mosquitto
 cat configs/mosquitto.txt > /etc/mosquitto/mosquitto.conf
 
-
 echo "installing and setting up samba server"
-sudo pacman -S --noconfirm samba
+pacman -S --noconfirm samba
 cat configs/samba.txt > /etc/samba/smb.conf
+
+echo "installing and setting up caddy server"
+pacman -S --noconfirm caddy
+cat configs/caddyfile.txt /etc/caddy/CaddyFile
 
 # User Services enablen
 systemctl --user start default.target

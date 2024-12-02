@@ -1,9 +1,9 @@
 if [ -z "$2" ]; then
-    read -r -p "Please choose a target: (/dev/sda)" $2
+    read -r -p "Please choose a target (/dev/sda): " $2
 fi
 
 if [ -z "$1" ]; then
-    read -r -p "Please enter the valid bootloader-id: (ARCH)" $1
+    read -r -p "Please enter the valid bootloader-id (ARCH): " $1
 fi
 
 

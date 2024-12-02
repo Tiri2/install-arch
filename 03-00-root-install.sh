@@ -43,7 +43,7 @@ chmod 750 /.snapshots
 
 echo "ATTENTION!! Executing following script: 04-01-install-grub.sh"
 # Executing a nother script with the args as descriped above
-/usr/bin/bash 04-01-install-grub.sh $BOOTLOADER_ID $BOOT_TARGET
+/usr/bin/bash ./04-01-install-grub.sh $BOOTLOADER_ID $BOOT_TARGET
 
 # Setting root password.
 echo "Setting root password"
@@ -51,4 +51,4 @@ passwd
 
 sed -i '/Color/s/^#//' /etc/pacman.conf
 
-echo "Next Script will be 05-00-dir-structure"
+echo "Next Script will be 04-00-dir-structure"

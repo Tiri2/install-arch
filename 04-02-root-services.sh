@@ -13,3 +13,4 @@ systemctl enable sshd
 # Enabling services needed for tasks (04-01-init-tasks.sh)
 systemctl enable smb
 systemctl enable mosquitto
+systemctl enable caddy
