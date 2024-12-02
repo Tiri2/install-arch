@@ -41,23 +41,14 @@ mkdir /.snapshots
 mount -a
 chmod 750 /.snapshots
 
-if [ -z "$BOOT_TARGET" ]; then
-    read -r -p "Please choose target: " BOOT_TARGET
-fi
-
-# Installing GRUB.
-echo "Installing GRUB on /boot."
-
-GRUB_MODULES="normal test efi_gop efi_uga search echo linux loadenv configfile gzio part_gpt btrfs"
-
-grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id="$BOOTLOADER_ID" --modules="$GRUB_MODULES" --disable-shim-lock "$BOOT_TARGET"
-
-# Creating grub config file.
-echo "Creating GRUB config file."
-grub-mkconfig -o /boot/grub/grub.cfg
+echo "ATTENTION!! Executing following script: 04-01-install-grub.sh"
+# Executing a nother script with the args as descriped above
+/usr/bin/bash 04-01-install-grub.sh $BOOTLOADER_ID $BOOT_TARGET
 
 # Setting root password.
 echo "Setting root password"
 passwd
 
 sed -i '/Color/s/^#//' /etc/pacman.conf
+
+echo "Next Script will be 05-00-dir-structure"
