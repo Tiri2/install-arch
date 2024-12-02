@@ -35,5 +35,5 @@ parted $DISK resizepart 2 100%
 
 echo "Mounting ${PART2} and chroot into"
 mount $PART2 /mnt
-cp 00-01-steps-for-chroot.sh /tmp/setup.sh
+cp 00-01-steps-for-chroot.sh /mnt/tmp/setup.sh
 arch-chroot /mnt /bin/bash -c "sh /tmp/setup.sh $DISK"
