@@ -1,6 +1,7 @@
 IP=10.1.1.69
 
-if ! `/usr/bin/nc -w 5 "$IP" 22`; then 
+echo "Trying to ping ${IP}"
+if ! /usr/bin/nc -w 5 "$IP" 22; then 
     echo "Can not reach "$IP" - do u have a internet connection?"
     ip a
     ping -W 5 -c 2 "$IP"
