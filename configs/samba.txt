@@ -1,0 +1,39 @@
+[global]
+
+workgroup = WORKGROUP
+server string = flexy System
+map to guest = Bad User
+syslog = 0
+syslog only = yes
+security = user
+local master = no
+dns proxy = no
+unix extensions = no
+wide links = yes
+
+[tasks]
+	comment = flexTasks
+	path = /srv/tasks
+	browseable = no
+	writable = yes
+	force user = flex
+	valid users = flex
+	create mask = 0600
+
+[share]
+	comment = Share Directory
+	path = /srv/smb/share
+	public = yes
+	writable = yes
+	force user = flex
+	guest ok = yes
+	create mask = 0600
+
+[backup]
+	comment = Backup Directory
+	path = /srv/smb/backup
+	public = yes
+	writable = no
+	force user = flex
+	guest ok = yes
+	create mask = 0600

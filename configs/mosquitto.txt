@@ -1,0 +1,6 @@
+allow_anonymous true
+max_inflight_bytes 0
+max_inflight_messages 0
+retain_available true
+listener 1883 0.0.0.0
+log_dest stdout
