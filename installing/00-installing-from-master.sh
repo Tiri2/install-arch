@@ -15,11 +15,14 @@ echo " "
 
 echo "Please enter a valid disk for write the master on (/dev/sda)"
 read -p "Disk: " DISK
+echo " "
 
 echo "Before writing on ${DSIK} please provide the second partition to chroot into"
 read -p "the second partiton (/dev/sda2): " PART2
+echo " "
 
-read -p "Have you already installed a the master on this system? (y/n): " INSTALLED
+read -p "Have you already installed the master on this system? (y/n): " INSTALLED
+echo " "
 
 if [[ $INSTALLED == "n" ]]; then
     echo "okay - installing system from master now..."
