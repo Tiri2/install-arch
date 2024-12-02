@@ -25,13 +25,12 @@ COW_VOLS=(
     home
     root
     boot
+    boot/efi
     srv
     var/log
-    var/crash
-    var/spool
+    var/log/tasks
 )
 NOCOW_VOLS=(
-    var/tmp
     var/cache
    .swap  # If you need Swapfile, create in this folder
 )
