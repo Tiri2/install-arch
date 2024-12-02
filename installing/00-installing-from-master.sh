@@ -1,7 +1,7 @@
 IP=10.1.1.69
 
 echo "Trying to ping ${IP}"
-if ! /usr/bin/nc -w 5 "$IP" 22; then 
+if ! ping -c 1 -w 5 $IP &> /dev/null; then 
     echo "Can not reach "$IP" - do u have a internet connection?"
     ip a
     ping -W 5 -c 2 "$IP"
@@ -9,6 +9,10 @@ if ! /usr/bin/nc -w 5 "$IP" 22; then
 fi
 
 lsblk
+
+echo " "
+echo " "
+
 echo "Please enter a valid disk for write the master on (/dev/sda)"
 read -p "Disk: " DISK
 
