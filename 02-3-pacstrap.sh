@@ -54,7 +54,7 @@ pacman -Sy curl
 
 # Pacstrap (setting up a base sytem onto the new root).
 echo "Installing the base system (it may take a while)."
-pacstrap /mnt base base-devel "${kernel}" linux-firmware "${microcode}" grub grub-btrfs snapper efibootmgr sudo nano firewalld snap-pac snap-sync git rsync zsh zsh-completions
+pacstrap /mnt base base-devel "${kernel}" linux-firmware "${microcode}" grub grub-btrfs snapper efibootmgr sudo nano firewalld snap-pac snap-sync git rsync zsh zsh-completions lsd fzf zoxide
 
 # Generating /etc/fstab.
 echo "Generating a new fstab."
