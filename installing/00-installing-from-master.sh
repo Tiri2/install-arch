@@ -41,6 +41,8 @@ SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 # Aktuelles Verzeichnis
 CURRENT_DIR=$(pwd)
 
+echo "DEBUG: CURRENT_DIR=${CURRENT_DIR}"
+
 # Vergleich
 if [[ "$SCRIPT_DIR" != "$CURRENT_DIR" ]]; then
   cd "$SCRIPT_DIR"
@@ -54,9 +56,9 @@ echo "DEBUG: CURRENT_DIR=${CURRENT_DIR}"
 echo "Mounting ${PART2} and chroot into"
 mount $PART2 /mnt
 # Coping files into chroot to execute them
-cp installing/00-01-steps-for-chroot.sh /mnt/root/setup.sh
+cp 00-01-steps-for-chroot.sh /mnt/root/setup.sh
 chmod +x /mnt/root/setup.sh
-cp 03-01-install-grub.sh /mnt/root/install-grub.sh
+cp ../03-01-install-grub.sh /mnt/root/install-grub.sh
 chmod +x /mnt/root/setup.sh
 
 arch-chroot /mnt /bin/bash -c "sh /root/setup.sh $DISK"
