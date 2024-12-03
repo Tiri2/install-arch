@@ -25,31 +25,6 @@ pacman -S --noconfirm java-runtime-common java-environment-common jdk17-openjdk
 echo "new installed Java Version: "
 java -version
 
-# Setting up firewalld
-echo "setting up firewalld"
-
-echo "starting and enabling firewalld"
-systemctl enable --now firewalld
-
-firewall-cmd --list-all
-# allowing ssh port
-firewall-cmd --permanent --add-service=ssh --zone=public
-# allowing smb port
-firewall-cmd --permanent --add-port=445/tcp --zone=public
-# allowing netbios ports
-firewall-cmd --permanent --add-port=139/tcp --zone=public
-firewall-cmd --permanent --add-port=137/udp --zone=public
-firewall-cmd --permanent --add-port=138/udp --zone=public
-
-# Break point to check if everything is all right
-echo "Looking fine?"
-echo "CTRL + C to abort - Enter to continue"
-read -p "Continue?"
-
-# Reloading firewall
-echo "ports opened - reloading firewall..."
-firewall-cmd --reload
-
 # Installing needed packages and configure them for our flex tasks
 echo "installing and setuping up mosquitto"
 pacman -S --noconfirm mosquitto
