@@ -1,3 +1,5 @@
+#!/bin/bash
+
 echo " "
 echo "Am i running in a chroot environment?"
 read -p "y/n: " confirm

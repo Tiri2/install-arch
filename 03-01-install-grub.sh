@@ -1,3 +1,5 @@
+#!/bin/bash
+
 if [ -z "$2" ]; then
     read -r -p "Please choose a target (/dev/sda): " $2
 fi
