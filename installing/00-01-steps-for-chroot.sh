@@ -1,5 +1,6 @@
 #!/bin/bash
 
+echo "arg 1: ${1} - arg 2: ${2}"
 echo " "
 mount -a
 lsblk
