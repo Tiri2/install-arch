@@ -36,9 +36,6 @@ echo "Resizing partiton 2 to maximum"
 parted $DISK resizepart 2 100%
 
 # Getting into folder where the script is
-
-
-# Absoluter Pfad zum Skript
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 
 # Aktuelles Verzeichnis
@@ -46,10 +43,13 @@ CURRENT_DIR=$(pwd)
 
 # Vergleich
 if [[ "$SCRIPT_DIR" != "$CURRENT_DIR" ]]; then
-  cd $SCRIPT_DIR
+  cd "$SCRIPT_DIR"
   echo "DEBUG: ${SCRIPT_DIR} - ${CURRENT_DIR}"
 fi
 
+# Debug-Ausgabe für Verzeichnisse
+echo "DEBUG: SCRIPT_DIR=${SCRIPT_DIR}"
+echo "DEBUG: CURRENT_DIR=${CURRENT_DIR}"
 
 echo "Mounting ${PART2} and chroot into"
 mount $PART2 /mnt
