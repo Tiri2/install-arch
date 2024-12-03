@@ -25,8 +25,13 @@ mkdir -p /var/system/tools/
 git clone https://github.com/Tiri2/install-arch.git /var/system/tools/install-arch/
 
 # Delete existings snapshots
-sh /var/system/tools/install-arch/installing/01-deleting-snapshots.sh /mnt/@/.snapshots
-sh /var/system/tools/install-arch/installing/01-deleting-snapshots.sh /mnt/@home/.snapshots
+sh /var/system/tools/install-arch/installing/01-deleting-snapshots.sh /.snapshots
+sh /var/system/tools/install-arch/installing/01-deleting-snapshots.sh /home/.snapshots
+sh /var/system/tools/install-arch/installing/01-deleting-snapshots.sh /srv/.snapshots
+
+snapper -c root create -d "Install Script"
+snapper -c home create -d "Install Script"
+snapper -c srv create -d "Install Script"
 
 # Installing Grub
 sh /var/system/tools/install-arch/03-01-install-grub.sh "$1" ARCH
