@@ -41,17 +41,11 @@ SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 # Aktuelles Verzeichnis
 CURRENT_DIR=$(pwd)
 
-echo "DEBUG: CURRENT_DIR=${CURRENT_DIR}"
-
 # Vergleich
 if [[ "$SCRIPT_DIR" != "$CURRENT_DIR" ]]; then
   cd "$SCRIPT_DIR"
   echo "DEBUG: ${SCRIPT_DIR} - ${CURRENT_DIR}"
 fi
-
-# Debug-Ausgabe für Verzeichnisse
-echo "DEBUG: SCRIPT_DIR=${SCRIPT_DIR}"
-echo "DEBUG: CURRENT_DIR=${CURRENT_DIR}"
 
 echo "Mounting ${PART2} and chroot into"
 mount $PART2 /mnt
