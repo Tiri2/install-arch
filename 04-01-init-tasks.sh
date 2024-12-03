@@ -39,7 +39,7 @@ pacman -S --noconfirm caddy
 cat configs/caddyfile.txt > /etc/caddy/CaddyFile
 
 echo "Setting up systemd-networkd"
-cat configs/systemd-networkd.txt > /etc/systemd/network/10-ethernet.network
+cat configs/systemd-network.txt > /etc/systemd/network/10-ethernet.network
 
 # User Services enablen
 systemctl --user enable default.target
