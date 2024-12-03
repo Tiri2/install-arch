@@ -1,3 +1,5 @@
+#!/bin/bash
+
 IP=10.1.1.69
 
 echo "Trying to ping ${IP}"
@@ -33,10 +35,26 @@ fi
 echo "Resizing partiton 2 to maximum"
 parted $DISK resizepart 2 100%
 
+# Getting into folder where the script is
+
+
+# Absoluter Pfad zum Skript
+SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
+
+# Aktuelles Verzeichnis
+CURRENT_DIR=$(pwd)
+
+# Vergleich
+if [[ "$SCRIPT_DIR" != "$CURRENT_DIR" ]]; then
+  cd $SCRIPT_DIR
+  echo "DEBUG: ${SCRIPT_DIR} - ${CURRENT_DIR}"
+fi
+
+
 echo "Mounting ${PART2} and chroot into"
 mount $PART2 /mnt
 # Coping files into chroot to execute them
-cp 00-01-steps-for-chroot.sh /mnt/root/setup.sh
+cp installing/00-01-steps-for-chroot.sh /mnt/root/setup.sh
 chmod +x /mnt/root/setup.sh
 cp 03-01-install-grub.sh /mnt/root/install-grub.sh
 chmod +x /mnt/root/setup.sh
