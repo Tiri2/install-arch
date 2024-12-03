@@ -1,0 +1,2 @@
+DATA_PATH=/srv/tasks/data
+JAVA_TOOL_OPTIONS=-Denv=prod -Dlog4j2.Script.enableLanguages=groovy -Dlog4j.configurationFile=./log4j2.xml

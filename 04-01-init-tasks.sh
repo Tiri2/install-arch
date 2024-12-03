@@ -7,6 +7,15 @@ chsh -s /usr/bin/zsh flex
 echo "Entering password for flex"
 passwd flex
 
+# Setting up needed files for tasks
+mkdir -p /home/flex/.config/systemd/user
+mkdir -p /srv/tasks/CURRENT/.config/env.d
+cat configs/flexTasks.txt > /srv/tasks/CURRENT/.config/env.d/flexTasks.conf
+
+cat configs/template.service.txt > /home/flex/.config/systemd/user/template.service
+
+cat misc/.sqliterc /home/flex/.sqliterc
+
 # Configure root user
 cp misc/.zshrc /root
 chsh -s /usr/bin/zsh root

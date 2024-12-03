@@ -1,0 +1,23 @@
+# Change the Description to whatever you want
+[Unit]
+Description=flexTask <name>
+
+[Service]
+# Change <name> to the specifc task name
+ExecStart=/usr/bin/java -Xms50m -Xmx300m -jar <name>.jar
+WorkingDirectory=/srv/tasks/CURRENT/<name>
+Environment="TASKNAME=<name>"
+
+
+Type=simple
+EnvironmentFile=/srv/tasks/CURRENT/.config/env.d/flexTasks.conf
+StandardOutput=null
+StandardError=journal
+TimeoutStopSec=10
+Restart=always
+RestartSec=5
+Slice=flexTasks.slice
+SuccessExitStatus=143
+
+[Install]
+WantedBy=default.target
