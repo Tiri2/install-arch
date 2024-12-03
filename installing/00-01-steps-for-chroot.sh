@@ -27,13 +27,14 @@ read -p "Continue?"
 
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 
-echo "DEBUG: script dir: ${SCRIPT_DIR}"
-ls -al
 cd "$SCRIPT_DIR"
 ls -al "$SCRIPT_DIR"
 
+echo "DEBUG: Inhalte des /root Verzeichnisses im Chroot:"
+ls -l /root/
+
 # Installing Grub
-source /root/install-grub.sh "$1" ARCH
+sh /root/install-grub.sh "$1" ARCH
 
 echo "Making initramfs"
 mkinitcpio -P
