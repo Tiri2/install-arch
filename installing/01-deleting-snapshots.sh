@@ -16,14 +16,8 @@ echo "Checking snapshots in directory $SNAPSHOT_DIR..."
 
 for snapshot in "$SNAPSHOT_DIR"/*; do
   if [[ -d "$snapshot" ]]; then
-    # Check if it is a subvolume
-    btrfs subvolume show "$snapshot" &>/dev/null
-    if [[ $? -eq 0 ]]; then
-      echo "Deleting subvolume: $snapshot"
-      btrfs subvolume delete "$snapshot" || { echo "Error deleting subvolume $snapshot"; exit 1; }
-    else
-      echo "Skipping (not a subvolume): $snapshot"
-    fi
+    echo "Deleting directory: $snapshot"
+    rm -rf "$snapshot" || { echo "Error deleting directory $snapshot"; exit 1; }
   fi
 done
 
