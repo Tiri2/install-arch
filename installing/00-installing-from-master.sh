@@ -2,7 +2,13 @@
 
 IP=10.1.1.69
 
-echo "Trying to ping ${IP}"
+echo "======          Industruction             ======"
+echo " "
+echo " "
+echo "These scripts writes the master image on the hard disk of this device. "
+echo "If you want to install from a backup use a other script instead of this."
+echo " "
+
 if ! ping -c 1 -w 5 $IP &> /dev/null; then 
     echo "Can not reach "$IP" - do u have a internet connection?"
     ip a
@@ -10,19 +16,11 @@ if ! ping -c 1 -w 5 $IP &> /dev/null; then
     exit 1
 fi
 
-ttyctl -f
-lsblk
-
-echo " "
 echo " "
 
-# Getting data from user to proceed installation
+# Getting disk from user to write the master disk on
 echo "Please enter a valid disk for write the master on (/dev/sda)"
 read -p "Disk: " DISK
-echo " "
-
-echo "Before writing on ${DISK} please provide the second partition to chroot into"
-read -p "the second partiton (/dev/sda2): " PART2
 echo " "
 
 # Reqeust if anything is already installed. If not installing from master
@@ -37,6 +35,17 @@ fi
 echo "Resizing partiton 2 to maximum"
 parted $DISK resizepart 2 100%
 
+echo " "
+echo " "
+
+lsblk
+
+echo " "
+# Getting second partiton from user
+echo "Before writing on ${DISK} please provide the second partition to chroot into"
+read -p "the second partiton (/dev/sda2): " PART2
+echo " "
+
 # Getting into folder where the script is
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 CURRENT_DIR=$(pwd)
@@ -45,7 +54,7 @@ if [[ "$SCRIPT_DIR" != "$CURRENT_DIR" ]]; then
   cd "$SCRIPT_DIR"
 fi
 
-# Mounting partition 2 to mount and chroot into 
+# Mounting partition 2 to chroot into 
 # and then executing 00-01-steps-for-chroot.sh (setup.sh)
 echo "Mounting ${PART2} and chroot into"
 mount $PART2 /mnt
@@ -54,5 +63,5 @@ mount $PART2 /mnt
 cp 00-01-steps-for-chroot.sh /mnt/root/setup.sh
 chmod +x /mnt/root/setup.sh
 
-# Chroot into and exeute the copied sh script named setup.sh with arg $DISK
+# Chroot into and exeute the copied sh script named setup.sh with args $DISK and $PART2
 arch-chroot /mnt /bin/bash -c "sh /root/setup.sh "$DISK" "$PART2""
