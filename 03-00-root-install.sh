@@ -4,16 +4,6 @@ TZ="Europe/Vienna"
 BOOTLOADER_ID=ARCH
 BOOT_TARGET="/dev/sda"
 
-#arch-chroot /mnt
-
-echo "Is this script running in a arch-chroot environment?"
-read -p "y/n: " input
-
-if [[ "$input" == "n" ]]; then
-    echo "Please run this script in an arch-chroot environment!"
-    exit 1
-fi
-
 # Setting up timezone.
 ln -sf "/usr/share/zoneinfo/$TZ" /etc/localtime
 
