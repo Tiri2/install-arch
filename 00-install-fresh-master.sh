@@ -8,8 +8,8 @@ echo "This scripts only execute the other scripts. "
 echo "If you want to install from the master use a other script instead of this."
 echo " "
 
-echo "executing 00-vm-partitioning.sh"
-source 00-vm-partitioning.sh
+echo "executing 01-partitioning.sh"
+source 01-partitioning.sh
 
 echo "executing 02-1-format.sh"
 source 02-1-format.sh
