@@ -25,6 +25,12 @@ read -p "Continue?"
 
 # TODO: Delete existing snapshots from master
 
+SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
+
+echo "DEBUG: script dir: ${SCRIPT_DIR}"
+ls -al
+
+# Installing Grub
 source /root/install-grub.sh "$1" ARCH
 
 echo "Making initramfs"

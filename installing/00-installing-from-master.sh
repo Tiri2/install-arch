@@ -58,7 +58,11 @@ mount $PART2 /mnt
 # Coping files into chroot to execute them
 cp 00-01-steps-for-chroot.sh /mnt/root/setup.sh
 chmod +x /mnt/root/setup.sh
+
+ls -al
+ls -al ../
+
 cp ../03-01-install-grub.sh /mnt/root/install-grub.sh
-chmod +x /mnt/root/setup.sh
+chmod +x /mnt/root/install-grub.sh
 
 arch-chroot /mnt /bin/bash -c "sh /root/setup.sh $DISK"
