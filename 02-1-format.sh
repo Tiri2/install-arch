@@ -24,13 +24,12 @@ btrfs subvolume create /mnt/@/.snapshots/1/snapshot
 COW_VOLS=(
     home
     root
-    boot
-    boot/efi
     srv
     var/log
     var/log/tasks
 )
 NOCOW_VOLS=(
+    var/tmp
     var/cache
    .swap  # If you need Swapfile, create in this folder
 )
