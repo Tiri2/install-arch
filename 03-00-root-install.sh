@@ -33,7 +33,7 @@ chmod 750 /.snapshots
 
 echo "ATTENTION!! Executing following script: 04-01-install-grub.sh"
 # Executing a nother script with the args as descriped above
-/usr/bin/bash ./04-01-install-grub.sh $BOOTLOADER_ID $BOOT_TARGET
+source ./03-01-install-grub.sh $BOOTLOADER_ID $BOOT_TARGET
 
 # Setting root password.
 echo "Setting root password"
