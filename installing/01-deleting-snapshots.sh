@@ -40,7 +40,7 @@ for snapshot_id in $snapshot_ids; do
     echo "Behalte Snapshot mit ID: $snapshot_id"
   else
     echo "Lösche Snapshot mit ID: $snapshot_id"
-    btrfs subvolume delete -i "$snapshot_id $1" || {
+    btrfs subvolume delete -i "$snapshot_id" "$1" || {
       echo "Fehler beim Löschen von Snapshot $snapshot_id"; 
       exit 1; 
     }
