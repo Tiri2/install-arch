@@ -7,6 +7,10 @@ chsh -s /usr/bin/zsh flex
 echo "Entering password for flex"
 passwd flex
 
+# Configure root user
+cp misc/.zshrc /root
+chsh -s /usr/bin/zsh root
+
 # Fully upgrading the system
 echo "Upgrading System"
 pacman -Syu
