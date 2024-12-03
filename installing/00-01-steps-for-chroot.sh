@@ -1,14 +1,6 @@
 #!/bin/bash
 
 echo " "
-echo "Am i running in a chroot environment?"
-read -p "y/n: " confirm
-
-if [[ $confirm == "n" ]]; then
-    echo "Please executing in chroot environment!"
-    exit 1
-fi
-
 mount -a
 lsblk
 
@@ -42,4 +34,14 @@ sh /var/system/tools/install-arch/03-01-install-grub.sh "$1" ARCH
 echo "Making initramfs"
 mkinitcpio -P
 
-echo "Done. "
+echo "Done. Installing succuessfully - do you want to restart now?"
+read -p "y/n: " RESTART
+
+if [[ $RESTART == "y" ]]; then
+    shutdown -r now
+elif [[ $RESTART == "n" ]]; then
+    echo "okay"
+    exit 1
+else 
+    exit 1
+fi
