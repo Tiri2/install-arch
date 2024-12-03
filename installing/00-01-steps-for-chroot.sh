@@ -31,10 +31,11 @@ cd "$SCRIPT_DIR"
 ls -al "$SCRIPT_DIR"
 
 echo "DEBUG: Inhalte des /root Verzeichnisses im Chroot:"
-ls -l /root/
+ls -al /root/
+
 
 # Installing Grub
-sh /root/install-grub.sh "$1" ARCH
+sh /mnt/root/install-grub.sh "$1" ARCH
 
 echo "Making initramfs"
 mkinitcpio -P
