@@ -1,39 +1,45 @@
 #!/bin/bash
 
+# Überprüfen, ob ein Verzeichnis übergeben wurde
 SNAPSHOT_DIR="$1"
 
 if [[ -z "$SNAPSHOT_DIR" ]]; then
-  echo "Error: Please specify a snapshot directory."
+  echo "Fehler: Bitte ein Snapshot-Verzeichnis als Argument übergeben."
   exit 1
 fi
 
 if [[ ! -d "$SNAPSHOT_DIR" ]]; then
-  echo "Error: Directory $SNAPSHOT_DIR does not exist."
+  echo "Fehler: Verzeichnis $SNAPSHOT_DIR existiert nicht."
   exit 1
 fi
 
-echo "Checking snapshots in directory $SNAPSHOT_DIR..."
+echo "Ermittle alle Snapshot-IDs im Verzeichnis $SNAPSHOT_DIR..."
 
-# Snapshots sortieren und alle außer den letzten löschen
-snapshots=($(ls -1 "$SNAPSHOT_DIR" | sort -V)) # Sortiere alphabetisch oder numerisch
-num_snapshots=${#snapshots[@]}
+# Liste der Snapshots abrufen und sortieren
+snapshot_ids=$(btrfs subvolume list "$SNAPSHOT_DIR" | awk '{print $2}' | sort -n)
 
-if [[ $num_snapshots -le 1 ]]; then
-  echo "Nothing to delete. There is only one or no snapshot."
-  exit 0
+# Prüfen, ob Snapshots gefunden wurden
+if [[ -z "$snapshot_ids" ]]; then
+  echo "Keine Snapshots gefunden in $SNAPSHOT_DIR."
+  exit 1
 fi
 
-# Alle bis auf den letzten Snapshot löschen
-for ((i = 0; i < num_snapshots - 1; i++)); do
-  snapshot="${SNAPSHOT_DIR}/${snapshots[$i]}"
-  if [[ -d "$snapshot" ]]; then
-    echo "Deleting snapshot: $snapshot"
-    if btrfs subvolume show "$snapshot" &>/dev/null; then
-      btrfs subvolume delete "$snapshot" || { echo "Error deleting snapshot: $snapshot"; exit 1; }
-    else
-      rm -rf "$snapshot" || { echo "Error deleting directory: $snapshot"; exit 1; }
-    fi
+# Letzte Snapshot-ID herausfinden
+last_snapshot_id=$(echo "$snapshot_ids" | tail -n 1)
+# Wichtigste Snapshot-ID definieren (kann angepasst werden)
+important_snapshot_id="<HIER-DIE-ID-EINFÜGEN>" # Z. B. den ID eines wichtigen Standard-Snapshots
+
+# Durchlaufen und Snapshots löschen, außer den letzten und wichtigsten
+for snapshot_id in $snapshot_ids; do
+  if [[ "$snapshot_id" == "$last_snapshot_id" || "$snapshot_id" == "$important_snapshot_id" ]]; then
+    echo "Behalte Snapshot mit ID: $snapshot_id"
+  else
+    echo "Lösche Snapshot mit ID: $snapshot_id"
+    btrfs subvolume delete -i "$snapshot_id" || {
+      echo "Fehler beim Löschen von Snapshot $snapshot_id"; 
+      exit 1; 
+    }
   fi
 done
 
-echo "All snapshots except the last one have been deleted."
+echo "Nicht benötigte Snapshots wurden erfolgreich gelöscht."
