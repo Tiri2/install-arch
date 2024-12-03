@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Überprüfen, ob ein Verzeichnis übergeben wurde
-SNAPSHOT_DIR="$1"
+SNAPSHOT_DIR="$2"
 
 if [[ -z "$SNAPSHOT_DIR" ]]; then
   echo "Fehler: Bitte ein Snapshot-Verzeichnis als Argument übergeben."
@@ -26,8 +26,12 @@ fi
 
 # Letzte Snapshot-ID herausfinden
 last_snapshot_id=$(echo "$snapshot_ids" | tail -n 1)
-# Wichtigste Snapshot-ID definieren (kann angepasst werden)
-important_snapshot_id="<HIER-DIE-ID-EINFÜGEN>" # Z. B. den ID eines wichtigen Standard-Snapshots
+# Wichtigste Snapshot-ID definieren
+important_snapshot_id="1"
+
+ECHO "DEBUG: last_snapshot_id: ${last_snapshot_id}"
+ECHO "DEBUG: snapshots_id: ${snapshot_ids}"
+ECHO "DEBUG: arg 1: ${$1} - arg 2: ${$2}"
 
 # Durchlaufen und Snapshots löschen, außer den letzten und wichtigsten
 for snapshot_id in $snapshot_ids; do
