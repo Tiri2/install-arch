@@ -31,7 +31,7 @@ last_snapshot_id=$(echo "$snapshot_ids" | tail -n 1)
 # Wichtigste Snapshot-ID definieren
 important_snapshot_id="1"
 # IDs, die nicht gelöscht werden sollen
-KEEP_IDS=("256" "257" "258" "259" "260" "263" "265" "266" "268", "269", "270", "272") 
+KEEP_IDS=("256" "257" "258" "259" "260" "261" "262" "263" "264" "265" "266" "267" "268" "269" "270" "272") 
 
 echo "DEBUG: last_snapshot_id: ${last_snapshot_id}"
 echo "DEBUG: snapshots_id: ${snapshot_ids}"
