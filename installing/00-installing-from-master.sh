@@ -16,17 +16,18 @@ lsblk
 echo " "
 echo " "
 
+# Getting data from user to proceed installation
 echo "Please enter a valid disk for write the master on (/dev/sda)"
 read -p "Disk: " DISK
 echo " "
 
-echo "Before writing on ${DSIK} please provide the second partition to chroot into"
+echo "Before writing on ${DISK} please provide the second partition to chroot into"
 read -p "the second partiton (/dev/sda2): " PART2
 echo " "
 
+# Reqeust if anything is already installed. If not installing from master
 read -p "Have you already installed the master on this system? (y/n): " INSTALLED
 echo " "
-
 if [[ $INSTALLED == "n" ]]; then
     echo "okay - installing system from master now..."
     echo "Take around 15 minutes"
@@ -38,20 +39,20 @@ parted $DISK resizepart 2 100%
 
 # Getting into folder where the script is
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
-
-# Aktuelles Verzeichnis
 CURRENT_DIR=$(pwd)
 
-# Vergleich
 if [[ "$SCRIPT_DIR" != "$CURRENT_DIR" ]]; then
   cd "$SCRIPT_DIR"
-  echo "DEBUG: ${SCRIPT_DIR} - ${CURRENT_DIR}"
 fi
 
+# Mounting partition 2 to mount and chroot into 
+# and then executing 00-01-steps-for-chroot.sh (setup.sh)
 echo "Mounting ${PART2} and chroot into"
 mount $PART2 /mnt
+
 # Coping files into chroot to execute them
 cp 00-01-steps-for-chroot.sh /mnt/root/setup.sh
 chmod +x /mnt/root/setup.sh
 
+# Chroot into and exeute the copied sh script named setup.sh with arg $DISK
 arch-chroot /mnt /bin/bash -c "sh /root/setup.sh $DISK"
