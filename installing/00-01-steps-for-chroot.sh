@@ -33,9 +33,12 @@ ls -al "$SCRIPT_DIR"
 echo "DEBUG: Inhalte des /root Verzeichnisses im Chroot:"
 ls -al /root/
 
+echo "Cloning git repo from tiri2/install-arch"
+mkdir -p /var/system/tools/
+git clone https://github.com/Tiri2/install-arch.git /var/system/tools/install-arch/
 
 # Installing Grub
-sh /mnt/root/install-grub.sh "$1" ARCH
+sh /var/system/tools/install-arch/03-01-install-grub.sh "$1" ARCH
 
 echo "Making initramfs"
 mkinitcpio -P
