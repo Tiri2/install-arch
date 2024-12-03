@@ -15,10 +15,9 @@ echo "Everything looking fine?"
 echo "CTRL + C to abort - Enter to continue"
 read -p "Continue?"
 
+# Cd into Script dir
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
-
 cd "$SCRIPT_DIR"
-ls -al "$SCRIPT_DIR"
 
 echo "Cloning git repo from tiri2/install-arch"
 mkdir -p /var/system/tools/
