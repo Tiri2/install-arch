@@ -29,6 +29,8 @@ SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 
 echo "DEBUG: script dir: ${SCRIPT_DIR}"
 ls -al
+cd "$SCRIPT_DIR"
+ls -al "$SCRIPT_DIR"
 
 # Installing Grub
 source /root/install-grub.sh "$1" ARCH
