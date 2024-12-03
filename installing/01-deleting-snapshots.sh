@@ -3,7 +3,7 @@
 # Überprüfen, ob ein Verzeichnis übergeben wurde
 SNAPSHOT_DIR="$2"
 
-ECHO "DEBUG: arg 1: ${$1} - arg 2: ${$2}"
+ECHO "DEBUG: arg 1: ${1} - arg 2: ${2}"
 
 if [[ -z "$SNAPSHOT_DIR" ]]; then
   echo "Fehler: Bitte ein Snapshot-Verzeichnis als Argument übergeben."
@@ -40,7 +40,7 @@ for snapshot_id in $snapshot_ids; do
     echo "Behalte Snapshot mit ID: $snapshot_id"
   else
     echo "Lösche Snapshot mit ID: $snapshot_id"
-    btrfs subvolume delete -i "$snapshot_id" || {
+    btrfs subvolume delete -i "$snapshot_id $1" || {
       echo "Fehler beim Löschen von Snapshot $snapshot_id"; 
       exit 1; 
     }
