@@ -10,6 +10,7 @@ if ! ping -c 1 -w 5 $IP &> /dev/null; then
     exit 1
 fi
 
+ttyctl -f
 lsblk
 
 echo " "
