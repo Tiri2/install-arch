@@ -30,9 +30,9 @@ else
 fi
 
 # Delete existings snapshots
-sh /var/system/tools/install-arch/installing/01-deleting-snapshots.sh "$2" "/.snapshots"
-sh /var/system/tools/install-arch/installing/01-deleting-snapshots.sh "$2" "/home/.snapshots"
-sh /var/system/tools/install-arch/installing/01-deleting-snapshots.sh "$2" "/srv/.snapshots"
+sh /var/system/tools/install-arch/installing/01-deleting-snapshots.sh "/mnt" "/.snapshots"
+sh /var/system/tools/install-arch/installing/01-deleting-snapshots.sh "/mnt/home" "/home/.snapshots"
+sh /var/system/tools/install-arch/installing/01-deleting-snapshots.sh "/mnt/srv" "/srv/.snapshots"
 
 snapper -c root create -d "Install Script"
 snapper -c home create -d "Install Script"
