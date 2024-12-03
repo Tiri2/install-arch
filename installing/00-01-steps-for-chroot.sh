@@ -19,19 +19,19 @@ read -p "Continue?"
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 cd "$SCRIPT_DIR"
 
-echo "Cloning git repo from tiri2/install-arch"
+echo "Fetch git repo from tiri2/install-arch"
 mkdir -p /var/system/tools/
 
 if [[ -d "/var/system/tools/install-arch/" ]]; then
-    git -C /var/system/tools/install-arch/ pull > /dev/null
+    git -C /var/system/tools/install-arch/ pull &> /dev/null
 else
-    git clone https://github.com/Tiri2/install-arch.git /var/system/tools/install-arch/ > /dev/null
+    git clone https://github.com/Tiri2/install-arch.git /var/system/tools/install-arch/ &> /dev/null
 fi
 
 # Delete existings snapshots
-sh /var/system/tools/install-arch/installing/01-deleting-snapshots.sh $2 /.snapshots
-sh /var/system/tools/install-arch/installing/01-deleting-snapshots.sh $2 /home/.snapshots
-sh /var/system/tools/install-arch/installing/01-deleting-snapshots.sh $2 /srv/.snapshots
+sh /var/system/tools/install-arch/installing/01-deleting-snapshots.sh "$2" "/.snapshots"
+sh /var/system/tools/install-arch/installing/01-deleting-snapshots.sh "$2" "/home/.snapshots"
+sh /var/system/tools/install-arch/installing/01-deleting-snapshots.sh "$2" "/srv/.snapshots"
 
 snapper -c root create -d "Install Script"
 snapper -c home create -d "Install Script"
