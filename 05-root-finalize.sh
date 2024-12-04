@@ -17,6 +17,7 @@ systemctl enable --now firewalld
 firewall-cmd --list-all
 # allowing ssh port
 firewall-cmd --permanent --add-service=ssh --zone=public
+firewall-cmd --permanent --add-service=postgresql --zone=public
 # allowing smb port
 firewall-cmd --permanent --add-port=445/tcp --zone=public
 # allowing netbios ports
@@ -27,6 +28,9 @@ firewall-cmd --permanent --add-port=138/udp --zone=public
 # Reloading firewall
 echo "ports opened - reloading firewall..."
 firewall-cmd --reload
+
+SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
+cd $SCRIPT_DIR
 
 # Setting up postgres
 sudo -iu postgres initdb -D /var/lib/postgres/data
