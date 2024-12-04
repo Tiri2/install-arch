@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Creating flex user and configure him
 echo "creating user flex"
 useradd -m flex
@@ -12,10 +14,20 @@ mkdir -p /home/flex/.config/systemd/user
 mkdir -p /srv/tasks/CURRENT/.config/env.d
 
 cat configs/flexTasks/log4j2.txt > /srv/tasks/CURRENT/default/log4j2.xml
-cat configs/flexTasks/flexTasks.txt > /srv/tasks/CURRENT/.config/env.d/flexTasks.conf
+cat configs/flexTasks/flexTasks.conf.txt > /srv/tasks/CURRENT/.config/env.d/flexTasks.conf
 cat configs/flexTasks/template.service.txt > /home/flex/.config/systemd/user/template.service
+cat configs/flexTasks/flexTasks.slice.txt > /home/flex/.config/systemd/user/flexTasks.slice
 
 cat misc/.sqliterc /home/flex/.sqliterc
+
+# Setting up bootlog service
+cat configs/system/bootlog.sh.txt > /var/system/scripts/bootlog.sh
+cat configs/system/bootlog.service.txt > /home/flex/.config/systemd/user/bootlog.service
+
+# Setting up flexLogMove
+cat configs/system/log/flexLogMove.path.txt > /home/flex/.config/systemd/user/flexLogMove.path
+cat configs/system/log/flexLogMove.service.txt > /home/flex/.config/systemd/user/flexLogMove.service
+cat configs/system/log/flexLogMove.sh.txt > /var/system/scripts/flexLogMove.sh
 
 # Configure root user
 cp misc/.zshrc /root
@@ -55,6 +67,10 @@ cat configs/resolve.txt > /etc/resolv.conf
 echo "Setting up postgres"
 pacman -S --noconfirm postgresql
 echo "Postgres will be configured in 05-root-finalize.sh"
+
+echo "Setting up sudoers"
+cp /etc/sudoers /etc/sudoers.old
+cat configs/sudoers.txt > /etc/sudoers
 
 # User Services enablen
 systemctl --user enable default.target

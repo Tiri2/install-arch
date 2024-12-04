@@ -1,0 +1,10 @@
+[Unit]
+Description=Flex Store Logs
+
+[Path]
+PathExistsGlob=/tmp/log/ready/*.log
+MakeDirectory=true
+DirectoryMode=0700
+
+[Install]
+WantedBy=default.target

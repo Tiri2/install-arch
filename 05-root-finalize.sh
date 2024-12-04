@@ -48,5 +48,9 @@ if [[ $USER == "root" ]]; then
     loginctl enable-linger flex
 fi
 
+sudo -u flex systemctl --user enable flexLogMove.path
+sudo -u flex systemctl --user enable flexLogMove.service
+sudo -u flex systemctl --user enable bootlog.service
+
 chmod 600 /etc/modprobe.d/*
 echo "finished"

@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Following directory structure will be created
 mkdir -p /var/system
 mkdir -p /var/system/tools

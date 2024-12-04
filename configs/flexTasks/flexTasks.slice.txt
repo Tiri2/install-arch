@@ -1,0 +1,6 @@
+[Unit]
+Description=FlexTasks Slice
+DefaultDependencies=no
+Before=slices.target
+
+[Slice]

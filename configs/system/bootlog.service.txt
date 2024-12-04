@@ -1,0 +1,12 @@
+[Unit]
+Description=Boot/Reboot/Shutdown
+Before=flexTasks.slice
+
+[Service]
+Type=oneshot
+ExecStart=/home/flex/scripts/bootlog.sh
+ExecStop=/home/flex/scripts/shutdown.sh
+RemainAfterExit=true
+
+[Install]
+WantedBy=default.target
