@@ -50,5 +50,9 @@ cat configs/caddyfile.txt > /etc/caddy/CaddyFile
 echo "Setting up systemd-networkd"
 cat configs/systemd-network.txt > /etc/systemd/network/10-ethernet.network
 
+echo "Setting up postgres"
+pacman -S --noconfirm postgresql
+echo "Postgres will be configured in 05-root-finalize.sh"
+
 # User Services enablen
 systemctl --user enable default.target

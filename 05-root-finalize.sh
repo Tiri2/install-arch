@@ -28,5 +28,18 @@ firewall-cmd --permanent --add-port=138/udp --zone=public
 echo "ports opened - reloading firewall..."
 firewall-cmd --reload
 
+# Setting up postgres
+sudo -iu postgres initdb -D /var/lib/postgres/data
+systemctl enable --now postgresql
+cp /var/lib/postgres/data/postgresql.conf /var/lib/postgres/data/postgresql.conf.old
+cat configs/postgres/postgresql.txt > /var/lib/postgres/data/postgresql.conf
+cat configs/postgres/pg_hba.txt > /var/lib/postgres/data/pg_hba.conf
+
+USER=whoami
+
+if [[ $USER == "root" ]]; then
+    loginctl enable-linger flex
+fi
+
 chmod 600 /etc/modprobe.d/*
 echo "finished"
