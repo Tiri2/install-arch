@@ -133,28 +133,21 @@ get_smb_usage() {
 
   if [[ -n $total_size && -n $used_size ]]; then
     local percentage=$(awk "BEGIN {printf \"%.2f\", ($used_size/$total_size)*100}")
-    echo "Verzeichnis /srv/smb nutzt $percentage% der Partition $partition"
-  else
-    echo "Fehler bei der Berechnung der Größe von /srv/smb"
+    echo -e "/srv/smb verbaucht ${cyan}$percentage% ${white}Speicher"
   fi
 }
 
 
-
-echo "${yellow}===================="
 echo " "
-echo "${green} "
-echo "   _____         ____     __     __  _             _____      __   __ __"
-echo "  / _/ /____ __ / __/__  / /_ __/ /_(_)__  ___    / ___/_ _  / /  / // /"
-echo " / _/ / -_) \ /_\ \/ _ \/ / // / __/ / _ \/ _ \  / (_ /  '\' / _ \/ _  / "
-echo "/_//_/\__/_\_\/___/\___/_/\_,_/\__/_/\___/_//_/  \___/_/_/_/_.__/_//_/  "
-echo "                                                                        "
+echo "      flexSolution GmBh"
 echo " "
+echo "${purple}===================="
 echo " "
 echo "${blue}Willkommen, ${white}${USER}!"
 echo " "
 echo "${white}Uptime is ${yellow}$UPTIME"
-# Anzeige der Nutzung bei jedem neuen Terminal
+
+echo "${white}"
 get_smb_usage
 
 echo " "
@@ -164,7 +157,7 @@ if [ "$USER" = "root" ]; then
   echo " "
 fi
 
-echo "${yellow}===================="
+echo "${purple}===================="
 
 # Extra space because of the prompt
 echo " "
