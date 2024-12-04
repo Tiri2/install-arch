@@ -27,6 +27,7 @@ ln -sf /srv/tasks/CORE-2.0.0-SNAPSHOT/ /srv/tasks/CURRENT
 mkdir -p /srv/tasks/CURRENT/{default,libs}
 ln -sf /var/system/certs/ /srv/tasks/CURRENT/default/certs
 ln -sf /srv/tasks/CURRENT/libs/ /srv/tasks/CURRENT/default/libs
+mkdir -p /srv/tasks/CURRENT/data/default/db
 
 echo "File Structure created"
 echo "Next Script will be 04-01-init-tasks.sh"

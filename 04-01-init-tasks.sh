@@ -10,8 +10,9 @@ passwd flex
 # Setting up needed files for tasks
 mkdir -p /home/flex/.config/systemd/user
 mkdir -p /srv/tasks/CURRENT/.config/env.d
-cat configs/flexTasks/flexTasks.txt > /srv/tasks/CURRENT/.config/env.d/flexTasks.conf
 
+cat configs/flexTasks/log4j2.txt > /srv/tasks/CURRENT/default/log4j2.xml
+cat configs/flexTasks/flexTasks.txt > /srv/tasks/CURRENT/.config/env.d/flexTasks.conf
 cat configs/flexTasks/template.service.txt > /home/flex/.config/systemd/user/template.service
 
 cat misc/.sqliterc /home/flex/.sqliterc
