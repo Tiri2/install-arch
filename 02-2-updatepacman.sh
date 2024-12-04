@@ -1,5 +1,4 @@
 #!/bin/bash
-pacman -Sy archlinux-keyring
-pacman -Sy reflector
+pacman -Sy --noconfirm archlinux-keyring reflector
 reflector --latest 5 --sort rate --save /etc/pacman.d/mirrorlist
 
