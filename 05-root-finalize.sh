@@ -72,8 +72,14 @@ chown -R :beer /srv/
 chmod -R g+rwx /srv/
 chmod -R o+rx /srv/
 
+# For home user specifc
+chown flex:flex /home/flex/.config
+chown flex:flex /home/flex/.config/systemd
+chown flex:flex /home/flex/.zshrc
+chown flex:flex /home/flex/.sqliterc
+
 echo "Installing missing packages"
-pacman -Sy --noconfirm htop btop ripgrep less curl iputils rsync tcpdump wget zstd jq
+pacman -Sy --noconfirm htop btop ripgrep less curl iputils rsync tcpdump wget zstd jq polkit
 
 echo "Starting required user services"
 sudo -iu flex systemctl --user enable flexLogMove.path
