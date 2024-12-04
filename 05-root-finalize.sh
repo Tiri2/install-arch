@@ -81,10 +81,12 @@ chown flex:flex /home/flex/.sqliterc
 echo "Installing missing packages"
 pacman -Sy --noconfirm htop btop ripgrep less curl iputils rsync tcpdump wget zstd jq polkit
 
+su flex
 echo "Starting required user services"
 sudo -iu flex systemctl --user enable flexLogMove.path
 sudo -iu flex systemctl --user enable flexLogMove.service
 sudo -iu flex systemctl --user enable bootlog.service
+exit
 
 chmod 600 /etc/modprobe.d/*
 echo "finished"
