@@ -24,6 +24,7 @@ firewall-cmd --permanent --add-port=445/tcp --zone=public
 firewall-cmd --permanent --add-port=139/tcp --zone=public
 firewall-cmd --permanent --add-port=137/udp --zone=public
 firewall-cmd --permanent --add-port=138/udp --zone=public
+firewall-cmd --permanent --add-port=8150/tcp --zone=public
 
 # Reloading firewall
 echo "ports opened - reloading firewall..."
