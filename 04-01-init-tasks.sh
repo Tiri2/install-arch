@@ -18,8 +18,6 @@ cat configs/flexTasks/flexTasks.conf.txt > /srv/tasks/CURRENT/.config/env.d/flex
 cat configs/flexTasks/template.service.txt > /home/flex/.config/systemd/user/template.service
 cat configs/flexTasks/flexTasks.slice.txt > /home/flex/.config/systemd/user/flexTasks.slice
 
-cat misc/.sqliterc /home/flex/.sqliterc
-
 # Setting up bootlog service
 cat configs/system/bootlog.sh.txt > /var/system/scripts/bootlog.sh
 cat configs/system/bootlog.service.txt > /home/flex/.config/systemd/user/bootlog.service
@@ -71,6 +69,10 @@ echo "Postgres will be configured in 05-root-finalize.sh"
 echo "Setting up sudoers"
 cp /etc/sudoers /etc/sudoers.old
 cat configs/sudoers.txt > /etc/sudoers
+
+echo "installing and setting up sqlite3"
+pacman -S --noconfirm sqlite3
+cat misc/.sqliterc > /home/flex/.sqliterc
 
 # User Services enablen
 systemctl --user enable default.target
