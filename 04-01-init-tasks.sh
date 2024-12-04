@@ -47,8 +47,9 @@ echo "installing and setting up caddy server"
 pacman -S --noconfirm caddy
 cat configs/caddyfile.txt > /etc/caddy/CaddyFile
 
-echo "Setting up systemd-networkd"
+echo "Setting up systemd-networkd and resolve.conf"
 cat configs/systemd-network.txt > /etc/systemd/network/10-ethernet.network
+cat configs/resolve.txt > /etc/resolv.conf
 
 echo "Setting up postgres"
 pacman -S --noconfirm postgresql
