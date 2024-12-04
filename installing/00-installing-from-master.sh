@@ -9,15 +9,6 @@ echo "These scripts writes the master image on the hard disk of this device. "
 echo "If you want to install from a backup use a other script instead of this."
 echo " "
 
-if ! ping -c 1 -w 5 $IP &> /dev/null; then 
-    echo "Can not reach "$IP" - do u have a internet connection?"
-    ip a
-    ping -W 5 -c 2 "$IP"
-    exit 1
-fi
-
-echo " "
-
 # Getting disk from user to write the master disk on
 echo "Please enter a valid disk for write the master on (/dev/sda)"
 read -p "Disk: " DISK
@@ -27,6 +18,12 @@ echo " "
 read -p "Have you already installed the master on this system? (y/n): " INSTALLED
 echo " "
 if [[ $INSTALLED == "n" ]]; then
+
+    if ! ping -c 1 -w 5 $IP &> /dev/null; then 
+        echo "Can not reach "$IP" - do u have a internet connection?"
+        exit 1
+    fi
+
     echo "okay - installing system from master now..."
     echo "Take around 15 minutes"
     ssh root@"$IP" "dd if=/dev/sda bs=64M | gzip" | pv | gunzip | dd of=$DISK bs=64M
