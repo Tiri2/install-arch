@@ -139,7 +139,7 @@ get_smb_usage() {
 
 
 echo " "
-echo "      flexSolution GmBh"
+echo "      flexSolution GmbH"
 echo " "
 echo "${purple}===================="
 echo " "
