@@ -4,8 +4,8 @@ Before=flexTasks.slice
 
 [Service]
 Type=oneshot
-ExecStart=/home/flex/scripts/bootlog.sh
-ExecStop=/home/flex/scripts/shutdown.sh
+ExecStart=/var/system/scripts/bootlog.sh
+ExecStop=/var/system/scripts/shutdown.sh
 RemainAfterExit=true
 
 [Install]

@@ -20,6 +20,7 @@ cat configs/flexTasks/flexTasks.slice.txt > /home/flex/.config/systemd/user/flex
 
 # Setting up bootlog service
 cat configs/system/bootlog.sh.txt > /var/system/scripts/bootlog.sh
+cat configs/system/shutdown.sh.txt > /var/system/scripts/shutdown.sh
 cat configs/system/bootlog.service.txt > /home/flex/.config/systemd/user/bootlog.service
 
 # Setting up flexLogMove

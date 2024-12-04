@@ -78,15 +78,24 @@ chown flex:flex /home/flex/.config/systemd
 chown flex:flex /home/flex/.zshrc
 chown flex:flex /home/flex/.sqliterc
 
+# System specifc
+chown -R :beer /var/system/
+chmod 655 /var/system/scripts/*
+chmod 770 /var/system/backup
+chmod 770 /var/system/certs
+chmod 775 /var/system/tools
+
 echo "Installing missing packages"
 pacman -Sy --noconfirm htop btop ripgrep less curl iputils rsync tcpdump wget zstd jq polkit
 
-su flex
-echo "Starting required user services"
-sudo -iu flex systemctl --user enable flexLogMove.path
-sudo -iu flex systemctl --user enable flexLogMove.service
-sudo -iu flex systemctl --user enable bootlog.service
-exit
+# Not working - must be logged in as root
+# echo "Starting required user services"
+# systemctl --user enable flexLogMove.path
+# systemctl --user enable flexLogMove.service
+# systemctl --user enable bootlog.service
+
+# Creating boots log file
+touch /var/olg/flex/boots.log
 
 chmod 600 /etc/modprobe.d/*
 echo "finished"
