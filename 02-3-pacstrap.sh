@@ -2,7 +2,7 @@
 
 kernel=         # linux, linux-zen, linux-hardened; for example
 microcode=      # amd-ucode or intel-ucode
-hostname="PiServer"       # any random makeup names
+hostname="master"       # any random makeup names
 locale="de_AT"  # uncomment this, if you want en_US; or en_GB is nice for metric units
 kblayout="de-latin1"       # Can be omitted
 
