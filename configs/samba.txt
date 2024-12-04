@@ -11,14 +11,23 @@ dns proxy = no
 unix extensions = no
 wide links = yes
 
-[tasks]
+[data]
 	comment = flexTasks
-	path = /srv/tasks
+	path = /srv/tasks/CURRENT/data
 	browseable = no
 	writable = yes
 	force user = flex
 	valid users = flex
-	create mask = 0600
+	create mask = 7764
+
+[http]
+	comment = Web data
+	path = /srv/http
+	browseable = no
+	writable = yes
+	force user = flex
+	valid users = flex
+	create mask = 7766
 
 [share]
 	comment = Share Directory
@@ -27,7 +36,7 @@ wide links = yes
 	writable = yes
 	force user = flex
 	guest ok = yes
-	create mask = 0600
+	create mask = 0774
 
 [backup]
 	comment = Backup Directory
