@@ -48,9 +48,37 @@ if [[ $USER == "root" ]]; then
     loginctl enable-linger flex
 fi
 
-sudo -u flex systemctl --user enable flexLogMove.path
-sudo -u flex systemctl --user enable flexLogMove.service
-sudo -u flex systemctl --user enable bootlog.service
+groupadd -U flex beer
+
+# Deleting temp files
+echo "Deleting temp files"
+rm /root/setup.sh
+
+# Deleting bash files - we use zsh instead
+rm /home/flex/.bash*
+
+# Settings rights
+echo "Settings missing rights"
+chmod 644 /home/flex/.config/systemd/user/*
+chown -R flex:flex /home/flex/.config/systemd/user/
+
+# For /srv/
+chmod 775 /srv/ftp
+chmod 775 /srv/http
+chmod 775 /srv/smb
+chmod 775 /srv/tasks
+
+chown -R :beer /srv/
+chmod -R g+rwx /srv/
+chmod -R o+rx /srv/
+
+echo "Installing missing packages"
+pacman -Sy --noconfirm htop btop ripgrep less curl iputils rsync tcpdump wget zstd jq
+
+echo "Starting required user services"
+sudo -iu flex systemctl --user enable flexLogMove.path
+sudo -iu flex systemctl --user enable flexLogMove.service
+sudo -iu flex systemctl --user enable bootlog.service
 
 chmod 600 /etc/modprobe.d/*
 echo "finished"
