@@ -18,6 +18,8 @@ firewall-cmd --list-all
 # allowing ssh port
 firewall-cmd --permanent --add-service=ssh --zone=public
 firewall-cmd --permanent --add-service=postgresql --zone=public
+firewall-cmd --permanent --add-service=http --zone=public
+firewall-cmd --permanent --add-service=https --zone=public
 # allowing smb port
 firewall-cmd --permanent --add-port=445/tcp --zone=public
 # allowing netbios ports
