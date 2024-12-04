@@ -1,6 +1,6 @@
 #!/bin/bash
 
-IP=10.1.1.69
+IP=10.1.1.70
 
 echo "======          Industruction             ======"
 echo " "
