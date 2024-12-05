@@ -59,6 +59,7 @@ fi
 source "$ZINIT_HOME/zinit.zsh"
 
 # zsh plugins
+zinit ice wait"1" # Lazy Loading
 zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
@@ -86,7 +87,7 @@ PROMPT='(%B%F{green}%n@%m%f%b) %F{blue}%~%f%b $ '
 # load completions
 autoload -U compinit && compinit
 
-eval "$(fzf --zsh)"
+source "$(fzf)"
 eval "$(zoxide init zsh)"
 
 autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
