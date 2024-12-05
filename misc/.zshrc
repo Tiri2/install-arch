@@ -72,6 +72,31 @@ zle -N down-line-or-beginning-search
 # ============================================
 #
 #
+# 	            COMMAND HISTORY
+#
+#
+# ============================================
+
+HISTFILE=~/.zsh_history
+HISTSIZE=1000
+SAVEHIST=10000
+
+setopt APPEND_HISTORY             # Befehle werden an die Datei angehängt, nicht überschrieben
+setopt SHARE_HISTORY              # History wird zwischen laufenden Zsh-Sessions geteilt
+setopt INC_APPEND_HISTORY         # Befehle sofort in die History-Datei schreiben
+setopt HIST_IGNORE_DUPS           # Duplikate in der History ignorieren
+setopt HIST_IGNORE_ALL_DUPS       # Alle Duplikate entfernen
+setopt HIST_IGNORE_SPACE          # Befehle, die mit einem Leerzeichen beginnen, ignorieren
+setopt HIST_FIND_NO_DUPS          # Keine Duplikate bei der History-Suche
+setopt HIST_REDUCE_BLANKS         # Überflüssige Leerzeichen aus Befehlen entfernen
+setopt HIST_VERIFY                # Befehl vor der Ausführung im Editor bestätigen
+setopt EXTENDED_HISTORY           # Befehle mit Zeitstempeln speichern
+
+setopt autocd
+
+# ============================================
+#
+#
 # 	            KEY BINDINGS
 #
 #
@@ -160,28 +185,3 @@ echo "${purple}===================="
 
 # Extra space because of the prompt
 echo " "
-
-# ============================================
-#
-#
-# 	            COMMAND HISTORY
-#
-#
-# ============================================
-
-HISTFILE=~/.zsh_history
-HISTSIZE=1000
-SAVEHIST=10000
-
-setopt APPEND_HISTORY             # Befehle werden an die Datei angehängt, nicht überschrieben
-setopt SHARE_HISTORY              # History wird zwischen laufenden Zsh-Sessions geteilt
-setopt INC_APPEND_HISTORY         # Befehle sofort in die History-Datei schreiben
-setopt HIST_IGNORE_DUPS           # Duplikate in der History ignorieren
-setopt HIST_IGNORE_ALL_DUPS       # Alle Duplikate entfernen
-setopt HIST_IGNORE_SPACE          # Befehle, die mit einem Leerzeichen beginnen, ignorieren
-setopt HIST_FIND_NO_DUPS          # Keine Duplikate bei der History-Suche
-setopt HIST_REDUCE_BLANKS         # Überflüssige Leerzeichen aus Befehlen entfernen
-setopt HIST_VERIFY                # Befehl vor der Ausführung im Editor bestätigen
-setopt EXTENDED_HISTORY           # Befehle mit Zeitstempeln speichern
-
-setopt autocd
