@@ -87,7 +87,7 @@ PROMPT='(%B%F{green}%n@%m%f%b) %F{blue}%~%f%b $ '
 # load completions
 autoload -U compinit && compinit
 
-source "$(fzf)"
+eval "$(fzf --zsh)"
 eval "$(zoxide init zsh)"
 
 autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
