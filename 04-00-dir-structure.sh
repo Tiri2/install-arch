@@ -26,9 +26,9 @@ chmod 775 /srv/smb/*
 mkdir -p /srv/tasks/CORE-2.0.0-SNAPSHOT/
 ln -sf /srv/tasks/CORE-2.0.0-SNAPSHOT/ /srv/tasks/CURRENT
 
-mkdir -p /srv/tasks/CURRENT/{default,libs}
+mkdir -p /srv/tasks/CURRENT/{default,lib}
 ln -sf /var/system/certs/ /srv/tasks/CURRENT/default/certs
-ln -sf /srv/tasks/CURRENT/libs/ /srv/tasks/CURRENT/default/libs
+ln -sf /srv/tasks/CURRENT/lib/ /srv/tasks/CURRENT/default/lib
 mkdir -p /srv/tasks/CURRENT/data/default/db
 
 echo "File Structure created"

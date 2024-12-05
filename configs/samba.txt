@@ -17,7 +17,7 @@ wide links = yes
 	browseable = no
 	writable = yes
 	force user = flex
-	valid users = flex
+#	valid users = flex
 	create mask = 7764
 
 [http]
@@ -26,7 +26,7 @@ wide links = yes
 	browseable = no
 	writable = yes
 	force user = flex
-	valid users = flex
+#	valid users = flex
 	create mask = 7766
 
 [share]
