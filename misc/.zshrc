@@ -86,6 +86,9 @@ bindkey -- "^[[A"         up-line-or-beginning-search               # up
 bindkey -- "^[[B"         down-line-or-beginning-search             # down
 bindkey -- "^[[5~"        beginning-of-buffer-or-history            # Page down
 bindkey -- "^[[6~"        end-of-buffer-or-history                  # Page up
+bindkey -- "^[[D"         backward-char                             # left
+bindkey -- "^[[C"         forward-char                              # right
+
 
 
 # ============================================
@@ -180,3 +183,5 @@ setopt HIST_FIND_NO_DUPS          # Keine Duplikate bei der History-Suche
 setopt HIST_REDUCE_BLANKS         # Überflüssige Leerzeichen aus Befehlen entfernen
 setopt HIST_VERIFY                # Befehl vor der Ausführung im Editor bestätigen
 setopt EXTENDED_HISTORY           # Befehle mit Zeitstempeln speichern
+
+setopt autocd
