@@ -62,7 +62,7 @@ source "$ZINIT_HOME/zinit.zsh"
 zinit ice wait"1" # Lazy Loading
 zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-completions
-zinit light zsh-users/zsh-autosuggestions
+#zinit light zsh-users/zsh-autosuggestions
 zinit light Aloxaf/fzf-tab
 
 zstyle ':completion:*' matcher-list 'm:{a-z}={S-Za-z}'
