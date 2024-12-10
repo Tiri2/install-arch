@@ -88,14 +88,15 @@ chmod 775 /var/system/tools
 echo "Installing missing packages"
 pacman -Sy --noconfirm htop btop ripgrep less curl iputils rsync tcpdump wget zstd jq polkit
 
-# Not working - must be logged in as root
+# Not working - must be logged in as flex
 # echo "Starting required user services"
 # systemctl --user enable flexLogMove.path
 # systemctl --user enable flexLogMove.service
 # systemctl --user enable bootlog.service
 
 # Creating boots log file
-touch /var/olg/flex/boots.log
+mkdir -p "/var/log/flex/"
+touch /var/log/flex/boots.log
 
 chmod 600 /etc/modprobe.d/*
 echo "finished"
