@@ -170,27 +170,33 @@ function print_smb_usage() {
 function list_nics_and_ips() {
     # Iterate through all network interfaces
     for nic in $(ls /sys/class/net/); do
-        echo "$nic:"  # Print the NIC name
+        # Check if the NIC exists and is up
+        if ip link show "$nic" > /dev/null 2>&1; then
+            echo "⇒ $nic:"  # Print the NIC name
 
-        # Get all IP addresses for the NIC
-        ips=$(ip -4 -o addr show dev "$nic" | awk '{print $4}')
+            # Get all IP addresses for the NIC
+            ips=$(ip -4 -o addr show dev "$nic" | awk '{print $4}')
 
-        if [ -n "$ips" ]; then
-            # Get the default gateway (if any) for the NIC
-            gateway=$(ip route | grep "default via" | grep "$nic" | awk '{print $3}')
+            if [ -n "$ips" ]; then
+                # Get the default gateway (if any) for the NIC
+                gateway=$(ip route | grep "default via" | grep "$nic" | awk '{print $3}')
 
-            for ip in $ips; do
-                if [ -n "$gateway" ]; then
-                    echo "   - $ip via $gateway"
-                else
-                    echo "   - $ip"
-                fi
-            done
+                for ip in $ips; do
+                    if [ -n "$gateway" ]; then
+                        echo "   - $ip via $gateway"
+                    else
+                        echo "   - $ip"
+                    fi
+                done
+            else
+                echo "   - No IPs assigned"
+            fi
         else
-            echo "   - No IPs assigned"
+            echo "$nic: - Device does not exist or is down"
         fi
     done
 }
+
 
 
 echo " "
