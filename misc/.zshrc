@@ -171,8 +171,8 @@ function list_nics_and_ips() {
     # Iterate through all network interfaces
     for nic in $(ls /sys/class/net/); do
         # Check if the NIC exists and is up
-        if ip link show "$nic" > /dev/null 2>&1; then
-            echo "⇒ $nic:"  # Print the NIC name
+        if [ -d "/sys/class/net/$nic" ] && ip link show "$nic" > /dev/null 2>&1; then
+            echo "$nic:"  # Print the NIC name
 
             # Get all IP addresses for the NIC
             ips=$(ip -4 -o addr show dev "$nic" | awk '{print $4}')
@@ -191,12 +191,9 @@ function list_nics_and_ips() {
             else
                 echo "   - No IPs assigned"
             fi
-        else
-            echo "$nic: - Device does not exist or is down"
         fi
     done
 }
-
 
 
 echo " "
