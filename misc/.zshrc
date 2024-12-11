@@ -172,7 +172,7 @@ function list_nics_and_ips() {
     for nic in $(ls /sys/class/net/); do
         # Check if the NIC exists and is up
         if [ -d "/sys/class/net/$nic" ] && ip link show "$nic" > /dev/null 2>&1; then
-            echo "$nic:"  # Print the NIC name
+            echo "${cyan}$nic:"  # Print the NIC name
 
             # Get all IP addresses for the NIC
             ips=$(ip -4 -o addr show dev "$nic" | awk '{print $4}')
@@ -183,9 +183,9 @@ function list_nics_and_ips() {
 
                 for ip in $ips; do
                     if [ -n "$gateway" ]; then
-                        echo "   - $ip via $gateway"
+                        echo "   - ${yellow}$ip ${white}via $gateway"
                     else
-                        echo "   - $ip"
+                        echo "   - ${yellow}$ip"
                     fi
                 done
             else
