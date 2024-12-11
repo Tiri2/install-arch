@@ -178,8 +178,8 @@ function list_nics_and_ips() {
             ips=$(ip -4 -o addr show dev "$nic" | awk '{print $4}')
 
             if [ -n "$ips" ]; then
-                # Get the default gateway (if any) for the NIC
-                gateway=$(ip route | grep "default via" | grep "$nic" | awk '{print $3}')
+                # Get the gateway (if any) for the NIC
+                gateway=$(ip route | grep "via" | grep "$nic" | awk '{print $3}')
 
                 for ip in $ips; do
                     if [ -n "$gateway" ]; then
