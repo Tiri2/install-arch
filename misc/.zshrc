@@ -179,11 +179,11 @@ function list_nics_and_ips() {
 
             if [ -n "$ips" ]; then
                 # Get the gateway (if any) for the NIC
-                gateway=$(ip route | grep "via" | grep "$nic" | awk '{print $3}')
+                gateway=$(ip route | grep "default via" | grep "$nic" | awk '{print $3}')
 
                 for ip in $ips; do
                     if [ -n "$gateway" ]; then
-                        echo "   - ${yellow}$ip ${white}via $gateway"
+                        echo "   - ${yellow}$ip ${white}via ${yellow}$gateway"
                     else
                         echo "   - ${yellow}$ip"
                     fi
