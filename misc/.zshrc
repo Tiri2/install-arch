@@ -198,7 +198,7 @@ echo "      flexSolution GmbH"
 echo " "
 echo "${purple}===================="
 echo " "
-echo "${blue}Willkommen, ${white}${USER}@${`cat /etc/hostname`}!"
+echo "${blue}Willkommen, ${white}${USER}@$(cat /etc/hostname)!"
 echo "${white}Uptime is ${yellow}$UPTIME"
 echo " "
 print_smb_usage()
