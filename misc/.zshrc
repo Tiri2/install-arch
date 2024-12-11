@@ -201,9 +201,9 @@ echo " "
 echo "${blue}Willkommen, ${white}${USER}@$(cat /etc/hostname)!"
 echo "${white}Uptime is ${yellow}$UPTIME"
 echo " "
-print_smb_usage()
+print_smb_usage
 echo " "
-list_nics_and_ips()
+list_nics_and_ips
 echo " "
 
 if [ "$USER" = "root" ]; then
