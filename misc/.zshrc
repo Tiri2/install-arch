@@ -11,6 +11,16 @@ export purple='\033[0;35m'       # Purple
 export cyan='\033[0;36m'         # Cyan
 export white='\033[0;37m'        # White
 
+# Other important settings
+setopt autocd
+
+# Download zinit if not installed
+ZINIT_HOME="${tools_dir}/zinit/zinit.git"
+if [ ! -d "$ZINIT_HOME" ]; then
+  echo -e "installing zinit"
+	mkdir -p "$(dirname "$ZINIT_HOME")"
+	git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+fi
 
 # ============================================
 #
@@ -34,18 +44,6 @@ setopt HIST_FIND_NO_DUPS          # Keine Duplikate bei der History-Suche
 setopt HIST_REDUCE_BLANKS         # Überflüssige Leerzeichen aus Befehlen entfernen
 setopt HIST_VERIFY                # Befehl vor der Ausführung im Editor bestätigen
 setopt EXTENDED_HISTORY           # Befehle mit Zeitstempeln speichern
-
-setopt autocd
-
-# Zinit Path
-ZINIT_HOME="${tools_dir}/zinit/zinit.git"
-
-# Download zinit if not installed
-if [ ! -d "$ZINIT_HOME" ]; then
-  echo -e "installing zinit"
-	mkdir -p "$(dirname "$ZINIT_HOME")"
-	git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
-fi
 
 # ============================================
 #
@@ -74,7 +72,15 @@ zstyle ':fzf-tab:complete:cd:*' fzf-preview "ls --color $realpath"
 autoload -Uz promptinit
 promptinit
 
-PROMPT='(%B%F{green}%n@%m%f%b) %F{blue}%~%f%b $ '
+# User based prompt
+USER=$(whoami)
+
+if [[ $USER == "root" ]]; then
+  PROMPT='(%B%F{red}%n@%m%f%b) %F{blue}%~%f%b $ '
+else
+  PROMPT='(%B%F{green}%n@%m%f%b) %F{blue}%~%f%b $ '
+fi
+
 
 # ============================================
 #
@@ -146,11 +152,10 @@ alias flextop='htop -p $(pidof java | sed -e "s/ /,/g")'
 #
 # ============================================
 
-USER=$(whoami)
 UPTIME=$(uptime -p)
 
 # Berechnung der Größe von /srv/smb/ in Prozent
-get_smb_usage() {
+function print_smb_usage() {
   local smb_path="/srv/smb"
   local partition=$(df "$smb_path" --output=source | tail -1) # Partition für das Verzeichnis
   local total_size=$(df "$partition" --output=size | tail -1) # Gesamtgröße der Partition (1K-Blöcke)
@@ -158,8 +163,33 @@ get_smb_usage() {
 
   if [[ -n $total_size && -n $used_size ]]; then
     local percentage=$(awk "BEGIN {printf \"%.2f\", ($used_size/$total_size)*100}")
-    echo -e "/srv/smb verbaucht ${cyan}$percentage% ${white}Speicher"
+    echo -e "${white}/srv/smb verbaucht ${cyan}$percentage% ${white}Speicher"
   fi
+}
+
+function list_nics_and_ips() {
+    # Iterate through all network interfaces
+    for nic in $(ls /sys/class/net/); do
+        echo "$nic:"  # Print the NIC name
+
+        # Get all IP addresses for the NIC
+        ips=$(ip -4 -o addr show dev "$nic" | awk '{print $4}')
+
+        if [ -n "$ips" ]; then
+            # Get the default gateway (if any) for the NIC
+            gateway=$(ip route | grep "default via" | grep "$nic" | awk '{print $3}')
+
+            for ip in $ips; do
+                if [ -n "$gateway" ]; then
+                    echo "   - $ip via $gateway"
+                else
+                    echo "   - $ip"
+                fi
+            done
+        else
+            echo "   - No IPs assigned"
+        fi
+    done
 }
 
 
@@ -168,12 +198,12 @@ echo "      flexSolution GmbH"
 echo " "
 echo "${purple}===================="
 echo " "
-echo "${blue}Willkommen, ${white}${USER}!"
+echo "${blue}Willkommen, ${white}${USER}@${`cat /etc/hostname`}!"
 echo "${white}Uptime is ${yellow}$UPTIME"
-
-echo "${white}"
-get_smb_usage
-
+echo " "
+print_smb_usage()
+echo " "
+list_nics_and_ips()
 echo " "
 
 if [ "$USER" = "root" ]; then
