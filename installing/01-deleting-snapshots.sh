@@ -3,8 +3,6 @@
 # Überprüfen, ob ein Verzeichnis übergeben wurde
 SNAPSHOT_DIR="$2"
 
-echo "DEBUG: arg 1: ${1} - arg 2: ${2}"
-
 if [[ -z "$SNAPSHOT_DIR" ]]; then
   echo "Fehler: Bitte ein Snapshot-Verzeichnis als Argument übergeben."
   exit 1
@@ -32,9 +30,6 @@ last_snapshot_id=$(echo "$snapshot_ids" | tail -n 1)
 important_snapshot_id="1"
 # IDs, die nicht gelöscht werden sollen
 KEEP_IDS=("256" "257" "258" "259" "260" "261" "262" "263" "264" "265" "266" "267" "268" "269" "270" "272") 
-
-echo "DEBUG: last_snapshot_id: ${last_snapshot_id}"
-echo "DEBUG: snapshots_id: ${snapshot_ids}"
 
 # Durchlaufen und Snapshots löschen, außer den letzten und wichtigsten
 for snapshot_id in $snapshot_ids; do

@@ -1,6 +1,5 @@
 #!/bin/bash
 
-echo "arg 1: ${1} - arg 2: ${2}"
 echo " "
 mount -a
 lsblk
@@ -53,5 +52,6 @@ elif [[ $RESTART == "n" ]]; then
     echo "okay"
     exit 1
 else 
+    echo "You may want to restart manual"
     exit 1
 fi

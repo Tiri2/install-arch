@@ -14,12 +14,21 @@ export white='\033[0;37m'        # White
 # Other important settings
 setopt autocd
 
+USER=$(whoami)
+
 # Download zinit if not installed
 ZINIT_HOME="${tools_dir}/zinit/zinit.git"
+LOAD_PLUGINS="yes"
 if [ ! -d "$ZINIT_HOME" ]; then
   echo -e "installing zinit"
-	mkdir -p "$(dirname "$ZINIT_HOME")"
-	git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+
+  if [[ $USER != "root" ]]; then
+    echo "${red}Bitte als Root ausführen!"
+    LOAD_PLUGINS="no"
+  else
+    mkdir -p "$(dirname "$ZINIT_HOME")"
+	  git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+  fi
 fi
 
 # ============================================
@@ -57,24 +66,24 @@ setopt EXTENDED_HISTORY           # Befehle mit Zeitstempeln speichern
 source "$ZINIT_HOME/zinit.zsh"
 
 # zsh plugins
-zinit ice wait"1" # Lazy Loading
-zinit light zsh-users/zsh-syntax-highlighting
-zinit light zsh-users/zsh-completions
-#zinit light zsh-users/zsh-autosuggestions
-zinit light Aloxaf/fzf-tab
+if [[ $LOAD_PLUGINS == "yes"]]; then
+  zinit ice wait"1" # Lazy Loading
+  zinit light zsh-users/zsh-syntax-highlighting
+  zinit light zsh-users/zsh-completions
+  #zinit light zsh-users/zsh-autosuggestions
+  zinit light Aloxaf/fzf-tab
 
-zstyle ':completion:*' matcher-list 'm:{a-z}={S-Za-z}'
-zstyle ':completion:*' list-colors "§{(s.:.)LS_COLORS}"
-zstyle ':completion:*' menu no
-zstyle ':fzf-tab:complete:cd:*' fzf-preview "ls --color $realpath"
+  zstyle ':completion:*' matcher-list 'm:{a-z}={S-Za-z}'
+  zstyle ':completion:*' list-colors "§{(s.:.)LS_COLORS}"
+  zstyle ':completion:*' menu no
+  zstyle ':fzf-tab:complete:cd:*' fzf-preview "ls --color $realpath"
+fi
 
 # load prompt (theme)
 autoload -Uz promptinit
 promptinit
 
 # User based prompt
-USER=$(whoami)
-
 if [[ $USER == "root" ]]; then
   PROMPT='(%B%F{red}%n@%m%f%b) %F{blue}%~%f%b $ '
 else
@@ -199,22 +208,22 @@ function list_nics_and_ips() {
 echo " "
 echo "      flexSolution GmbH"
 echo " "
-echo "${purple}===================="
+echo "${purple}========================"
 echo " "
 echo "${blue}Willkommen, ${white}${USER}@$(cat /etc/hostname)!"
 echo "${white}Uptime is ${yellow}$UPTIME"
 echo " "
-print_smb_usage
-echo " "
 list_nics_and_ips
+echo " "
+print_smb_usage
 echo " "
 
 if [ "$USER" = "root" ]; then
-  echo "⚠️    ${red}Du bist als root Nutzer angemeldet!"
+  echo "${red}Du bist als root Nutzer angemeldet!"
   echo " "
 fi
 
-echo "${purple}===================="
+echo "${purple}========================"
 
 # Extra space because of the prompt
 echo " "

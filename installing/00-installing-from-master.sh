@@ -60,5 +60,5 @@ mount $PART2 /mnt
 cp 00-01-steps-for-chroot.sh /mnt/root/setup.sh
 chmod +x /mnt/root/setup.sh
 
-# Chroot into and exeute the copied sh script named setup.sh with args $DISK and $PART2
-arch-chroot /mnt /bin/bash -c "sh /root/setup.sh "$DISK" "$PART2""
+# Chroot into and exeute the copied sh script named setup.sh with args $DISK
+arch-chroot /mnt /bin/bash -c "sh /root/setup.sh "$DISK""
