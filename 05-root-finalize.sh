@@ -41,6 +41,7 @@ systemctl enable --now postgresql
 cp /var/lib/postgres/data/postgresql.conf /var/lib/postgres/data/postgresql.conf.old
 cat configs/postgres/postgresql.txt > /var/lib/postgres/data/postgresql.conf
 cat configs/postgres/pg_hba.txt > /var/lib/postgres/data/pg_hba.conf
+systemctl restart postgresql
 
 USER=whoami
 
@@ -86,7 +87,7 @@ chmod 770 /var/system/certs
 chmod 775 /var/system/tools
 
 echo "Installing missing packages"
-pacman -Sy --noconfirm htop btop ripgrep less curl iputils rsync tcpdump wget zstd jq polkit
+pacman -Sy --noconfirm htop btop ripgrep less curl iputils net-tools rsync tcpdump wget zstd jq polkit
 
 # Not working - must be logged in as flex
 # echo "Starting required user services"
