@@ -87,7 +87,7 @@ chmod 770 /var/system/certs
 chmod 775 /var/system/tools
 
 echo "Installing missing packages"
-pacman -Sy --noconfirm htop btop ripgrep less curl iputils net-tools rsync tcpdump wget zstd jq polkit
+pacman -Sy --noconfirm htop btop ripgrep less curl iputils net-tools bind rsync tcpdump wget zstd jq polkit
 
 # Not working - must be logged in as flex
 # echo "Starting required user services"
