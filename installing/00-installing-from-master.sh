@@ -9,6 +9,8 @@ echo "These scripts writes the master image on the hard disk of this device. "
 echo "If you want to install from a backup use a other script instead of this."
 echo " "
 
+lsblk
+
 # Getting disk from user to write the master disk on
 echo "Please enter a valid disk for write the master on (/dev/sda)"
 read -p "Disk: " DISK
