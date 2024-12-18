@@ -1,14 +1,13 @@
 #!/bin/bash
 
 BTRFS=""  # real partition e.g. /dev/vda2, /dev/sda2, or /dev/mapper/cryptroot
-ESP=""  # /dev/vda1, /dev/sda1
 
 if [ -z "$BTRFS" ]; then
     read -r -p "Please choose the partition to format to BTRFS: " BTRFS
 fi
 
-if [ -z "$ESP" ]; then
-    read -r -p "Please choose the EFI partition: " ESP
+if [ -z "$BOOT_PART" ]; then
+    read -r -p "Please choose the EFI partition: " BOOT_PART
 fi
 
 mkfs.btrfs -f -L ARCH "$BTRFS"
@@ -78,4 +77,4 @@ do
 done
 
 mkdir -p /mnt/boot/efi
-mount $ESP /mnt/boot/efi
+mount $BOOT_PART /mnt/boot/efi

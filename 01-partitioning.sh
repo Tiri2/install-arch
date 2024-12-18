@@ -22,4 +22,4 @@ parted "$PART" -- mkpart primary 512MiB 100%
 
 lsblk
 
-mkfs.vfat "${PART}"
+mkfs.vfat "${BOOT_PART}"
