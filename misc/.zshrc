@@ -66,7 +66,7 @@ setopt EXTENDED_HISTORY           # Befehle mit Zeitstempeln speichern
 source "$ZINIT_HOME/zinit.zsh"
 
 # zsh plugins
-if [[ $LOAD_PLUGINS == "yes"]]; then
+if [[ $LOAD_PLUGINS == "yes" ]]; then
   zinit ice wait"1" # Lazy Loading
   zinit light zsh-users/zsh-syntax-highlighting
   zinit light zsh-users/zsh-completions
