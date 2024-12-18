@@ -19,7 +19,7 @@ parted "$PART" -- mkpart primary 512MiB 100%
 lsblk
 
 if [ -z "$BOOT_PART" ]; then
-    read -r -p "Please choose the boot partition: " PART
+    read -r -p "Please choose the boot partition: " BOOT_PART
 fi
 
 mkfs.vfat "${BOOT_PART}"
