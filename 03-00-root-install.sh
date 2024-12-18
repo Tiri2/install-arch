@@ -2,7 +2,13 @@
 
 TZ="Europe/Vienna"
 BOOTLOADER_ID=ARCH
-BOOT_TARGET="/dev/sda"
+BOOT_TARGET=""
+
+lsblk
+
+if [ -z "$BOOT_TARGET" ]; then
+    read -r -p "Please choose the boot target: (mostly /dev/sda)" BOOT_TARGET
+fi
 
 # Setting up timezone.
 ln -sf "/usr/share/zoneinfo/$TZ" /etc/localtime
