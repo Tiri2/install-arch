@@ -1,0 +1,79 @@
+<Configuration status="warn" name="flextasks" monitorInterval="1">
+    <!--
+    auf flexSystem muss -Denv=prod mit angegeben werden
+    Änderungen sind bei den Properties in der Regel keine notwendig!
+    -->
+    <Properties>
+        <Select>
+            <DefaultArbiter>
+                <Property name="taskname">configurator</Property>
+                <Property name="path">/var/log/system</Property>
+                <Property name="mode">dev</Property>
+                <Property name="filepattern-date">%d{yyyy-MM-ddss}-%i</Property>
+            </DefaultArbiter>
+        </Select>
+    </Properties>
+    <!-- Filter:
+        es wird ein Tuppel aus LogLevel und LogMarker übergeben, beides muss zutreffen. Wird "" übergeben ist vergleich immer TRUE
+ 
+        ["INFO", ""]        : LogMarker TASK wird in jeden fall ausgegeben, unabhängig vom LogLevel.
+        ["DEBUG", ""]   : LogMarker TASK wird nur ausgegeben wenn Loglevel = DEBUG ist.
+        ["ERROR", ""]       : LogLevel ERROR wird in jeden fall ausgegeben, unabhängig vom LogMarker.
+ 
+ 
+        Wichtig: beim Hinzufügen/Löschen von Filtern nicht vergessen einen Beistrich(',') als Separator zu verwenden(außer beim letzten Filter)
+    -->
+    <Scripts>
+        <Script name="filter" language="groovy"><![CDATA[
+                def filters =
+                            [
+                                ["INFO", ""],
+                                ["DEBUG", ""],
+                                ["ERROR", ""],
+                                ["FATAL", ""],
+                                ["TRACE", ""],
+                            ]
+                for(f in filters){
+                        String level = f[0]
+                        String marker = f[1]
+                        Boolean validMarker = marker.equals("") || (logEvent.Marker !=null && logEvent.Marker.isInstanceOf(marker))
+                        Boolean validLevel = level.equals("") || logEvent.Level.name.equals(level)
+ 
+                        if(validMarker && validLevel){
+                            return true;
+                        }
+                }
+                return false
+        ]]></Script>
+    </Scripts>
+ 
+    <!-- hier können bei Bedarf LogLevels für die einzelnen Logger abgeändert werden -->
+    <Loggers>
+        <AsyncRoot level="OFF" includeLocation="true">
+        </AsyncRoot>
+        <AsyncLogger name="eu.flexsolution.intern" level="DEBUG">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="default" />
+        </AsyncLogger>
+ 
+    </Loggers>
+ 
+    <!-- Ab hier nichts ändern! -->
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{MM-dd HH:mm} %highlight{%-5level}{FATAL=bg_red bright, ERROR=red bright, WARN=yellow, INFO=dim green, DEBUG=blue, TRACE=cyan} - %maxLen{%msg}{100000}%xEx%n"/>
+        </Console>
+
+        <RollingFile name="default" fileName="${path}/${taskname}.log" filePattern="${path}/ready/${taskname}-${filepattern-date}.log" append="true">
+            <ScriptFilter onMatch="ACCEPT" onMismatch="DENY">
+                <ScriptRef ref="filter"/>
+            </ScriptFilter>
+ 
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %style{${taskname}(%pid)}{bright} %highlight{%-5level}{FATAL=bg_red bright, ERROR=red bright, WARN=yellow, INFO=dim green, DEBUG=blue, TRACE=cyan} %-30notEmpty{%marker} - %maxLen{%msg}{100000}%xEx - %class{-2}{36}.%M:%L%n"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="50 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="2"/>
+        </RollingFile>
+    </Appenders>
+</Configuration>

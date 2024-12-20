@@ -3,11 +3,28 @@
 # Creating flex user and configure him
 echo "creating user flex"
 useradd -m flex
-cp misc/.zshrc /home/flex
+cp configs/.zshrc /home/flex
 chsh -s /usr/bin/zsh flex
 
 echo "Entering password for flex"
 passwd flex
+
+# Creating gui user and configure him
+echo "creating user gui"
+useradd -m gui
+cp configs/gui/.zshrc /home/gui
+cp configs/gui/.start-chromium.sh /home/gui
+chsh -s /usr/bin/zsh gui
+
+mkdir -p /srv/http/gui/connecting
+cp configs/gui/connecting-site.zip /srv/http/gui/connecting
+unzip /srv/http/gui/connecting/connecting-site.zip /srv/http/gui/connecting/
+
+mkdir -p /home/gui/.config/sway
+cp configs/gui/sway-config.txt /home/gui/.config/sway
+
+chown -R gui:gui /home/gui
+chown -R gui:beer /srv/http/gui/connecting
 
 # Setting up needed files for tasks
 mkdir -p /home/flex/.config/systemd/user
@@ -28,8 +45,11 @@ cat configs/system/log/flexLogMove.path.txt > /home/flex/.config/systemd/user/fl
 cat configs/system/log/flexLogMove.service.txt > /home/flex/.config/systemd/user/flexLogMove.service
 cat configs/system/log/flexLogMove.sh.txt > /var/system/scripts/flexLogMove.sh
 
+cat configs/system/flexcert.sh.txt > /var/system/scripts/flexcert.sh
+chown 666 /var/system/scripts/flexcert.sh
+
 # Configure root user
-cp misc/.zshrc /root
+cp configs/.zshrc /root
 chsh -s /usr/bin/zsh root
 
 # Fully upgrading the system
@@ -73,7 +93,7 @@ cat configs/sudoers.txt > /etc/sudoers
 
 echo "installing and setting up sqlite3"
 pacman -S --noconfirm sqlite3
-cat misc/.sqliterc > /home/flex/.sqliterc
+cat configs/.sqliterc > /home/flex/.sqliterc
 
 # User Services enablen
 systemctl --user enable default.target

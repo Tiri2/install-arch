@@ -1,0 +1,58 @@
+#!/bin/zsh
+
+case "$1" in
+	c|ca)
+		# Name überprüfen
+		if [ -z "$2" ]
+			then
+			echo "Es wurde kein Name angegeben!";
+		else
+			# Datei überprüfen
+			if [ -f "$3" ]
+				then
+				certutil -d sql:/var/gui/.pki/nssdb -A -t "CT,C,C" -n "$2" -i "$3" && exit
+			else
+				echo "Es wurde keine Datei gefunden!"
+			fi
+		fi
+		;;
+
+	h|host)
+		# Name überprüfen
+		if [ -z "$2" ]
+			then
+			echo "Es wurde kein Name angegeben!"
+		else
+			# Datei überprüfen
+			if [ -f "$3" ]
+				then
+				certutil -d sql:/var/gui/.pki/nssdb -A -t "P,," -n "$2" -i "$3" && exit
+			else
+				echo "Es wurde keine Datei gefunden!"
+			fi
+		fi
+		;;
+
+	d|del)
+		# Name überprüfen
+		if [ -z "$2" ]
+			then
+			echo "Es wurde kein Name angegeben!"
+		else
+			certutil -d sql:/var/gui/.pki/nssdb -D -n "$2" && exit
+		fi
+		;;
+
+	l|list)
+		certutil -d sql:/var/gui/.pki/nssdb -L && exit
+		;;
+esac
+
+echo
+cat <<EOM
+flexcert.sh - Zertifikate Tool
+  ca    NAME PEMFILE  - CA Zertifikate hinzufügen
+  host  NAME PEMFILE  - Host Zertifikat hinzufügen
+  del   NAME          - Zertifikat löschen
+  list                - Zertifikate auflisten
+EOM

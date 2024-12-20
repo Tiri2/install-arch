@@ -90,6 +90,40 @@ cp /srv/postgres/postgresql.conf /srv/postgres/postgresql.conf.old
 cp /srv/postgres/pg_hba.conf /srv/postgres/pg_hba.conf.old
 cat configs/postgres/postgresql.txt > /srv/postgres/postgresql.conf
 cat configs/postgres/pg_hba.txt > /srv/postgres/pg_hba.conf
+
+#!/bin/bash
+
+# Variablen
+DB_NAME="Database"
+DB_USER="flex"
+DB_PASSWORD="your_secure_password"
+SCHEMAS=("public" "erp" "specific")
+POSTGRES_CONF="/etc/postgresql/$(pg_lsclusters -h | awk '{print $1}')/$(pg_lsclusters -h | awk '{print $2}')/postgresql.conf"
+PG_HBA_CONF="/etc/postgresql/$(pg_lsclusters -h | awk '{print $1}')/$(pg_lsclusters -h | awk '{print $2}')/pg_hba.conf"
+
+# Datenbank und Benutzer erstellen
+sudo -u postgres psql <<EOF
+-- Datenbank erstellen
+CREATE DATABASE "$DB_NAME";
+
+-- Benutzer erstellen und Passwort setzen
+CREATE USER "$DB_USER" WITH PASSWORD '$DB_PASSWORD';
+
+-- Rechte zuweisen
+GRANT ALL PRIVILEGES ON DATABASE "$DB_NAME" TO "$DB_USER";
+
+\c "$DB_NAME"
+
+-- Schemas erstellen
+$(for schema in "${SCHEMAS[@]}"; do echo "CREATE SCHEMA IF NOT EXISTS $schema AUTHORIZATION $DB_USER;"; done)
+
+-- Rechte für Benutzer auf die Schemas zuweisen
+$(for schema in "${SCHEMAS[@]}"; do echo "GRANT ALL PRIVILEGES ON SCHEMA $schema TO $DB_USER;"; done)
+EOF
+
+echo "Datenbank $DB_NAME mit Benutzer $DB_USER wurde erfolgreich erstellt und für externe Zugriffe konfiguriert."
+
+
 systemctl restart postgresql
 
 # Not working - must be logged in as flex

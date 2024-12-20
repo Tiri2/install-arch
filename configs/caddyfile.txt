@@ -19,6 +19,9 @@
     admin "unix//run/caddy/admin.socket"
 }
 
+# Import additional caddy config files in /etc/caddy/conf.d/
+import /etc/caddy/conf.d/*
+
 https:// {
     root * /srv/http
 
@@ -29,6 +32,5 @@ https:// {
     file_server
 }
 
-# Import additional caddy config files in /etc/caddy/conf.d/
-# import /etc/caddy/conf.d/*
+
 
