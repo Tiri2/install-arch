@@ -35,13 +35,6 @@ firewall-cmd --reload
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 cd $SCRIPT_DIR
 
-# Setting up postgres
-sudo -iu postgres initdb -D /var/lib/postgres/data
-systemctl enable --now postgresql
-cp /var/lib/postgres/data/postgresql.conf /var/lib/postgres/data/postgresql.conf.old
-cat configs/postgres/postgresql.txt > /var/lib/postgres/data/postgresql.conf
-cat configs/postgres/pg_hba.txt > /var/lib/postgres/data/pg_hba.conf
-systemctl restart postgresql
 
 USER=whoami
 
@@ -89,6 +82,16 @@ chmod 775 /var/system/tools
 echo "Installing missing packages"
 pacman -Sy --noconfirm htop btop ripgrep less curl iputils net-tools bind rsync tcpdump wget zstd jq polkit
 
+echo "Setting up postgres"
+# Setting up postgres
+sudo -iu postgres initdb -D /srv/postgres
+systemctl enable --now postgresql
+cp /srv/postgres/postgresql.conf /srv/postgres/postgresql.conf.old
+cp /srv/postgres/pg_hba.conf /srv/postgres/pg_hba.conf.old
+cat configs/postgres/postgresql.txt > /srv/postgres/postgresql.conf
+cat configs/postgres/pg_hba.txt > /srv/postgres/pg_hba.conf
+systemctl restart postgresql
+
 # Not working - must be logged in as flex
 # echo "Starting required user services"
 # systemctl --user enable flexLogMove.path
@@ -96,8 +99,8 @@ pacman -Sy --noconfirm htop btop ripgrep less curl iputils net-tools bind rsync 
 # systemctl --user enable bootlog.service
 
 # Creating boots log file
-mkdir -p "/var/log/flex/"
-touch /var/log/flex/boots.log
+mkdir -p "/var/log/system/"
+touch /var/log/system/boot.log
 
 chmod 600 /etc/modprobe.d/*
 echo "finished"

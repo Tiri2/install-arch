@@ -15,7 +15,7 @@ mkdir -p /srv/tasks/CURRENT/.config/
 
 cat configs/flexTasks/log4j2.txt > /srv/tasks/CURRENT/default/log4j2.xml
 cat configs/flexTasks/flexTasks.conf.txt > /srv/tasks/CURRENT/.config/flexTasks.conf
-cat configs/flexTasks/template.service.txt > /home/flex/.config/systemd/user/template.service
+cat configs/flexTasks/task.template.service.txt > /home/flex/.config/systemd/user/task.template.service
 cat configs/flexTasks/flexTasks.slice.txt > /home/flex/.config/systemd/user/flexTasks.slice
 
 # Setting up bootlog service
