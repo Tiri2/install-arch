@@ -43,6 +43,9 @@ sh /var/system/tools/install-arch/03-01-install-grub.sh "$1" ARCH
 echo "Making initramfs"
 mkinitcpio -P
 
+# Remove config.json because tool should generate a new one
+rm /var/system/config.json
+
 echo "Done. Installing succuessfully - do you want to restart now?"
 read -p "y/n: " RESTART
 

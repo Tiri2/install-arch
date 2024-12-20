@@ -1,0 +1,10 @@
+[Unit]
+Description=config.json file listener
+
+[Path]
+PathExistsGlob=/var/system/config.json
+MakeDirectory=true
+DirectoryMode=0700
+
+[Install]
+WantedBy=default.target
