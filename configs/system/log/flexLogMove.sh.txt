@@ -8,5 +8,5 @@ files=(/tmp/log/ready/*.log(N))
 sleep 2
 
 for file in $files; do
-    /usr/bin/zstdmt -f --rm --no-progress --output-dir-flat=/var/log/flex "$file"
+    /usr/bin/zstdmt -f --rm --no-progress --output-dir-flat=/var/log/tasks "$file"
 done

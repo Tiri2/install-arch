@@ -11,4 +11,4 @@ else
 fi
 
 # Boot Loggen
-echo -e "====================================\nBoot: $(/usr/bin/date)" >> /var/log/flex/boots.log
+echo -e "====================================\nBoot: $(/usr/bin/date)" >> /var/log/system/boot.log
