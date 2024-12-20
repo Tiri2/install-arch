@@ -41,9 +41,10 @@ echo "ATTENTION!! Executing following script: 04-01-install-grub.sh"
 # Executing a nother script with the args as descriped above
 source ./03-01-install-grub.sh $BOOTLOADER_ID $BOOT_TARGET
 
-NEXT = 0
+NEXT=0
 
-while($NEXT == 0){
+while [$NEXT == 0]
+do 
     # Setting root password.
     echo "Setting root password"
     passwd
@@ -55,7 +56,7 @@ while($NEXT == 0){
     if [[ $ANSWER == "y" ]]; then
         NEXT = 0
     fi
-}
+done
 
 
 sed -i '/Color/s/^#//' /etc/pacman.conf

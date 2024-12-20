@@ -23,9 +23,6 @@ unzip /srv/http/gui/connecting/connecting-site.zip /srv/http/gui/connecting/
 mkdir -p /home/gui/.config/sway
 cp configs/gui/sway-config.txt /home/gui/.config/sway
 
-chown -R gui:gui /home/gui
-chown -R gui:beer /srv/http/gui/connecting
-
 # Setting up needed files for tasks
 mkdir -p /home/flex/.config/systemd/user
 mkdir -p /srv/tasks/CURRENT/.config/

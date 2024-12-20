@@ -67,10 +67,16 @@ chmod -R g+rwx /srv/
 chmod -R o+rx /srv/
 
 # For home user specifc
+
+# flex
 chown flex:flex /home/flex/.config
 chown flex:flex /home/flex/.config/systemd
 chown flex:flex /home/flex/.zshrc
 chown flex:flex /home/flex/.sqliterc
+
+# gui
+chown -R gui:gui /home/gui
+chown -R gui:beer /srv/http/gui/connecting
 
 # System specifc
 chown -R :beer /var/system/
@@ -78,6 +84,7 @@ chmod 655 /var/system/scripts/*
 chmod 770 /var/system/backup
 chmod 770 /var/system/certs
 chmod 775 /var/system/tools
+chmod 766 /var/system/tools/
 
 echo "Installing missing packages"
 pacman -Sy --noconfirm htop btop ripgrep less curl iputils net-tools bind rsync tcpdump wget zstd jq polkit

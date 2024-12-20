@@ -51,7 +51,7 @@ fi
 
 # Pacstrap (setting up a base sytem onto the new root).
 echo "Installing the base system (it may take a while)."
-pacstrap /mnt base base-devel "${kernel}" linux-firmware "${microcode}" efibootmgr grub grub-btrfs inotify-tools snapper snap-pac snap-sync git sudo nano firewalld rsync openssh zsh zsh-completions lsd fzf zoxide
+pacstrap /mnt base base-devel "${kernel}" linux-firmware "${microcode}" efibootmgr grub grub-btrfs inotify-tools snapper snap-pac snap-sync git sudo nano firewalld rsync openssh zsh zsh-completions lsd fzf zoxide unzip zip
 
 # Generating /etc/fstab.
 echo "Generating a new fstab."
