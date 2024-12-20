@@ -1,0 +1,8 @@
+[Unit]
+Description=Configurator - Change system settings with /var/system/config.json 
+Wants=flexLogDelete.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/java -Dlog4j2.Script.enableLanguages=groovy -Dlog4j.configurationFile=./log4j2.xml -jar configurator.jar file-change
+WorkingDirectory=/var/system/tools/configurator

@@ -2,9 +2,8 @@
 Description=config.json file listener
 
 [Path]
-PathExistsGlob=/var/system/config.json
-MakeDirectory=true
-DirectoryMode=0700
+PathChanged=/var/system/config.json
+Unit=system.configurator.service
 
 [Install]
 WantedBy=default.target
