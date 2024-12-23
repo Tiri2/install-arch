@@ -55,6 +55,13 @@ chown -R :beer /var/system/tools/configurator
 chmod 555 /var/system/tools/configurator/linux-configurator*
 chmod 774 /var/system/tools/configurator/log4j2.xml
 
+# Install-arch
+chmod -R 755 /var/system/tools/install-arch
+
+# Logs
+chown flex:beer /var/log/system/boot.log
+chmod 744 /var/log/system/boot.log
+
 # Break point to check if everything is all right
 echo "Everything looking fine?"
 echo "CTRL + C to abort - Enter to continue"
