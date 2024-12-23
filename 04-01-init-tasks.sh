@@ -54,6 +54,8 @@ cat configs/flexTasks/flexTasks.slice.txt > /home/flex/.config/systemd/user/flex
 cat configs/system/bootlog.sh.txt > /var/system/scripts/bootlog.sh
 cat configs/system/shutdown.sh.txt > /var/system/scripts/shutdown.sh
 cat configs/system/bootlog.service.txt > /home/flex/.config/systemd/user/bootlog.service
+mkdir -p /var/log/system/
+touch /var/log/system/boot.log
 
 # Setting up flexLogMove
 cat configs/system/log/flexLogMove.path.txt > /home/flex/.config/systemd/user/flexLogMove.path
