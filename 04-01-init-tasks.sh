@@ -21,7 +21,18 @@ cp configs/gui/connecting-site.zip /srv/http/gui/connecting
 unzip /srv/http/gui/connecting/connecting-site.zip /srv/http/gui/connecting
 
 mkdir -p /home/gui/.config/sway
-cp configs/gui/sway-config.txt /home/gui/.config/sway
+cp configs/gui/sway-config.txt /home/gui/.config/sway/config
+
+mkdir -p /etc/systemd/system/getty@tty1.service.d
+cat configs/gui/systemd/getty@tty1.service.txt > /etc/systemd/system/getty@tty1.service.d/override.conf
+
+systemctl daemon-reload
+systemctl enable getty@tty1.service
+
+# Break point to check if everything is all right
+echo "Everything looking fine?"
+echo "CTRL + C to abort - Enter to continue"
+read -p "Continue?"
 
 # Setting up needed files for tasks
 mkdir -p /home/flex/.config/systemd/user
