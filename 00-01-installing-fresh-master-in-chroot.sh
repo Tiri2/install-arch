@@ -24,5 +24,8 @@ source ./04-01-init-tasks.sh
 echo "executing 04-02-root-services.sh"
 source ./04-02-root-services.sh
 
+echo "executing 04-03-permissions.sh"
+source ./04-03-permissions.sh
+
 echo "executing 05-root-finalize.sh"
 source ./05-root-finalize.sh

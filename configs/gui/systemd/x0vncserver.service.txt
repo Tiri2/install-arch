@@ -1,0 +1,13 @@
+[Unit]
+Description=VNC Server for X Display :0
+After=syslog.target network.target
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/x0vncserver -display :0
+User=gui
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target
