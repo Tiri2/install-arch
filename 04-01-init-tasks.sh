@@ -28,10 +28,10 @@ cp configs/gui/sway-config.txt /home/gui/.config/sway/config
 
 mkdir -p /etc/systemd/system/getty@tty1.service.d
 cat configs/gui/systemd/getty@tty1.service.txt > /etc/systemd/system/getty@tty1.service.d/override.conf
-systemctl enable getty@tty1.service
+# systemctl enable getty@tty1.service
 
 # installing sway for gui user
-pacman -S --noconfirm sway xorg-xwayland tigervnc chromium
+pacman -S --noconfirm sway xorg-xwayland tigervnc chromium libinput evtest
 
 cat configs/gui/systemd/x0vncserver.service.txt > /etc/systemd/system/system.x0vncserver.service
 systemctl enable system.x0vncserver.service

@@ -13,5 +13,8 @@ if [ -z "$DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ]; then
     else
         echo "[$(date)] [ERROR] No valid Wayland-Socket found!" >> /var/log/gui/init.log
     fi
+
+    echo "[$(date)] [INFO] Starting vnc server" >> /var/log/gui/init.log
+    systemctl start system.x0vncserver.service
 fi
 
