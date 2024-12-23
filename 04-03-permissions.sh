@@ -46,3 +46,7 @@ chmod 770 /var/system/backup
 chmod 770 /var/system/certs
 chmod 775 /var/system/tools
 chmod 766 /var/system/tools/
+
+# Gui Specific
+chown -R /var/log/gui
+chmod -R 744 /var/log/gui
