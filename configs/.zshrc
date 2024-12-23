@@ -17,7 +17,7 @@ setopt autocd
 USER=$(whoami)
 
 # Download zinit if not installed
-ZINIT_HOME="${tools_dir}/zinit/zinit.git"
+ZINIT_HOME="${tools_dir}/zinit"
 LOAD_PLUGINS="yes"
 if [ ! -d "$ZINIT_HOME" ]; then
   echo -e "installing zinit"
