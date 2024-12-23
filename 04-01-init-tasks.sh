@@ -16,18 +16,22 @@ cp configs/gui/.zshrc /home/gui
 cp configs/gui/.start-chromium.sh /home/gui
 chsh -s /usr/bin/zsh gui
 
+mkdir -p /var/log/gui
+touch /var/log/gui/init.log
+
 mkdir -p /srv/http/gui/connecting
 cp configs/gui/connecting-site.zip /srv/http/gui/connecting
-unzip /srv/http/gui/connecting/connecting-site.zip /srv/http/gui/connecting
+unzip /srv/http/gui/connecting/connecting-site.zip -d /srv/http/gui/connecting
 
 mkdir -p /home/gui/.config/sway
 cp configs/gui/sway-config.txt /home/gui/.config/sway/config
 
 mkdir -p /etc/systemd/system/getty@tty1.service.d
 cat configs/gui/systemd/getty@tty1.service.txt > /etc/systemd/system/getty@tty1.service.d/override.conf
-
-systemctl daemon-reload
 systemctl enable getty@tty1.service
+
+# installing sway for gui user
+pacman -S --noconfirm sway xorg-xwayland chromium
 
 # Break point to check if everything is all right
 echo "Everything looking fine?"

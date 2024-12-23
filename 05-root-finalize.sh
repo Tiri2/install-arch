@@ -8,6 +8,11 @@ if [[ $WHEN_RUNNING == "c" ]]; then
     exit 1
 fi
 
+# Creating a snapshot for each entries
+snapper -c root create -d "Root finalize"
+snapper -c home create -d "Root finalize"
+snapper -c srv create -d "Root finalize"
+
 # Setting up firewalld
 echo "setting up firewalld"
 
@@ -50,6 +55,7 @@ rm /root/setup.sh
 
 # Deleting bash files - we use zsh instead
 rm /home/flex/.bash*
+rm /home/gui/.bash*
 
 # Settings rights
 echo "Settings missing rights"
@@ -91,22 +97,18 @@ pacman -Sy --noconfirm htop btop ripgrep less curl iputils net-tools bind rsync 
 
 echo "Setting up postgres"
 # Setting up postgres
-sudo -iu postgres initdb -D /srv/postgres
+sudo -iu postgres initdb -D /var/lib/postgres/data
 systemctl enable --now postgresql
-cp /srv/postgres/postgresql.conf /srv/postgres/postgresql.conf.old
-cp /srv/postgres/pg_hba.conf /srv/postgres/pg_hba.conf.old
-cat configs/postgres/postgresql.txt > /srv/postgres/postgresql.conf
-cat configs/postgres/pg_hba.txt > /srv/postgres/pg_hba.conf
-
-#!/bin/bash
+cp /var/lib/postgres/data/postgresql.conf /var/lib/postgres/data/postgresql.conf.old
+cp /var/lib/postgres/data/pg_hba.conf /var/lib/postgres/data/pg_hba.conf.old
+cat configs/postgres/postgresql.txt > /var/lib/postgres/data/postgresql.conf
+cat configs/postgres/pg_hba.txt > /var/lib/postgres/data/pg_hba.conf
 
 # Variablen
 DB_NAME="Database"
 DB_USER="flex"
 DB_PASSWORD="your_secure_password"
 SCHEMAS=("public" "erp" "specific")
-POSTGRES_CONF="/etc/postgresql/$(pg_lsclusters -h | awk '{print $1}')/$(pg_lsclusters -h | awk '{print $2}')/postgresql.conf"
-PG_HBA_CONF="/etc/postgresql/$(pg_lsclusters -h | awk '{print $1}')/$(pg_lsclusters -h | awk '{print $2}')/pg_hba.conf"
 
 # Datenbank und Benutzer erstellen
 sudo -u postgres psql <<EOF
