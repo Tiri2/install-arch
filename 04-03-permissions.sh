@@ -50,3 +50,8 @@ chmod 766 /var/system/tools/
 # Gui Specific
 chown -R /var/log/gui
 chmod -R 744 /var/log/gui
+
+# Break point to check if everything is all right
+echo "Everything looking fine?"
+echo "CTRL + C to abort - Enter to continue"
+read -p "Continue?"
