@@ -31,7 +31,7 @@ cat configs/gui/systemd/getty@tty1.service.txt > /etc/systemd/system/getty@tty1.
 systemctl enable getty@tty1.service
 
 # installing sway for gui user
-pacman -S --noconfirm sway xorg-xwayland xwayland tigervnc chromium
+pacman -S --noconfirm sway xorg-xwayland tigervnc chromium
 
 cat configs/gui/systemd/x0vncserver.service.txt > /etc/systemd/system/system.x0vncserver.service
 systemctl enable system.x0vncserver.service
