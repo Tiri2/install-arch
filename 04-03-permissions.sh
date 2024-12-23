@@ -44,12 +44,16 @@ chown -R :beer /var/system/
 chmod 655 /var/system/scripts/*
 chmod 770 /var/system/backup
 chmod 770 /var/system/certs
-chmod 775 /var/system/tools
-chmod 766 /var/system/tools/
+chmod -R 777 /var/system/tools
 
 # Gui Specific
-chown -R /var/log/gui
+chown -R gui:gui /var/log/gui
 chmod -R 744 /var/log/gui
+
+# Configurator
+chown -R :beer /var/system/tools/configurator
+chmod 555 /var/system/tools/configurator/linux-configurator*
+chmod 774 /var/system/tools/configurator/log4j2.xml
 
 # Break point to check if everything is all right
 echo "Everything looking fine?"

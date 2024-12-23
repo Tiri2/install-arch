@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "[$(date)] Starting updating system" >> /var/flex/updates.log
+echo "[$(date)] Starting updating system" >> /var/log/system/updates.log
 start_time=$(date +%s)
 
 pacman -Syu
@@ -21,5 +21,5 @@ chown flex:flex /home/flex/.zshrc
 end_time=$(date +%s)
 duration=$((end_time - start_time))
 
-echo "[$(date)] Successfully updated system" >> /var/flex/updates.log
-echo "[$(date)] Took ${duration}s to updating" >> /var/flex/updates.log
+echo "[$(date)] Successfully updated system" >> /var/log/system/updates.log
+echo "[$(date)] Took ${duration}s to updating" >> /var/log/system/updates.log
