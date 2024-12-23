@@ -18,7 +18,7 @@ chsh -s /usr/bin/zsh gui
 
 mkdir -p /srv/http/gui/connecting
 cp configs/gui/connecting-site.zip /srv/http/gui/connecting
-unzip /srv/http/gui/connecting/connecting-site.zip /srv/http/gui/connecting/
+unzip /srv/http/gui/connecting/connecting-site.zip /srv/http/gui/connecting
 
 mkdir -p /home/gui/.config/sway
 cp configs/gui/sway-config.txt /home/gui/.config/sway

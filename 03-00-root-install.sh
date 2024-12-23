@@ -43,18 +43,17 @@ source ./03-01-install-grub.sh $BOOTLOADER_ID $BOOT_TARGET
 
 NEXT=0
 
-while [$NEXT == 0]
-do 
+while [ $NEXT -eq 0 ]; do 
     # Setting root password.
     echo "Setting root password"
     passwd
 
     # Break point to check if everything is all right
-    echo "Root password correct set?"
-    read -p "y/n" ANSWER
+    echo "Root password correctly set?"
+    read -p "y/n: " ANSWER
 
     if [[ $ANSWER == "y" ]]; then
-        NEXT = 0
+        NEXT=1  # Exit the loop if the answer is 'y'
     fi
 done
 
