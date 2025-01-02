@@ -1,7 +1,11 @@
 if [ -z "$DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ]; then
     echo "[$(date)] [INFO] starting sway and chromium" >> /var/log/gui/init.log
-    
-    exec sway -c ~/.config/sway/config &>> /var/log/gui/init.log
+
+    # Das Letzte &-Zeichen sagt, dass der Prozess im Hintergrund laufen soll
+    /usr/bin/sway -c ~/.config/sway/config &>> /var/log/gui/init.log &
+
+    # sway etwas zeit geben zum starten, damit der wayland socket erstellt wird
+    /usr/bin/sleep 5
 
     # Finde den korrekten Wayland-Socket
     WAYLAND_SOCKET=$(ls /run/user/$(id -u)/wayland-* | grep -E 'wayland-[0-9]+$')
@@ -14,7 +18,7 @@ if [ -z "$DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ]; then
         echo "[$(date)] [ERROR] No valid Wayland-Socket found!" >> /var/log/gui/init.log
     fi
 
-    echo "[$(date)] [INFO] Starting vnc server" >> /var/log/gui/init.log
-    systemctl start system.x0vncserver.service
-fi
+    echo "[$(date)] [INFO] starting wayvnc" >> /var/log/gui/vnc.log
+    /usr/bin/wayvnc --config /home/gui/.config/wayvnc/config &>> /var/log/gui/vnc.log
 
+fi
