@@ -1,0 +1,3 @@
+/var/system/backup.include
+/var/system/config.json
+/var/system/certs

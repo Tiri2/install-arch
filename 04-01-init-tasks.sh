@@ -65,6 +65,12 @@ cat configs/system/log/flexLogMove.path.txt > /home/flex/.config/systemd/user/fl
 cat configs/system/log/flexLogMove.service.txt > /home/flex/.config/systemd/user/flexLogMove.service
 cat configs/system/log/flexLogMove.sh.txt > /var/system/scripts/flexLogMove.sh
 
+# Setting up daily backup
+cat configs/system/backup/system.backup.service.txt > /etc/systemd/system/system.backup.service
+cat configs/system/backup/system.backup.timer.txt > /etc/systemd/system/system.backup.timer
+cat configs/system/backup/backup.sh.txt > /var/system/scripts/backup.sh
+
+# Setup flexcert
 cat configs/system/flexcert.sh.txt > /var/system/scripts/flexcert.sh
 chown 666 /var/system/scripts/flexcert.sh
 

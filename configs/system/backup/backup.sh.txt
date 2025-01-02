@@ -1,0 +1,42 @@
+#!/bin/zsh
+
+roption=(
+        --create
+        --file=-
+        --xattrs
+        --absolute-names
+        --use-compress-program=zstd
+)
+
+foption=(
+        -newer /root/packages.list
+        \( -type f -o -type l \)
+        ! -path "/boot/*"
+        ! -path "/proc/*"
+        ! -path "/sys/*"
+        ! -path "/run/*"
+        ! -path "/dev/*"
+        ! -path "/tmp/*"
+        ! -path "/var/cache/*"
+        ! -path "/var/lib/*"
+        ! -path "/var/log/*"
+        ! -path "/var/spool/*"
+        ! -path "/var/system/backup/*"
+        ! -path "/srv/smb/share/*"
+        ! -path "/home/gui/.config/*"
+        ! -name "lost+found"
+        ! -name "*.bak"
+        ! -name "*.cache"
+        ! -name "*.updated"
+        ! -empty
+)
+
+if [ "$1" = "full" ]
+        then
+        sudo find / "${foption[@]}" 2>/dev/null | sudo tar "${roption[@]}" --files-from=- /home/flex/http
+else
+        tar "${roption[@]}" --files-from=/var/system/backup.include $(find /srv/tasks/CURRENT/ -iname "*.db")
+fi
+
+
+
