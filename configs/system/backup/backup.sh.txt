@@ -33,7 +33,7 @@ foption=(
 
 if [ "$1" = "full" ]
         then
-        sudo find / "${foption[@]}" 2>/dev/null | sudo tar "${roption[@]}" --files-from=- /home/flex/http
+        sudo find / "${foption[@]}" 2>/dev/null | sudo tar "${roption[@]}" --files-from=-
 else
         tar "${roption[@]}" --files-from=/var/system/backup.include $(find /srv/tasks/CURRENT/ -iname "*.db")
 fi
