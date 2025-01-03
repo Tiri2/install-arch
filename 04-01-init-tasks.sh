@@ -64,6 +64,7 @@ touch /var/log/system/boot.log
 cat configs/system/log/flexLogMove.path.txt > /home/flex/.config/systemd/user/flexLogMove.path
 cat configs/system/log/flexLogMove.service.txt > /home/flex/.config/systemd/user/flexLogMove.service
 cat configs/system/log/flexLogMove.sh.txt > /var/system/scripts/flexLogMove.sh
+touch /var/log/system/flexLogMove.log
 
 # Setting up daily backup
 cat configs/system/backup/system.backup.service.txt > /etc/systemd/system/system.backup.service
