@@ -18,11 +18,5 @@ systemctl enable mosquitto
 systemctl enable caddy
 
 # Setting up configurator
-echo "Setting up configurator"
-mkdir -p /var/system/tools/configurator/
-cat configs/configurator/log4j2.xml.txt > /var/system/tools/configurator/log4j2.xml
-cat configs/configurator/configurator.path.txt > /etc/systemd/system/system.configurator.path
-cat configs/configurator/configurator.service.txt > /etc/systemd/system/system.configurator.service
-cp configs/configurator/linux-configurator-1.0.0-SNAPSHOT.jar /var/system/tools/configurator
-ln -sf /var/system/tools/configurator/linux-configurator-1.0.0-SNAPSHOT.jar /var/system/tools/install-arch/configurator.jar
+echo "enabling configurator"
 systemctl enable system.configurator.path

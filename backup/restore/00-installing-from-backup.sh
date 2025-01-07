@@ -41,8 +41,6 @@ else
   echo "Disk already formatted, skipping..."
 fi
 
-echo "BTRFS -> $BTRFS"
-
 BACKUP_DIR="/tmp/backup"
 
 echo "Please enter the full file path of the tar.gz backup file"
