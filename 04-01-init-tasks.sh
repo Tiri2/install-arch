@@ -76,7 +76,7 @@ mkdir -p /var/log/system/
 touch /var/log/system/boot.log
 
 # LogManage
-cat configs/system/log/ManageLogs.service.txt > /etc/systemd/system/ManageLogs.service
+cat configs/system/log/ManageLogs.service.txt > /etc/systemd/system/system.manageLogs.service
 cat configs/system/log/ManageLogs.sh.txt > /var/system/scripts/ManageLogs.sh
 
 # Fully upgrading the system
