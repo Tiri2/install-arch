@@ -1,0 +1,10 @@
+[Unit]
+Description=Manage Flex Logs
+
+[Service]
+Type=exec
+ExecStart=/var/system/scripts/ManageLogs.sh
+WorkingDirectory=/tmp
+
+[Install]
+WantedBy=default.target

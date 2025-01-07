@@ -7,11 +7,11 @@ mkdir -p /tmp/log/ready
 /usr/bin/java -Dlog4j2.Script.enableLanguages=groovy -Dlog4j.configurationFile=/var/system/tools/configurator/log4j2.xml -jar /var/system/tools/configurator/configurator.jar boot
 
 # Get newest changes of install-arch from git
-if [[ -d "/var/system/tools/install-arch/" ]]; then
-    git -C /var/system/tools/install-arch/ pull &> /dev/null
-else
-    git clone https://github.com/Tiri2/install-arch.git /var/system/tools/install-arch/ &> /dev/null
-fi
+# if [[ -d "/var/system/tools/install-arch/" ]]; then
+#    git -C /var/system/tools/install-arch/ pull &> /dev/null
+# else
+#    git clone https://github.com/Tiri2/install-arch.git /var/system/tools/install-arch/ &> /dev/null
+# fi
 
 # Boot Loggen
 echo -e "====================================\nBoot: $(/usr/bin/date)" >> /var/log/system/boot.log

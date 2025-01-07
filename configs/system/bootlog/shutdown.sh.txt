@@ -7,8 +7,8 @@ date=`date +"%Y-%m-%d-%H%M%S"`
 for file in $files; do
 	nfile="/tmp/log/$(basename ${file} .log)-${date}-halt.log"
 	mv "$file" "$nfile"
-    /usr/bin/zstdmt -f --rm --no-progress --output-dir-flat=/var/flex/log "$nfile"
+    /usr/bin/zstdmt -f --rm --no-progress --output-dir-flat=/var/log/tasks "$nfile"
 done
 
 # Shutdown Loggen
-echo -e "====================================\nShutdown: $(/usr/bin/date)" >> /var/flex/log/boots.log
+echo -e "====================================\nShutdown: $(/usr/bin/date)" >> /var/log/system/boot.log

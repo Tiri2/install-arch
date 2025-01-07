@@ -1,8 +1,0 @@
-[Unit]
-Description=Flex Store Logs
-Wants=flexLogDelete.service
-
-[Service]
-Type=simple
-ExecStart=/usr/bin/sh /var/system/scripts/flexLogMove.sh
-WorkingDirectory=/tmp/log

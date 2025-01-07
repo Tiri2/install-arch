@@ -3,4 +3,4 @@ Description=Daily Backup
 
 [Service]
 Type=simple
-ExecStart=/bin/sh -c "/home/flex/scripts/backup.sh > /var/system/backup/backup-$$(date +'%%a')"
+ExecStart=/bin/sh -c "/var/system/scripts/backup.sh > /var/system/backup/backup-$(date +'%a')"
