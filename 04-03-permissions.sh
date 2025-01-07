@@ -59,8 +59,13 @@ chmod 774 /var/system/tools/configurator/log4j2.xml
 chmod -R 755 /var/system/tools/install-arch
 
 # Logs
-chown flex:beer /var/log/system/boot.log
-chmod 744 /var/log/system/boot.log
+chown -R root:beer /var/log/system
+chmod 774 /var/log/system/boot.log
+chmod 774 /var/log/system/configurator.log
+
+chown -R flex:beer /var/log/tasks
+chmod 775 /var/log/tasks
+
 
 # Break point to check if everything is all right
 echo "Everything looking fine?"
