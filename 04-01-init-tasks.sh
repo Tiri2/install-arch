@@ -53,19 +53,6 @@ cat configs/flexTasks/flexTasks.conf.txt > /srv/tasks/CURRENT/.config/flexTasks.
 cat configs/flexTasks/task.template.service.txt > /home/flex/.config/systemd/user/task.template.service
 cat configs/flexTasks/flexTasks.slice.txt > /home/flex/.config/systemd/user/flexTasks.slice
 
-# Setting up bootlog service
-cat configs/system/bootlog.sh.txt > /var/system/scripts/bootlog.sh
-cat configs/system/shutdown.sh.txt > /var/system/scripts/shutdown.sh
-cat configs/system/bootlog.service.txt > /home/flex/.config/systemd/user/bootlog.service
-mkdir -p /var/log/system/
-touch /var/log/system/boot.log
-
-# Setting up flexLogMove
-cat configs/system/log/flexLogMove.path.txt > /home/flex/.config/systemd/user/flexLogMove.path
-cat configs/system/log/flexLogMove.service.txt > /home/flex/.config/systemd/user/flexLogMove.service
-cat configs/system/log/flexLogMove.sh.txt > /var/system/scripts/flexLogMove.sh
-touch /var/log/system/flexLogMove.log
-
 # Setting up daily backup
 cat configs/system/backup/system.backup.service.txt > /etc/systemd/system/system.backup.service
 cat configs/system/backup/system.backup.timer.txt > /etc/systemd/system/system.backup.timer
@@ -74,10 +61,23 @@ cat configs/system/backup/backup.sh.txt > /var/system/scripts/backup.sh
 # Setup flexcert
 cat configs/system/flexcert.sh.txt > /var/system/scripts/flexcert.sh
 chown 666 /var/system/scripts/flexcert.sh
+ln -sf /var/system/scripts/flexcert.sh /usr/bin/flexcert
 
 # Configure root user
 cp configs/.zshrc /root
 chsh -s /usr/bin/zsh root
+
+# Setting up system services
+# bootlog service
+cat configs/system/bootlog/bootlog.sh.txt > /var/system/scripts/bootlog.sh
+cat configs/system/bootlog/shutdown.sh.txt > /var/system/scripts/shutdown.sh
+cat configs/system/bootlog/bootlog.service.txt > /etc/systemd/system/system.bootlog.service
+mkdir -p /var/log/system/
+touch /var/log/system/boot.log
+
+# LogManage
+cat configs/system/log/ManageLogs.service.txt > /etc/systemd/system/ManageLogs.service
+cat configs/system/log/ManageLogs.sh.txt > /var/system/scripts/ManageLogs.sh
 
 # Fully upgrading the system
 echo "Upgrading System"
