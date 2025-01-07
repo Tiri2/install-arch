@@ -3,7 +3,7 @@
 Description=flexTask <name>
 
 [Service]
-# Change <name> to the specifc task name
+# Change <name> to the specific task name
 ExecStart=/usr/bin/java -Xms50m -Xmx300m -jar <name>.jar
 WorkingDirectory=/srv/tasks/CURRENT/<name>
 Environment="TASKNAME=<name>"
