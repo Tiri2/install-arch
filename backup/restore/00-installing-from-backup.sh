@@ -30,10 +30,10 @@ function formatted() {
 # Format the hard disk
 if ! formatted; then
   echo "executing 01-partitioning.sh"
-  source ../01-partitioning.sh
+  source ../../01-partitioning.sh
 
   echo "executing 02-1-format.sh"
-  source ../02-1-format.sh
+  source ../../02-1-format.sh
 
   # Erstelle die Datei als Marker, dass die Festplatte formatiert wurde
   touch "$HOME/.formatted"
