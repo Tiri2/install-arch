@@ -58,6 +58,7 @@ cat configs/flexTasks/flexTasks.slice.txt > /home/flex/.config/systemd/user/flex
 cat configs/system/backup/system.backup.service.txt > /etc/systemd/system/system.backup.service
 cat configs/system/backup/system.backup.timer.txt > /etc/systemd/system/system.backup.timer
 cat configs/system/backup/backup.sh.txt > /var/system/scripts/backup.sh
+cat backup/00-create-backup.sh > /var/system/scripts/backup-full.sh
 
 # Setup flexcert
 cat configs/system/flexcert.sh.txt > /var/system/scripts/flexcert.sh

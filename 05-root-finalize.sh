@@ -90,15 +90,6 @@ echo "Datenbank $DB_NAME mit Benutzer $DB_USER wurde erfolgreich erstellt und f√
 
 systemctl restart postgresql
 
-# Not working - must be logged in as flex
-echo "Starting required user services"
-machinectl shell flex@ /bin/bash <<EOF
-    systemctl --user status bootlog.service
-    systemctl --user enable flexLogMove.path
-    systemctl --user enable flexLogMove.service
-    systemctl --user enable bootlog.service
-EOF
-
 # Creating boots log file
 mkdir -p "/var/log/system/"
 touch /var/log/system/boot.log

@@ -33,7 +33,7 @@ for subvol in "${SUBVOLS[@]}"; do
   btrfs subvolume snapshot -r "$subvol" "$path" 2>> "$LOGFILE"
 
   if [[ $? -ne 0 ]]; then
-    echo "Fehler beim Anlegen des Snapshots. Siehe Log Datei"
+    echo "Error while creating snapshot"
   fi
 
   start=$(date +%s)
@@ -53,6 +53,10 @@ for subvol in "${SUBVOLS[@]}"; do
 
   echo "deleting snapshot" | tee -a "$LOGFILE"
   btrfs subvolume delete "$path" 2>> "$LOGFILE"
+
+  if [[ $? -ne 0 ]]; then
+    echo "Error while deleting snapshot"
+  fi
   
 done
 

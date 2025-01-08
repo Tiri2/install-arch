@@ -31,9 +31,8 @@ foption=(
         ! -empty
 )
 
-if [ "$1" = "full" ]
-        then
-        sudo find / "${foption[@]}" 2>/dev/null | sudo tar "${roption[@]}" --files-from=-
+if [ "$1" = "full" ]; then 
+        zsh /var/system/scripts/backup-full.sh
 else
         tar "${roption[@]}" --files-from=/var/system/backup.include $(find /srv/tasks/CURRENT/ -iname "*.db")
 fi

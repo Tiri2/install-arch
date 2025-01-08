@@ -20,3 +20,9 @@ systemctl enable caddy
 # Setting up configurator
 echo "enabling configurator"
 systemctl enable system.configurator.path
+
+# Setting up bootlog
+systemctl enable system.bootlog.service
+
+# Setting up manageLogs
+systemctl enable system.manageLogs.service
