@@ -1,4 +1,4 @@
-include /usr/share/nano/bash.nanorc
+include /usr/share/nano/*.nanorc
 
 set tabsize 2       # Tabgröße auf 2 Leerzeichen setzen
 set tabstospaces    # Tabs in Leerzeichen umwandeln
