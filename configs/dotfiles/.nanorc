@@ -1,0 +1,8 @@
+include /usr/share/nano/bash.nanorc
+
+set tabsize 2       # Tabgröße auf 2 Leerzeichen setzen
+set tabstospaces    # Tabs in Leerzeichen umwandeln
+set autoindent      # Automatische Einrückung aktivieren
+set linenumbers     # Zeilennummern anzeigen
+set softwrap        # Längere Zeilen umbrechen
+set constantshow    # Aktuelle Cursorposition anzeigen

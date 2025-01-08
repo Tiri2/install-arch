@@ -13,6 +13,7 @@ export white='\033[0;37m'        # White
 
 # Other important settings
 setopt autocd
+export EDITOR=nano
 
 USER=$(whoami)
 

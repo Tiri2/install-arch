@@ -1,10 +1,16 @@
 #!/bin/bash
 
+# global dotfiles
+cp configs/dotfiles/.zshrc /var/system/
+cp configs/dotfiles/.sqliterc /var/system/
+cp configs/dotfiles/.nanorc /var/system/
+
 # Creating flex user and configure him
 echo "creating user flex"
 useradd -m flex
-cp configs/.zshrc /home/flex
 chsh -s /usr/bin/zsh flex
+ln -sf /var/system/.zshrc /home/flex/.zshrc
+ln -sf /var/system/.nanorc /home/flex/.nanorc
 
 echo "Entering password for flex"
 passwd flex
@@ -66,7 +72,8 @@ chown 666 /var/system/scripts/flexcert.sh
 ln -sf /var/system/scripts/flexcert.sh /usr/bin/flexcert
 
 # Configure root user
-cp configs/.zshrc /root
+ln -sf /var/system/.zshrc /root/.zshrc
+ln -sf /var/system/.nanorc /root/.nanorc
 chsh -s /usr/bin/zsh root
 
 # Setting up system services
@@ -132,7 +139,7 @@ cat configs/sudoers.txt > /etc/sudoers
 
 echo "installing and setting up sqlite3"
 pacman -S --noconfirm sqlite3
-cat configs/.sqliterc > /home/flex/.sqliterc
+ln -sf /var/system/.sqliterc /home/flex/.sqliterc
 
 # User Services enablen
 systemctl --user enable default.target

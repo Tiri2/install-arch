@@ -46,4 +46,8 @@ mkinitcpio -P
 # Remove config.json because tool should generate a new one
 mv /var/system/config.json /var/system/config.from-master.json
 
+# Removing .zsh_history because new host
+rm /home/flex/.zsh_history
+rm /root/.zsh_history
+
 exit 0
