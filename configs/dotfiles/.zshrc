@@ -149,7 +149,7 @@ alias reboot="sudo systemctl reboot"
 alias ..="cd .."
 alias ...="cd ../.."
 alias cls="clear"
-alias ss="ss -tuln"
+alias fss="ss -tulnp"
 alias ftop='htop -p $(pidof java | sed -e "s/ /,/g")'
 alias flextop='htop -p $(pidof java | sed -e "s/ /,/g")'
 
