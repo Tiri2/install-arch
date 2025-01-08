@@ -64,3 +64,16 @@ chmod +x /mnt/root/setup.sh
 
 # Chroot into and exeute the copied sh script named setup.sh with args $DISK
 arch-chroot /mnt /bin/bash -c "sh /root/setup.sh "$DISK""
+
+echo "Done. Installing succuessfully - do you want to restart now?"
+read -p "y/n: " RESTART
+
+if [[ $RESTART == "y" ]]; then
+    shutdown -r now
+elif [[ $RESTART == "n" ]]; then
+    echo "okay"
+    exit 1
+else 
+    echo "You may want to restart manual"
+    exit 1
+fi

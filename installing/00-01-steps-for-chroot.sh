@@ -44,17 +44,6 @@ echo "Making initramfs"
 mkinitcpio -P
 
 # Remove config.json because tool should generate a new one
-rm /var/system/config.json
+mv /var/system/config.json /var/system/config.from-master.json
 
-echo "Done. Installing succuessfully - do you want to restart now?"
-read -p "y/n: " RESTART
-
-if [[ $RESTART == "y" ]]; then
-    shutdown -r now
-elif [[ $RESTART == "n" ]]; then
-    echo "okay"
-    exit 1
-else 
-    echo "You may want to restart manual"
-    exit 1
-fi
+exit 0
