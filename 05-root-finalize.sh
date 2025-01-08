@@ -95,4 +95,9 @@ mkdir -p "/var/log/system/"
 touch /var/log/system/boot.log
 
 chmod 600 /etc/modprobe.d/*
+
+# SMB User
+echo "Please enter the password for the smb connection - user: flex"
+sudo smbpasswd -a flex
+
 echo "finished"
