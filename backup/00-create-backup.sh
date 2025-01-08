@@ -39,7 +39,7 @@ for subvol in "${SUBVOLS[@]}"; do
   start=$(date +%s)
 
   if [ "$subvol" == "/" ]; then
-    subvol = "rootfs"
+    subvol="rootfs"
   fi
   
   echo "Compress subvolume and save it to ${subvol}.btrfs.zst" | tee -a "$LOGFILE"
