@@ -51,12 +51,16 @@ for subvol in "${SUBVOLS[@]}"; do
 
   sleep 0.5
 
-  echo "deleting snapshot" | tee -a "$LOGFILE"
-  btrfs subvolume delete "$path" 2>> "$LOGFILE"
+  # echo "deleting snapshot" | tee -a "$LOGFILE"
+  # btrfs subvolume delete "$path" 2>> "$LOGFILE"
 
-  if [[ $? -ne 0 ]]; then
-    echo "Error while deleting snapshot"
-  fi
+#  if [[ $? -ne 0 ]]; then
+#    echo "Error while deleting snapshot"
+#  fi
+
+  # Break point to check if everything is all right
+  echo "CTRL + C to abort - Enter to continue"
+  read -p "Continue?"
   
 done
 
