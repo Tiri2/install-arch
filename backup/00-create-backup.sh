@@ -22,15 +22,11 @@ touch "$LOGFILE"
 for subvol in "${SUBVOLS[@]}"; do
   # create snapshot readonly
 
-  path="$BACKUP_DIR$subvol"
-
-  if [ "$subvol" == "/" ]; then
-    path="$BACKUP_DIR/root"
-  fi
-
   if [ "$subvol" == "/" ]; then
     subvol="/rootfs"
   fi
+
+  path="$BACKUP_DIR$subvol"
 
   echo "Snapshot Path: $path" | tee -a "$LOGFILE"
   echo "creating snapshot" | tee -a "$LOGFILE"
@@ -51,16 +47,17 @@ for subvol in "${SUBVOLS[@]}"; do
 
   sleep 0.5
 
-  # echo "deleting snapshot" | tee -a "$LOGFILE"
-  # btrfs subvolume delete "$path" 2>> "$LOGFILE"
-
-#  if [[ $? -ne 0 ]]; then
-#    echo "Error while deleting snapshot"
-#  fi
-
   # Break point to check if everything is all right
   echo "CTRL + C to abort - Enter to continue"
   read -p "Continue?"
+
+  echo "deleting snapshot" | tee -a "$LOGFILE"
+  btrfs subvolume delete "$path" 2>> "$LOGFILE"
+
+  if [[ $? -ne 0 ]]; then
+    echo "Error while deleting snapshot"
+  fi
+  
   
 done
 
