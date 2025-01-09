@@ -29,8 +29,8 @@ if ! formatted; then
   echo "executing 02-1-format.sh"
   source ../../02-1-format.sh
 
-  echo "executing 02-2-updatepacman.sh"
-  source ../../02-2-updatepacman.sh
+  # echo "executing 02-2-updatepacman.sh"
+  # source ../../02-2-updatepacman.sh
 
   # echo "executing 02-3-pacstrap.sh"
   # source ../../02-3-pacstrap.sh
