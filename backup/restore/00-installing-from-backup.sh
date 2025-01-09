@@ -39,8 +39,8 @@ if ! formatted; then
   echo "executing 02-2-updatepacman.sh"
   source ../../02-2-updatepacman.sh
 
-  echo "executing 02-3-pacstrap.sh"
-  source ../../02-3-pacstrap.sh
+  # echo "executing 02-3-pacstrap.sh"
+  # source ../../02-3-pacstrap.sh
 
   touch "$HOME/.formatted"
   echo "The System was setup correctly. Now copying the old subvolumes into the new ones"
@@ -197,3 +197,33 @@ for zst_file in "${ZST_FILES[@]}"; do
     
   fi
 done
+
+echo "Installing grub on the new system to boot up"
+SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
+CURRENT_DIR=$(pwd)
+
+if [[ "$SCRIPT_DIR" != "$CURRENT_DIR" ]]; then
+  cd "$SCRIPT_DIR"
+fi
+
+# Coping files into chroot to execute them
+cp ../../03-01-install-grub.sh /mnt/var/install-grub.sh
+chmod +x /mnt/var/install-grub.sh
+
+# Chroot into and exeute the copied sh script named setup.sh with args $DISK
+arch-chroot /mnt /bin/bash -c "sh /var/install-grub.sh ARCH "$PART""
+
+echo "Installation from backup finished."
+
+echo "Do you want to restart now?"
+read -p "y/n: " RESTART
+
+if [[ $RESTART == "y" ]]; then
+    shutdown -r now
+elif [[ $RESTART == "n" ]]; then
+    echo "okay"
+    exit 1
+else 
+    echo "You may want to restart manual"
+    exit 1
+fi
