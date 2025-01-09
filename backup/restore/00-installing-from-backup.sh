@@ -123,33 +123,6 @@ fi
 for zst_file in "${ZST_FILES[@]}"; do
   echo "processing file $zst_file"
 
-  # Ziel-Subvolume bestimmen
-  case "$zst_file" in
-    *rootfs.btrfs.zst)
-      TARGET_SUBVOL="/mnt/"
-      ;;
-    *home.btrfs.zst)
-      TARGET_SUBVOL="/mnt/home"
-      ;;
-    *root.btrfs.zst)
-      TARGET_SUBVOL="/mnt/root"
-      ;;
-    *srv.btrfs.zst)
-      TARGET_SUBVOL="/mnt/srv"
-      ;;
-    *)
-      echo "Unkown datatype: $zst_file, skipping..."
-      continue
-      ;;
-  esac
-
-
-    # Ziel-Subvolume prüfen
-  if [ ! -d "$TARGET_SUBVOL" ]; then
-    echo "Target subvolume $TARGET_SUBVOL does not exist. Skipping..."
-    continue
-  fi
-
   # Datei prüfen
   if ! unzstd -t "$zst_file"; then
     echo "Error: $zst_file is not a valid zstd file or is corrupted."
@@ -171,12 +144,12 @@ for zst_file in "${ZST_FILES[@]}"; do
   fi
 
   # Entpackte Datei mit btrfs receive einspielen
-  echo "Sending $TEMP_FILE to subvolume $TARGET_SUBVOL..."
-  btrfs receive "$TARGET_SUBVOL" < "$TEMP_FILE"
+  echo "Sending $TEMP_FILE"
+  btrfs receive /mnt/ < "$TEMP_FILE"
 
   # Erfolg prüfen
   if [ $? -ne 0 ]; then
-    echo "Error while processing pushing into subvolume $TARGET_SUBVOL - $zst_file."
+    echo "Error while processing pushing into subvolume - $zst_file."
   else
 
     end=$(date +%s)
@@ -185,7 +158,7 @@ for zst_file in "${ZST_FILES[@]}"; do
     # Temporäre Datei entfernen
     rm -f "$TEMP_FILE"
 
-    echo "$zst_file successfully pushed into $TARGET_SUBVOL."
+    echo "$zst_file successfully pushed into the subvolume."
     echo "This process took $runtime seconds."
     
   fi
