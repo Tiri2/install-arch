@@ -150,6 +150,7 @@ for zst_file in "${ZST_FILES[@]}"; do
       ;;
   esac
 
+  
     # Ziel-Subvolume prüfen
   if [ ! -d "$TARGET_SUBVOL" ]; then
     echo "Target subvolume $TARGET_SUBVOL does not exist. Skipping..."
@@ -162,13 +163,24 @@ for zst_file in "${ZST_FILES[@]}"; do
     continue
   fi
 
-  echo "Dearchive $zst_file and push it in subvolume $TARGET_SUBVOL..."
-
   start=$(date +%s)
 
-  # Entpacken und in das Subvolume einspielen
-  unzstd "$zst_file" | btrfs receive "$TARGET_SUBVOL"
-  
+  # Temporäre Datei für entpackte Datei
+  TEMP_FILE="/tmp/$(basename "$zst_file" .zst)"
+
+  # Datei entpacken
+  echo "Decompressing $zst_file to $TEMP_FILE..."
+  unzstd -d "$zst_file" -o "$TEMP_FILE"
+
+  if [ $? -ne 0 ]; then
+    echo "Error decompressing $zst_file. Skipping..."
+    continue
+  fi
+
+  # Entpackte Datei mit btrfs receive einspielen
+  echo "Sending $TEMP_FILE to subvolume $TARGET_SUBVOL..."
+  btrfs receive "$TARGET_SUBVOL" < "$TEMP_FILE"
+
   # Erfolg prüfen
   if [ $? -ne 0 ]; then
     echo "Error while processing pushing into subvolume $TARGET_SUBVOL - $zst_file."
@@ -177,7 +189,11 @@ for zst_file in "${ZST_FILES[@]}"; do
     end=$(date +%s)
     runtime=$((end - start))
 
+    # Temporäre Datei entfernen
+    rm -f "$TEMP_FILE"
+
     echo "$zst_file successfully pushed into $TARGET_SUBVOL."
     echo "This process took $runtime seconds."
+    
   fi
 done
