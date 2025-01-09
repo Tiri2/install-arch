@@ -9,13 +9,6 @@ echo "These scripts writes a backup on the hard disk of this device. "
 echo "If you want to install from the master use a other script instead of this."
 echo " "
 
-SUBVOLS=(
-  "/srv"
-  "/root"
-  "/home"
-  "/"
-)
-
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 cd $SCRIPT_DIR
 
