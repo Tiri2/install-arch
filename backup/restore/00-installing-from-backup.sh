@@ -27,15 +27,20 @@ function formatted() {
   fi
 }
 
-# Format the hard disk
+# Setting up the new host
+echo "Please wait, the new system is setting currently up..."
 if ! formatted; then
   echo "executing 01-partitioning.sh"
-  source ../../01-partitioning.sh
+  source ../../01-partitioning.sh 2>> /dev/null
 
   echo "executing 02-1-format.sh"
-  source ../../02-1-format.sh
+  source ../../02-1-format.sh 2>> /dev/null
+
+  echo "executing 02-3-pacstrap.sh"
+  source ../../02-3-pacstrap.sh 2>> /dev/null 
 
   touch "$HOME/.formatted"
+  echo "The System was setup correctly. Now copying the old subvolumes into the new ones"
 else
   echo "Disk already formatted, skipping..."
 fi
@@ -46,11 +51,10 @@ NEXT=0
 
 # Check if the file is found, if not ask again
 while [ $NEXT -eq 0 ]; do 
-    echo "Please enter the full file path of the tar.gz backup file"
+    echo "Before doing that, please provide the full path to the backup file."
+    echo "You can exit the script with ctrl + c - current state will be saved"
     read -p "file (/root/backup-Di-250107.tar.gz): " BACKUP_FILE
 
-    echo "Checking if file exists..."
-    echo "You entered ${BACKUP_FILE}"
     ls -al "$BACKUP_FILE"
 
     if [ -e "$BACKUP_FILE" ]; then
@@ -97,17 +101,17 @@ mkdir -p "$BACKUP_DIR/raw"
 
 start=$(date +%s)
 
-echo "Uncompressing the file $BACKUP_FILE"
+echo "Dearchive the file $BACKUP_FILE"
 tar -xf "$BACKUP_FILE" -C "$BACKUP_DIR/raw"
 
 if [ $? -ne 0 ]; then
-  echo "Fehler beim Entpacken von $BACKUP_FILE."
+  echo "Error while dearchive $BACKUP_FILE."
   exit 1
 fi
 
 end=$(date +%s)
 runtime=$((end - start))
-echo "Uncompressing the archiv "$BACKUP_FILE" took $runtime seconds." | tee -a "$LOGFILE"
+echo "Dearchive the archiv "$BACKUP_FILE" took $runtime seconds." | tee -a "$LOGFILE"
 
 echo "Archiv erfolgreich entpackt nach $BACKUP_DIR/raw."
 
@@ -116,45 +120,42 @@ ZST_FILES=($(find "$BACKUP_DIR/raw" -type f -name "*.zst"))
 
 # Prüfen, ob Dateien gefunden wurden
 if [ ${#ZST_FILES[@]} -eq 0 ]; then
-  echo "Keine .zst-Dateien gefunden."
+  echo "No files found in the archive!"
   exit 1
 fi
 
 for zst_file in "${ZST_FILES[@]}"; do
-  echo "Verarbeite $zst_file..."
+  echo "processing file $zst_file"
 
   # Ziel-Subvolume bestimmen
   case "$zst_file" in
     *rootfs.btrfs.zst)
-      TARGET_SUBVOL="/"
+      TARGET_SUBVOL="/mnt/"
       ;;
     *home.btrfs.zst)
-      TARGET_SUBVOL="/home"
+      TARGET_SUBVOL="/mnt/home"
       ;;
     *root.btrfs.zst)
-      TARGET_SUBVOL="/root"
+      TARGET_SUBVOL="/mnt/root"
       ;;
     *srv.btrfs.zst)
-      TARGET_SUBVOL="/srv"
+      TARGET_SUBVOL="/mnt/srv"
       ;;
     *)
-      echo "Unbekannter Dateityp: $zst_file, überspringe..."
+      echo "Unkown datatype: $zst_file, skipping..."
       continue
       ;;
   esac
 
-  echo "Entpacke $zst_file und spiele es im Subvolume $TARGET_SUBVOL ein..."
+  echo "Dearchive $zst_file and push it in subvolume $TARGET_SUBVOL..."
 
   # Entpacken und in das Subvolume einspielen
-  unzstd "$zst_file" | btrfs receive "/mnt$TARGET_SUBVOL"
+  unzstd "$zst_file" | btrfs receive "$TARGET_SUBVOL"
   
   # Erfolg prüfen
   if [ $? -ne 0 ]; then
-    echo "Fehler beim Einspielen von $zst_file in $TARGET_SUBVOL."
-    exit 1
+    echo "Error while processing pushing into subvolume $TARGET_SUBVOL - $zst_file."
   else
-    echo "$zst_file erfolgreich nach $TARGET_SUBVOL eingespielt."
+    echo "$zst_file successfully pushed into $TARGET_SUBVOL."
   fi
 done
-
-# TODO den tar datei angeben und diese dann extrahieren und die einzelnen subvolumes dann via btrfs receive einspielen
