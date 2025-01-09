@@ -60,7 +60,7 @@ for subvol in "${SUBVOLS[@]}"; do
   
 done
 
-ARCHIVE_FILE="backup-$(date +%a-%y%m%d).tar.gz"
+ARCHIVE_FILE="backup-$(date +%a-%y%m%d)-$(cat /etc/hostname).tar.gz"
 
 echo "archive all compressed subvolume files" | tee -a "$LOGFILE"
 tar -cf "$BACKUP_DIR/$ARCHIVE_FILE" "$BACKUP_DIR"/*.zst
