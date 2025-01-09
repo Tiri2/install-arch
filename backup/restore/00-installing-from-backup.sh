@@ -55,13 +55,46 @@ while [ $NEXT -eq 0 ]; do
 
     if [ -e "$BACKUP_FILE" ]; then
         NEXT=1  # Exit the loop
-        echo "Cannot find the file. Please try again!"
+    fi
+    echo "Cannot find the file. Please try again!"
+done
+
+NEXT=0
+
+NEXT=0
+
+while [ $NEXT -eq 0 ]; do 
+    echo "Please enter a valid path to put the files temporarily down."
+    read -p "Directory (/run/media/usb): " BACKUP_DIR
+
+    if [ ! -d "$BACKUP_DIR" ]; then
+        echo "No valid path. Please try again!"
+        continue
+    fi
+
+    # Größe der Backup-Datei ermitteln (in KB)
+    FILE_SIZE=$(du -k "$BACKUP_FILE" | cut -f1)
+
+    # Verfügbaren Speicherplatz im Zielverzeichnis ermitteln (in KB)
+    AVAILABLE_SPACE=$(df -k "$BACKUP_DIR" | awk 'NR==2 {print $4}')
+
+    echo "File size: $FILE_SIZE KB"
+    echo "Available space: $AVAILABLE_SPACE KB"
+
+    # Überprüfen, ob genug Platz vorhanden ist
+    if [ "$AVAILABLE_SPACE" -lt "$FILE_SIZE" ]; then
+        echo "Not enough space in $BACKUP_DIR. Please try another directory!"
+    else
+        echo "Sufficient space available in $BACKUP_DIR."
+        NEXT=1  # Exit the loop
     fi
 done
 
-mkdir -p "$BACKUP_DIR"
+BACKUP_DIR="$BACKUP_DIR/tmp"
 
-tar -xzf "$BACKUP_FILE" -C "$BACKUP_DIR/raw"
+mkdir -p "$BACKUP_DIR/tmp"
+
+tar -xf "$BACKUP_FILE" -C "$BACKUP_DIR/raw"
 
 if [ $? -ne 0 ]; then
   echo "Fehler beim Entpacken von $BACKUP_FILE."
