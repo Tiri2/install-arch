@@ -146,7 +146,7 @@ for zst_file in "${ZST_FILES[@]}"; do
   echo "Entpacke $zst_file und spiele es im Subvolume $TARGET_SUBVOL ein..."
 
   # Entpacken und in das Subvolume einspielen
-  unzstd "$zst_file" | btrfs receive "$TARGET_SUBVOL"
+  unzstd "$zst_file" | btrfs receive "/mnt$TARGET_SUBVOL"
   
   # Erfolg prüfen
   if [ $? -ne 0 ]; then
