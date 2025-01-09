@@ -51,7 +51,7 @@ while [ $NEXT -eq 0 ]; do
 
     echo "Checking if file exists..."
     echo "You entered ${BACKUP_FILE}"
-    ll "$BACKUP_FILE"
+    ls -al "$BACKUP_FILE"
 
     if [ -e "$BACKUP_FILE" ]; then
         NEXT=1  # Exit the loop
