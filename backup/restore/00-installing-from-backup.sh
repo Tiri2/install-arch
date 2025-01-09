@@ -31,13 +31,13 @@ function formatted() {
 echo "Please wait, the new system is setting currently up..."
 if ! formatted; then
   echo "executing 01-partitioning.sh"
-  source ../../01-partitioning.sh 2>> /dev/null
+  source ../../01-partitioning.sh
 
   echo "executing 02-1-format.sh"
-  source ../../02-1-format.sh 2>> /dev/null
+  source ../../02-1-format.sh
 
   echo "executing 02-3-pacstrap.sh"
-  source ../../02-3-pacstrap.sh 2>> /dev/null 
+  source ../../02-3-pacstrap.sh
 
   touch "$HOME/.formatted"
   echo "The System was setup correctly. Now copying the old subvolumes into the new ones"
