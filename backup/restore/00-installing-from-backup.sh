@@ -114,7 +114,7 @@ fi
 
 end=$(date +%s)
 runtime=$((end - start))
-echo "Dearchive the archiv "$BACKUP_FILE" took $runtime seconds." | tee -a "$LOGFILE"
+echo "Dearchive the archiv "$BACKUP_FILE" took $runtime seconds."
 
 echo "Archiv erfolgreich entpackt nach $BACKUP_DIR/raw."
 
@@ -152,6 +152,8 @@ for zst_file in "${ZST_FILES[@]}"; do
 
   echo "Dearchive $zst_file and push it in subvolume $TARGET_SUBVOL..."
 
+  start=$(date +%s)
+
   # Entpacken und in das Subvolume einspielen
   unzstd "$zst_file" | btrfs receive "$TARGET_SUBVOL"
   
@@ -159,6 +161,11 @@ for zst_file in "${ZST_FILES[@]}"; do
   if [ $? -ne 0 ]; then
     echo "Error while processing pushing into subvolume $TARGET_SUBVOL - $zst_file."
   else
+
+    end=$(date +%s)
+    runtime=$((end - start))
+
     echo "$zst_file successfully pushed into $TARGET_SUBVOL."
+    echo "This process took $runtime seconds."
   fi
 done
