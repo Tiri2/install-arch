@@ -22,11 +22,11 @@ touch "$LOGFILE"
 for subvol in "${SUBVOLS[@]}"; do
   # create snapshot readonly
 
-  if [ "$subvol" == "/" ]; then
-    subvol="/rootfs"
-  fi
-
   path="$BACKUP_DIR$subvol"
+
+  if [ "$subvol" == "/" ]; then
+    path="$BACKUP_DIR/rootfs"
+  fi
 
   echo "Snapshot Path: $path" | tee -a "$LOGFILE"
   echo "creating snapshot" | tee -a "$LOGFILE"
@@ -34,6 +34,10 @@ for subvol in "${SUBVOLS[@]}"; do
 
   if [[ $? -ne 0 ]]; then
     echo "Error while creating snapshot"
+  fi
+
+  if [ "$subvol" == "/" ]; then
+    subvol="/rootfs"
   fi
 
   start=$(date +%s)
