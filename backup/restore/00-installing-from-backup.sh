@@ -150,6 +150,18 @@ for zst_file in "${ZST_FILES[@]}"; do
       ;;
   esac
 
+    # Ziel-Subvolume prüfen
+  if [ ! -d "$TARGET_SUBVOL" ]; then
+    echo "Target subvolume $TARGET_SUBVOL does not exist. Skipping..."
+    continue
+  fi
+
+  # Datei prüfen
+  if ! unzstd -t "$zst_file"; then
+    echo "Error: $zst_file is not a valid zstd file or is corrupted."
+    continue
+  fi
+
   echo "Dearchive $zst_file and push it in subvolume $TARGET_SUBVOL..."
 
   start=$(date +%s)
