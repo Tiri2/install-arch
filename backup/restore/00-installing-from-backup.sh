@@ -95,12 +95,19 @@ BACKUP_DIR="$BACKUP_DIR/tmp"
 
 mkdir -p "$BACKUP_DIR/raw"
 
+start=$(date +%s)
+
+echo "Uncompressing the file $BACKUP_FILE"
 tar -xf "$BACKUP_FILE" -C "$BACKUP_DIR/raw"
 
 if [ $? -ne 0 ]; then
   echo "Fehler beim Entpacken von $BACKUP_FILE."
   exit 1
 fi
+
+end=$(date +%s)
+runtime=$((end - start))
+echo "Uncompressing the archiv "$BACKUP_FILE" took $runtime seconds." | tee -a "$LOGFILE"
 
 echo "Archiv erfolgreich entpackt nach $BACKUP_DIR/raw."
 
