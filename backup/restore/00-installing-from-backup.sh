@@ -35,7 +35,6 @@ if ! formatted; then
   echo "executing 02-1-format.sh"
   source ../../02-1-format.sh
 
-  # Erstelle die Datei als Marker, dass die Festplatte formatiert wurde
   touch "$HOME/.formatted"
 else
   echo "Disk already formatted, skipping..."
@@ -43,8 +42,22 @@ fi
 
 BACKUP_DIR="/tmp/backup"
 
-echo "Please enter the full file path of the tar.gz backup file"
-read -p "file (/root/backup-Di-250107.tar.gz): " BACKUP_FILE
+NEXT=0
+
+# Check if the file is found, if not ask again
+while [ $NEXT -eq 0 ]; do 
+    echo "Please enter the full file path of the tar.gz backup file"
+    read -p "file (/root/backup-Di-250107.tar.gz): " BACKUP_FILE
+
+    echo "Checking if file exists..."
+    echo "You entered ${BACKUP_FILE}"
+    ll "$BACKUP_FILE"
+
+    if [ -e "$BACKUP_FILE" ]; then
+        NEXT=1  # Exit the loop
+        echo "Cannot find the file. Please try again!"
+    fi
+done
 
 mkdir -p "$BACKUP_DIR"
 
