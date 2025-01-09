@@ -55,8 +55,9 @@ while [ $NEXT -eq 0 ]; do
 
     if [ -e "$BACKUP_FILE" ]; then
         NEXT=1  # Exit the loop
+    else
+        echo "Cannot find the file. Please try again!"
     fi
-    echo "Cannot find the file. Please try again!"
 done
 
 NEXT=0
@@ -92,7 +93,7 @@ done
 
 BACKUP_DIR="$BACKUP_DIR/tmp"
 
-mkdir -p "$BACKUP_DIR/tmp"
+mkdir -p "$BACKUP_DIR/raw"
 
 tar -xf "$BACKUP_FILE" -C "$BACKUP_DIR/raw"
 
