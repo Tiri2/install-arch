@@ -150,7 +150,7 @@ for zst_file in "${ZST_FILES[@]}"; do
       ;;
   esac
 
-  
+
     # Ziel-Subvolume prüfen
   if [ ! -d "$TARGET_SUBVOL" ]; then
     echo "Target subvolume $TARGET_SUBVOL does not exist. Skipping..."
@@ -166,7 +166,7 @@ for zst_file in "${ZST_FILES[@]}"; do
   start=$(date +%s)
 
   # Temporäre Datei für entpackte Datei
-  TEMP_FILE="/tmp/$(basename "$zst_file" .zst)"
+  TEMP_FILE="$BACKUP_DIR/$(basename "$zst_file" .zst)"
 
   # Datei entpacken
   echo "Decompressing $zst_file to $TEMP_FILE..."
