@@ -120,16 +120,41 @@ if [ ${#ZST_FILES[@]} -eq 0 ]; then
   exit 1
 fi
 
-echo "Gefundene .zst-Dateien:"
-for file in "${ZST_FILES[@]}"; do
-  echo "$file"
-done
-
-# Jetzt kannst du die Variable ZST_FILES iterieren oder für weitere Verarbeitung nutzen
-# Beispiel: Iteration über alle Dateien
 for zst_file in "${ZST_FILES[@]}"; do
   echo "Verarbeite $zst_file..."
-  # Hier kannst du etwas mit jeder Datei machen, z.B. entpacken
+
+  # Ziel-Subvolume bestimmen
+  case "$zst_file" in
+    *rootfs.btrfs.zst)
+      TARGET_SUBVOL="/"
+      ;;
+    *home.btrfs.zst)
+      TARGET_SUBVOL="/home"
+      ;;
+    *root.btrfs.zst)
+      TARGET_SUBVOL="/root"
+      ;;
+    *srv.btrfs.zst)
+      TARGET_SUBVOL="/srv"
+      ;;
+    *)
+      echo "Unbekannter Dateityp: $zst_file, überspringe..."
+      continue
+      ;;
+  esac
+
+  echo "Entpacke $zst_file und spiele es im Subvolume $TARGET_SUBVOL ein..."
+
+  # Entpacken und in das Subvolume einspielen
+  unzstd "$zst_file" | btrfs receive "$TARGET_SUBVOL"
+  
+  # Erfolg prüfen
+  if [ $? -ne 0 ]; then
+    echo "Fehler beim Einspielen von $zst_file in $TARGET_SUBVOL."
+    exit 1
+  else
+    echo "$zst_file erfolgreich nach $TARGET_SUBVOL eingespielt."
+  fi
 done
 
 # TODO den tar datei angeben und diese dann extrahieren und die einzelnen subvolumes dann via btrfs receive einspielen
