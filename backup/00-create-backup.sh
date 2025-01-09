@@ -28,6 +28,10 @@ for subvol in "${SUBVOLS[@]}"; do
     path="$BACKUP_DIR/root"
   fi
 
+  if [ "$subvol" == "/" ]; then
+    subvol="/rootfs"
+  fi
+
   echo "Snapshot Path: $path" | tee -a "$LOGFILE"
   echo "creating snapshot" | tee -a "$LOGFILE"
   btrfs subvolume snapshot -r "$subvol" "$path" 2>> "$LOGFILE"
@@ -37,10 +41,6 @@ for subvol in "${SUBVOLS[@]}"; do
   fi
 
   start=$(date +%s)
-
-  if [ "$subvol" == "/" ]; then
-    subvol="/rootfs"
-  fi
   
   echo "Compress subvolume and save it to ${subvol}.btrfs.zst" | tee -a "$LOGFILE"
   btrfs send "$path" 2>> "$LOGFILE" | zstd -9 -o "$BACKUP_DIR$subvol".btrfs.zst 2>> "$LOGFILE"
