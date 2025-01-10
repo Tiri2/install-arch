@@ -230,7 +230,7 @@ btrfs subvolume create /mnt/@/.snapshots/1/snapshot
 for vol in "${COW_VOLS[@]}" "${NOCOW_VOLS[@]}"; do
 
   # Überspringe ausgeschlossene Volumes
-  if [[ " ${EXCLUDES[*]} " =~ " /$vol " ]]; then
+  if [[ " ${EXCLUDES[*]} " =~ " $vol " ]]; then
     continue
   fi
 
