@@ -53,7 +53,7 @@ if ! formatted; then
   source ../../01-partitioning.sh
 
   touch "$HOME/.formatted"
-  echo "The System was setup correctly. Now copying the old subvolumes into the new ones"
+  # echo "The System was setup correctly. Now copying the old subvolumes into the new ones"
 
   BTRFS="" # real partition e.g. /dev/vda2, /dev/sda2, or /dev/mapper/cryptroot
 
@@ -257,7 +257,7 @@ EOF
 
 chmod 600 /mnt/@/.snapshots/1/info.xml
 
-umount /mnt
+umount -R /mnt
 
 echo "Mounting the newly created subvolumes."
 
@@ -271,11 +271,11 @@ done
 mkdir -p /mnt/boot/efi
 mount $BOOT_PART /mnt/boot/efi
 
-echo "executing 02-2-updatepacman.sh"
-source ../../02-2-updatepacman.sh
+# echo "executing 02-2-updatepacman.sh"
+# source ../../02-2-updatepacman.sh
 
-echo "executing 02-3-pacstrap.sh"
-source ../../02-3-pacstrap.sh
+# echo "executing 02-3-pacstrap.sh"
+# source ../../02-3-pacstrap.sh
 
 # Installing grub
 echo "Installing grub on the new system to boot up"
