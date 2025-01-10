@@ -30,7 +30,7 @@ rm -rf "*"
 
 # Create the rootfs (@) snapshot
 echo "creating snapshot rootfs" | tee -a "$LOGFILE"
-btrfs subvolume snapshot -r "/" "$BACKUP_DIR/rootfs" 2>>"$LOGFILE"
+btrfs subvolume snapshot -r "/" "$BACKUP_DIR/rootfs/" 2>>"$LOGFILE"
 
 start=$(date +%s)
 

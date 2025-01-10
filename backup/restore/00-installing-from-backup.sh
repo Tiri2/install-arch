@@ -12,6 +12,32 @@ echo " "
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 cd $SCRIPT_DIR
 
+EXCLUDES=(
+  srv
+  home
+  root
+)
+
+COW_VOLS=(
+  srv
+  home
+  root
+  var/log
+  var/log/tasks
+)
+NOCOW_VOLS=(
+  var/tmp
+  var/cache
+  .swap # If you need Swapfile, create in this folder
+)
+
+function elem_in() {
+  local e m="$1"
+  shift
+  for e in "$@"; do [[ "$m" == "$e" ]] && return 0; done
+  return 1
+}
+
 function formatted() {
   if [[ ! -f "$HOME/.formatted" ]]; then
     return 1 # Nicht formatiert
@@ -26,26 +52,17 @@ if ! formatted; then
   echo "executing 01-partitioning.sh"
   source ../../01-partitioning.sh
 
-  # echo "executing 02-1-format.sh"
-  # source ../../02-1-format.sh --exclude="/srv,/root,/home,/"
-
-  # echo "executing 02-2-updatepacman.sh"
-  # source ../../02-2-updatepacman.sh
-
-  # echo "executing 02-3-pacstrap.sh"
-  # source ../../02-3-pacstrap.sh
-
   touch "$HOME/.formatted"
   echo "The System was setup correctly. Now copying the old subvolumes into the new ones"
 
-  BTRFS=""    # real partition e.g. /dev/vda2, /dev/sda2, or /dev/mapper/cryptroot
+  BTRFS="" # real partition e.g. /dev/vda2, /dev/sda2, or /dev/mapper/cryptroot
 
   if [ -z "$BTRFS" ]; then
-      read -r -p "Please choose the partition to format to BTRFS: " BTRFS
+    read -r -p "Please choose the partition to format to BTRFS: " BTRFS
   fi
 
   if [ -z "$BOOT_PART" ]; then
-      read -r -p "Please choose the EFI partition: " BOOT_PART
+    read -r -p "Please choose the EFI partition: " BOOT_PART
   fi
 
   mkfs.btrfs -f -L ARCH "$BTRFS"
@@ -73,8 +90,6 @@ while [ $NEXT -eq 0 ]; do
     echo "Cannot find the file. Please try again!"
   fi
 done
-
-NEXT=0
 
 NEXT=0
 
@@ -166,22 +181,22 @@ for zst_file in "${ZST_FILES[@]}"; do
 
   # Ziel-Subvolume bestimmen
   case "$zst_file" in
-    *rootfs.btrfs.zst)
-      TARGET_SUBVOL="/mnt"
-      ;;
-    *home.btrfs.zst)
-      TARGET_SUBVOL="/mnt/home"
-      ;;
-    *root.btrfs.zst)
-      TARGET_SUBVOL="/mnt/root"
-      ;;
-    *srv.btrfs.zst)
-      TARGET_SUBVOL="/mnt/srv"
-      ;;
-    *)
-      echo "Unkown datatype: $zst_file, skipping..."
-      continue
-      ;;
+  *rootfs.btrfs.zst)
+    TARGET_SUBVOL="/mnt"
+    ;;
+  *home.btrfs.zst)
+    TARGET_SUBVOL="/mnt/home"
+    ;;
+  *root.btrfs.zst)
+    TARGET_SUBVOL="/mnt/root"
+    ;;
+  *srv.btrfs.zst)
+    TARGET_SUBVOL="/mnt/srv"
+    ;;
+  *)
+    echo "Unkown datatype: $zst_file, skipping..."
+    continue
+    ;;
   esac
 
   mkdir -p "$TARGET_SUBVOL"
@@ -207,51 +222,24 @@ for zst_file in "${ZST_FILES[@]}"; do
   fi
 done
 
-
 # Create missing subvolumes
 btrfs subvolume create /mnt/@/.snapshots
 mkdir -p /mnt/@/.snapshots/1
 btrfs subvolume create /mnt/@/.snapshots/1/snapshot
 
-EXCLUDES=(
-    srv
-    home
-    root
-)
-
-COW_VOLS=(
-    srv
-    home
-    root
-    var/log
-    var/log/tasks
-)
-NOCOW_VOLS=(
-    var/tmp
-    var/cache
-    .swap # If you need Swapfile, create in this folder
-)
-
-elem_in() {
-    local e m="$1"
-    shift
-    for e in "$@"; do [[ "$m" == "$e" ]] && return 0; done
-    return 1
-}
-
 for vol in "${COW_VOLS[@]}" "${NOCOW_VOLS[@]}"; do
 
-    # Überspringe ausgeschlossene Volumes
-    if [[ " ${EXCLUDES[*]} " =~ " /$vol " ]]; then
-        continue
-    fi
+  # Überspringe ausgeschlossene Volumes
+  if [[ " ${EXCLUDES[*]} " =~ " /$vol " ]]; then
+    continue
+  fi
 
-    btrfs subvolume create "/mnt/@/${vol//\//_}"
-    mkdir -p "/mnt/$vol"
+  btrfs subvolume create "/mnt/@/${vol//\//_}"
+  mkdir -p "/mnt/$vol"
 
-    if elem_in "$vol" "${NOCOW_VOLS[@]}"; then
-        chattr +C "/mnt/@/${vol//\//_}"
-    fi
+  if elem_in "$vol" "${NOCOW_VOLS[@]}"; then
+    chattr +C "/mnt/@/${vol//\//_}"
+  fi
 done
 
 btrfs subvolume set-default "$(btrfs subvolume list /mnt | grep "@/.snapshots/1/snapshot" | grep -oP '(?<=ID )[0-9]+')" /mnt
@@ -269,7 +257,6 @@ EOF
 
 chmod 600 /mnt/@/.snapshots/1/info.xml
 
-
 umount /mnt
 
 echo "Mounting the newly created subvolumes."
@@ -277,12 +264,18 @@ echo "Mounting the newly created subvolumes."
 mount -o ssd,noatime,space_cache=v2,compress=zstd:15 "$BTRFS" /mnt
 
 for vol in .snapshots "${COW_VOLS[@]}" "${NOCOW_VOLS[@]}"; do
-    mkdir -p "/mnt/$vol"
-    mount -o "ssd,noatime,space_cache,autodefrag,compress=zstd:15,discard=async,subvol=@/${vol//\//_}" "$BTRFS" "/mnt/$vol"
+  mkdir -p "/mnt/$vol"
+  mount -o "ssd,noatime,space_cache,autodefrag,compress=zstd:15,discard=async,subvol=@/${vol//\//_}" "$BTRFS" "/mnt/$vol"
 done
 
 mkdir -p /mnt/boot/efi
 mount $BOOT_PART /mnt/boot/efi
+
+echo "executing 02-2-updatepacman.sh"
+source ../../02-2-updatepacman.sh
+
+echo "executing 02-3-pacstrap.sh"
+source ../../02-3-pacstrap.sh
 
 # Installing grub
 echo "Installing grub on the new system to boot up"
@@ -299,7 +292,6 @@ chmod +x /mnt/var/install-grub.sh
 
 # Chroot into and exeute the copied sh script named setup.sh with args $DISK
 arch-chroot /mnt /bin/bash -c "sh /var/install-grub.sh ARCH "$PART""
-
 
 # Finish installation
 echo "Installation from backup finished."
