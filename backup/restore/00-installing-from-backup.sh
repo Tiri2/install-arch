@@ -26,8 +26,8 @@ if ! formatted; then
   echo "executing 01-partitioning.sh"
   source ../../01-partitioning.sh
 
-  echo "executing 02-1-format.sh"
-  source ../../02-1-format.sh
+  # echo "executing 02-1-format.sh"
+  # source ../../02-1-format.sh
 
   # echo "executing 02-2-updatepacman.sh"
   # source ../../02-2-updatepacman.sh
@@ -38,17 +38,21 @@ if ! formatted; then
   touch "$HOME/.formatted"
   echo "The System was setup correctly. Now copying the old subvolumes into the new ones"
 
-  sync
+  # Own formating
 
-#  umount /mnt
-#  umount /mnt/home
-#  umount /mnt/root
-#  umount /mnt/srv
+  BTRFS=""  # real partition e.g. /dev/vda2, /dev/sda2, or /dev/mapper/cryptroot
 
-  btrfs subvolume delete /mnt/
-  btrfs subvolume delete /mnt/root
-  btrfs subvolume delete /mnt/srv
-  btrfs subvolume delete /mnt/home
+  if [ -z "$BTRFS" ]; then
+      read -r -p "Please choose the partition to format to BTRFS: " BTRFS
+  fi
+
+  if [ -z "$BOOT_PART" ]; then
+      read -r -p "Please choose the EFI partition: " BOOT_PART
+  fi
+
+  mkfs.btrfs -f -L ARCH "$BTRFS"
+  mkdir -p /mnt/boot/efi
+  mount $BOOT_PART /mnt/boot/efi
 
 
 else
@@ -126,7 +130,16 @@ echo "Dearchive the archiv "$BACKUP_FILE" took $runtime seconds."
 echo "Archiv erfolgreich entpackt nach $BACKUP_DIR/raw."
 
 # Alle Dateien mit der Endung .zst finden
-ZST_FILES=($(find "$BACKUP_DIR/raw" -type f -name "*.zst"))
+# Sortiere ZST_FILES, sodass rootfs zuerst kommt
+ZST_FILES=($(printf "%s\n" "${ZST_FILES[@]}" | sort -f | grep "rootfs.btrfs.zst"))
+REST_FILES=($(printf "%s\n" "${ZST_FILES[@]}" | grep -v "rootfs.btrfs.zst"))
+ZST_FILES=("${ZST_FILES[@]}" "${REST_FILES[@]}")
+
+echo "$ZST_FILES"
+
+# Break point to check if everything is all right
+echo "CTRL + C to abort - Enter to continue"
+read -p "Continue?"
 
 # Prüfen, ob Dateien gefunden wurden
 if [ ${#ZST_FILES[@]} -eq 0 ]; then
@@ -157,9 +170,29 @@ for zst_file in "${ZST_FILES[@]}"; do
     continue
   fi
 
+  # Ziel-Subvolume bestimmen
+  case "$zst_file" in
+    *rootfs.btrfs.zst)
+      TARGET_SUBVOL="/mnt"
+      ;;
+    *home.btrfs.zst)
+      TARGET_SUBVOL="/mnt/home"
+      ;;
+    *root.btrfs.zst)
+      TARGET_SUBVOL="/mnt/root"
+      ;;
+    *srv.btrfs.zst)
+      TARGET_SUBVOL="/mnt/srv"
+      ;;
+    *)
+      echo "Unkown datatype: $zst_file, skipping..."
+      continue
+      ;;
+  esac
+
   # Entpackte Datei mit btrfs receive einspielen
   echo "Sending $TEMP_FILE"
-  btrfs receive /mnt/@ <"$TEMP_FILE"
+  btrfs receive "$TARGET_SUBVOL" <"$TEMP_FILE"
 
   # Erfolg prüfen
   if [ $? -ne 0 ]; then
