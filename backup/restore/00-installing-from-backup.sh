@@ -231,7 +231,7 @@ for zst_file in "${ZST_FILES[@]}"; do
     rm -f "$TEMP_FILE"
 
     if [ "$zst_file" ==  "rootfs.btrfs.zst" ]; then
-      btrfs property set -ts "/mnt/@" ro false 
+      btrfs property set -fts "/mnt/@" ro false 
       # 2>> "$LOGFILE"
       echo "SET READONLY FALSE"
     fi
@@ -279,6 +279,11 @@ cat <<EOF >>/mnt/@/.snapshots/1/info.xml
 EOF
 
 chmod 600 /mnt/@/.snapshots/1/info.xml
+
+sync
+
+echo "waiting 5 sec"
+sleep 5
 
 umount /mnt
 
