@@ -7,17 +7,20 @@ EXCLUDES=() # Array für auszuschließende Subvolumes
 while [[ $# -gt 0 ]]; do
     case "$1" in
     --exclude=*)
-        shift
-        IFS=',' read -r -a EXCLUDES <<<"$1" # Argument als Liste mit Komma getrennt
+        # Extrahiere den Wert nach "--exclude="
+        IFS=',' read -r -a EXCLUDES <<<"${1#*=}"
         ;;
     *)
         echo "Unknown argument: $1"
         exit 1
         ;;
     esac
+    shift # Verschiebe die Argumentliste nach der Verarbeitung
 done
 
-echo "$EXCLUDES"
+# Debugging: Zeige die Werte in EXCLUDES an
+echo "Excludes: ${EXCLUDES[@]}"
+
 
 if [ -z "$BTRFS" ]; then
     read -r -p "Please choose the partition to format to BTRFS: " BTRFS
