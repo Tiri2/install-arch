@@ -91,7 +91,6 @@ while [ $NEXT -eq 0 ]; do
   fi
 done
 
-
 NEXT=0
 
 while [ $NEXT -eq 0 ]; do
@@ -175,7 +174,7 @@ for zst_file in "${ZST_FILES[@]}"; do
 
   # Datei entpacken
   echo "Decompressing $zst_file to $TEMP_FILE..."
-  unzstd -d "$zst_file" -o "$TEMP_FILE" 2>> "$LOGFILE"
+  unzstd -d "$zst_file" -o "$TEMP_FILE" 2>>"$LOGFILE"
 
   if [ $? -ne 0 ]; then
     echo "Error decompressing $zst_file. Skipping..."
@@ -214,7 +213,7 @@ for zst_file in "${ZST_FILES[@]}"; do
 
   # Entpackte Datei mit btrfs receive einspielen
   echo "Sending $TEMP_FILE"
-  btrfs receive "$TARGET_SUBVOL" <"$TEMP_FILE" 2>> "$LOGFILE"
+  btrfs receive "$TARGET_SUBVOL" <"$TEMP_FILE" 2>>"$LOGFILE"
 
   # Erfolg prüfen
   if [ $? -ne 0 ]; then
@@ -230,11 +229,29 @@ for zst_file in "${ZST_FILES[@]}"; do
     # Temporäre Datei entfernen
     rm -f "$TEMP_FILE"
 
-    if [ "$zst_file" ==  "rootfs.btrfs.zst" ]; then
-      btrfs property set -fts "/mnt/@" ro false 
-      # 2>> "$LOGFILE"
-      echo "SET READONLY FALSE"
-    fi
+    # 2>> "$LOGFILE"
+    echo "SET READONLY FALSE"
+
+    case "$zst_file" in
+    *rootfs.btrfs.zst)
+      # Kein @ nötig weil es mitn snapshot geht
+      TARGET_SUBVOL="/mnt"
+      btrfs property set -fts "/mnt/@" ro false
+      ;;
+    *home.btrfs.zst)
+      btrfs property set -fts "$TARGET_SUBVOL/home" ro false
+      ;;
+    *root.btrfs.zst)
+      btrfs property set -fts "$TARGET_SUBVOL/root" ro false
+      ;;
+    *srv.btrfs.zst)
+      btrfs property set -fts "$TARGET_SUBVOL/srv" ro false
+      ;;
+    *)
+      echo "Unkown datatype: $zst_file, skipping..."
+      continue
+      ;;
+    esac
 
     echo "$zst_file successfully pushed into the subvolume."
     echo "This process took $runtime seconds."
