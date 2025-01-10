@@ -207,7 +207,7 @@ for zst_file in "${ZST_FILES[@]}"; do
 
   # Entpackte Datei mit btrfs receive einspielen
   echo "Sending $TEMP_FILE"
-  btrfs receive "$TARGET_SUBVOL" <"$TEMP_FILE" 2>> "$LOGFILE"
+  btrfs receive "/mnt/@" <"$TEMP_FILE" 2>> "$LOGFILE"
 
   # Erfolg prüfen
   if [ $? -ne 0 ]; then
