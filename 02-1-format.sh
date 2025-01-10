@@ -6,7 +6,7 @@ EXCLUDES=() # Array für auszuschließende Subvolumes
 # Parse Argumente
 while [[ $# -gt 0 ]]; do
     case "$1" in
-    --exclude)
+    --exclude=*)
         shift
         IFS=',' read -r -a EXCLUDES <<<"$1" # Argument als Liste mit Komma getrennt
         ;;
