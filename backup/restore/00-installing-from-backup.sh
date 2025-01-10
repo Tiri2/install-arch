@@ -185,16 +185,17 @@ for zst_file in "${ZST_FILES[@]}"; do
   # Ziel-Subvolume bestimmen
   case "$zst_file" in
   *rootfs.btrfs.zst)
+    # Kein @ nötig weil es mitn snapshot geht
     TARGET_SUBVOL="/mnt"
     ;;
   *home.btrfs.zst)
-    TARGET_SUBVOL="/mnt/home"
+    TARGET_SUBVOL="/mnt/@/home"
     ;;
   *root.btrfs.zst)
-    TARGET_SUBVOL="/mnt/root"
+    TARGET_SUBVOL="/mnt/@/root"
     ;;
   *srv.btrfs.zst)
-    TARGET_SUBVOL="/mnt/srv"
+    TARGET_SUBVOL="/mnt/@/srv"
     ;;
   *)
     echo "Unkown datatype: $zst_file, skipping..."
@@ -211,6 +212,9 @@ for zst_file in "${ZST_FILES[@]}"; do
   # Erfolg prüfen
   if [ $? -ne 0 ]; then
     echo "Error while processing pushing into subvolume - $zst_file."
+
+    # Temporäre Datei entfernen
+    rm -f "$TEMP_FILE"
   else
 
     end=$(date +%s)
@@ -230,7 +234,7 @@ for subvol in /mnt/*; do
 done
 
 # @ dir rename to /mnt/
-mv /mnt/@ /mnt
+# mv /mnt/@ /mnt
 
 # Create missing subvolumes
 btrfs subvolume create /mnt/@/.snapshots
@@ -267,7 +271,7 @@ EOF
 
 chmod 600 /mnt/@/.snapshots/1/info.xml
 
-umount -R /mnt
+umount /mnt
 
 echo "Mounting the newly created subvolumes."
 
