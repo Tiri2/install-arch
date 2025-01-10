@@ -18,6 +18,8 @@ if [ -z "$DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ]; then
         echo "[$(date)] [ERROR] No valid Wayland-Socket found!" >> /var/log/gui/init.log
     fi
 
+    export XCURSOR_SIZE=24
+
     echo "[$(date)] [INFO] starting wayvnc" >> /var/log/gui/vnc.log
     /usr/bin/wayvnc --config /home/gui/.config/wayvnc/config &>> /var/log/gui/vnc.log
 
