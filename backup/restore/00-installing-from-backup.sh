@@ -26,8 +26,8 @@ if ! formatted; then
   echo "executing 01-partitioning.sh"
   source ../../01-partitioning.sh
 
-  echo "executing 02-1-format.sh --exclude="/srv,/root,/home,/""
-  source ../../02-1-format.sh
+  echo "executing 02-1-format.sh"
+  source ../../02-1-format.sh --exclude="/srv,/root,/home,/"
 
   # echo "executing 02-2-updatepacman.sh"
   # source ../../02-2-updatepacman.sh
