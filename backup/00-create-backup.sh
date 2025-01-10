@@ -36,13 +36,13 @@ start=$(date +%s)
 
 # Compress the rootfs subvolume to rootfs.btrfs.zst
 echo "Compress subvolume and save it to rootfs.btrfs.zst" | tee -a "$LOGFILE"
-btrfs send "$BACKUP_DIR/rootfs" 2>>"$LOGFILE" | zstd -9 -o "$BACKUP_DIR/rootfs".btrfs.zst 2>>"$LOGFILE"
+btrfs send "$BACKUP_DIR/rootfs/" 2>>"$LOGFILE" | zstd -9 -o "$BACKUP_DIR/rootfs".btrfs.zst 2>>"$LOGFILE"
 
 end=$(date +%s)
 runtime=$((end - start))
 echo "Compressing subvolume took $runtime seconds." | tee -a "$LOGFILE"
 
-btrfs subvolume delete "$BACKUP_DIR/rootfs" 2>>"$LOGFILE"
+btrfs subvolume delete "$BACKUP_DIR/rootfs/" 2>>"$LOGFILE"
 
 for subvol in "${SUBVOLS[@]}"; do
   # create snapshot readonly
