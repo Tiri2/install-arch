@@ -34,13 +34,19 @@ for subvol in "${SUBVOLS[@]}"; do
 
   path="$BACKUP_DIR$subvol"
 
+  # At rootfs delete current backup in snapshot
   if [ "$subvol" == "/" ]; then
     path="$BACKUP_DIR/rootfs"
+    echo "Snapshot Path: $path" | tee -a "$LOGFILE"
+    echo "creating snapshot" | tee -a "$LOGFILE"
+    btrfs subvolume snapshot "$subvol" "$path" 2>> "$LOGFILE"
+    rm -r "$path/$BACKUP_DIR"
+    btrfs property set -ts "$path" ro true
+  else
+    echo "Snapshot Path: $path" | tee -a "$LOGFILE"
+    echo "creating snapshot" | tee -a "$LOGFILE"
+    btrfs subvolume snapshot -r "$subvol" "$path" 2>> "$LOGFILE"
   fi
-
-  echo "Snapshot Path: $path" | tee -a "$LOGFILE"
-  echo "creating snapshot" | tee -a "$LOGFILE"
-  btrfs subvolume snapshot -r "$subvol" "$path" 2>> "$LOGFILE"
 
   if [[ $? -ne 0 ]]; then
     echo "Error while creating snapshot"
@@ -48,11 +54,12 @@ for subvol in "${SUBVOLS[@]}"; do
 
   start=$(date +%s)
   
-  echo "Compress subvolume and save it to ${subvol}.btrfs.zst" | tee -a "$LOGFILE"
   if [ "$subvol" == "/" ]; then
     subvol="/rootfs"
+    echo "Compress subvolume and save it to ${subvol}.btrfs.zst" | tee -a "$LOGFILE"
     btrfs send "$path/" 2>> "$LOGFILE" | zstd -9 -o "$BACKUP_DIR$subvol".btrfs.zst 2>> "$LOGFILE"
   else 
+    echo "Compress subvolume and save it to ${subvol}.btrfs.zst" | tee -a "$LOGFILE"
     btrfs send "$path" 2>> "$LOGFILE" | zstd -9 -o "$BACKUP_DIR$subvol".btrfs.zst 2>> "$LOGFILE"
   fi
 
