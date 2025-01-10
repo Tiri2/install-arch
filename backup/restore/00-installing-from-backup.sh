@@ -184,7 +184,7 @@ for zst_file in "${ZST_FILES[@]}"; do
       ;;
   esac
 
-  mount "$BTRFS" --mkdir "$TARGET_SUBVOL"
+  mkdir -p "$TARGET_SUBVOL"
 
   # Entpackte Datei mit btrfs receive einspielen
   echo "Sending $TEMP_FILE"
@@ -213,8 +213,16 @@ btrfs subvolume create /mnt/@/.snapshots
 mkdir -p /mnt/@/.snapshots/1
 btrfs subvolume create /mnt/@/.snapshots/1/snapshot
 
+EXCLUDES=(
+    srv
+    home
+    root
+)
 
 COW_VOLS=(
+    srv
+    home
+    root
     var/log
     var/log/tasks
 )
@@ -232,6 +240,12 @@ elem_in() {
 }
 
 for vol in "${COW_VOLS[@]}" "${NOCOW_VOLS[@]}"; do
+
+    # Überspringe ausgeschlossene Volumes
+    if [[ " ${EXCLUDES[*]} " =~ " /$vol " ]]; then
+        continue
+    fi
+
     btrfs subvolume create "/mnt/@/${vol//\//_}"
     mkdir -p "/mnt/$vol"
 
@@ -240,23 +254,21 @@ for vol in "${COW_VOLS[@]}" "${NOCOW_VOLS[@]}"; do
     fi
 done
 
-# Set Default Subvolume nur, wenn "/" nicht ausgeschlossen ist
-if ! [[ " ${EXCLUDES[*]} " =~ " / " ]]; then
-    btrfs subvolume set-default "$(btrfs subvolume list /mnt | grep "@/.snapshots/1/snapshot" | grep -oP '(?<=ID )[0-9]+')" /mnt
+btrfs subvolume set-default "$(btrfs subvolume list /mnt | grep "@/.snapshots/1/snapshot" | grep -oP '(?<=ID )[0-9]+')" /mnt
 
-    cat <<EOF >>/mnt/@/.snapshots/1/info.xml
+cat <<EOF >>/mnt/@/.snapshots/1/info.xml
 <?xml version="1.0"?>
 <snapshot>
-    <type>single</type>
-    <num>1</num>
-    <date>2021-01-01 0:00:00</date>
-    <description>First Root Filesystem</description>
-    <cleanup>number</cleanup>
+  <type>single</type>
+  <num>1</num>
+  <date>2021-01-01 0:00:00</date>
+  <description>First Root Filesystem</description>
+  <cleanup>number</cleanup>
 </snapshot>
 EOF
 
-    chmod 600 /mnt/@/.snapshots/1/info.xml
-fi
+chmod 600 /mnt/@/.snapshots/1/info.xml
+
 
 umount /mnt
 
@@ -265,11 +277,6 @@ echo "Mounting the newly created subvolumes."
 mount -o ssd,noatime,space_cache=v2,compress=zstd:15 "$BTRFS" /mnt
 
 for vol in .snapshots "${COW_VOLS[@]}" "${NOCOW_VOLS[@]}"; do
-    # Überspringe ausgeschlossene Volumes
-    if [[ " ${EXCLUDES[*]} " =~ " /$vol " ]]; then
-        continue
-    fi
-
     mkdir -p "/mnt/$vol"
     mount -o "ssd,noatime,space_cache,autodefrag,compress=zstd:15,discard=async,subvol=@/${vol//\//_}" "$BTRFS" "/mnt/$vol"
 done
