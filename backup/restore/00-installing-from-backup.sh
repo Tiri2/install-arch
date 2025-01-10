@@ -184,11 +184,11 @@ for zst_file in "${ZST_FILES[@]}"; do
       ;;
   esac
 
+  mount "$BTRFS" --mkdir "$TARGET_SUBVOL"
+
   # Entpackte Datei mit btrfs receive einspielen
   echo "Sending $TEMP_FILE"
   btrfs receive "$TARGET_SUBVOL" <"$TEMP_FILE"
-
-  mount "$BTRFS" "$TARGET_SUBVOL"
 
   # Erfolg prüfen
   if [ $? -ne 0 ]; then
