@@ -91,6 +91,8 @@ while [ $NEXT -eq 0 ]; do
   fi
 done
 
+LOGFILE="$BACKUP_DIR/mkrestore.log"
+
 NEXT=0
 
 while [ $NEXT -eq 0 ]; do
@@ -172,7 +174,7 @@ for zst_file in "${ZST_FILES[@]}"; do
 
   # Datei entpacken
   echo "Decompressing $zst_file to $TEMP_FILE..."
-  unzstd -d "$zst_file" -o "$TEMP_FILE"
+  unzstd -d "$zst_file" -o "$TEMP_FILE" 2>> "$LOGFILE"
 
   if [ $? -ne 0 ]; then
     echo "Error decompressing $zst_file. Skipping..."
@@ -203,7 +205,7 @@ for zst_file in "${ZST_FILES[@]}"; do
 
   # Entpackte Datei mit btrfs receive einspielen
   echo "Sending $TEMP_FILE"
-  btrfs receive "$TARGET_SUBVOL" <"$TEMP_FILE"
+  btrfs receive "$TARGET_SUBVOL" <"$TEMP_FILE" 2>> "$LOGFILE"
 
   # Erfolg prüfen
   if [ $? -ne 0 ]; then
@@ -221,6 +223,13 @@ for zst_file in "${ZST_FILES[@]}"; do
 
   fi
 done
+
+for subvol in /mnt/*; do
+  btrfs property set -ts "$subvol" ro false 2>> "$LOGFILE"
+done
+
+# @ dir rename to /mnt/
+mv /mnt/@ /mnt
 
 # Create missing subvolumes
 btrfs subvolume create /mnt/@/.snapshots
