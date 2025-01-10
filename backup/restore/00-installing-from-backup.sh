@@ -14,9 +14,9 @@ cd $SCRIPT_DIR
 
 function formatted() {
   if [[ ! -f "$HOME/.formatted" ]]; then
-    return 1  # Nicht formatiert
+    return 1 # Nicht formatiert
   else
-    return 0  # Bereits formatiert
+    return 0 # Bereits formatiert
   fi
 }
 
@@ -37,6 +37,13 @@ if ! formatted; then
 
   touch "$HOME/.formatted"
   echo "The System was setup correctly. Now copying the old subvolumes into the new ones"
+
+  btrfs subvolume delete /mnt/@
+  btrfs subvolume delete /mnt/@/root
+  btrfs subvolume delete /mnt/@/srv
+  btrfs subvolume delete /mnt/@/home
+
+
 else
   echo "Disk already formatted, skipping..."
 fi
@@ -46,49 +53,49 @@ BACKUP_DIR="/tmp/backup"
 NEXT=0
 
 # Check if the file is found, if not ask again
-while [ $NEXT -eq 0 ]; do 
-    echo "Before doing that, please provide the full path to the backup file."
-    echo "You can exit the script with ctrl + c - current state will be saved"
-    read -p "file (/root/backup-Di-250107.tar.gz): " BACKUP_FILE
+while [ $NEXT -eq 0 ]; do
+  echo "Before doing that, please provide the full path to the backup file."
+  echo "You can exit the script with ctrl + c - current state will be saved"
+  read -p "file (/root/backup-Di-250107.tar.gz): " BACKUP_FILE
 
-    ls -al "$BACKUP_FILE"
+  ls -al "$BACKUP_FILE"
 
-    if [ -e "$BACKUP_FILE" ]; then
-        NEXT=1  # Exit the loop
-    else
-        echo "Cannot find the file. Please try again!"
-    fi
+  if [ -e "$BACKUP_FILE" ]; then
+    NEXT=1 # Exit the loop
+  else
+    echo "Cannot find the file. Please try again!"
+  fi
 done
 
 NEXT=0
 
 NEXT=0
 
-while [ $NEXT -eq 0 ]; do 
-    echo "Please enter a valid path to put the files temporarily down."
-    read -p "Directory (/run/media/usb): " BACKUP_DIR
+while [ $NEXT -eq 0 ]; do
+  echo "Please enter a valid path to put the files temporarily down."
+  read -p "Directory (/run/media/usb): " BACKUP_DIR
 
-    if [ ! -d "$BACKUP_DIR" ]; then
-        echo "No valid path. Please try again!"
-        continue
-    fi
+  if [ ! -d "$BACKUP_DIR" ]; then
+    echo "No valid path. Please try again!"
+    continue
+  fi
 
-    # Größe der Backup-Datei ermitteln (in KB)
-    FILE_SIZE=$(du -k "$BACKUP_FILE" | cut -f1)
+  # Größe der Backup-Datei ermitteln (in KB)
+  FILE_SIZE=$(du -k "$BACKUP_FILE" | cut -f1)
 
-    # Verfügbaren Speicherplatz im Zielverzeichnis ermitteln (in KB)
-    AVAILABLE_SPACE=$(df -k "$BACKUP_DIR" | awk 'NR==2 {print $4}')
+  # Verfügbaren Speicherplatz im Zielverzeichnis ermitteln (in KB)
+  AVAILABLE_SPACE=$(df -k "$BACKUP_DIR" | awk 'NR==2 {print $4}')
 
-    echo "File size: $FILE_SIZE KB"
-    echo "Available space: $AVAILABLE_SPACE KB"
+  echo "File size: $FILE_SIZE KB"
+  echo "Available space: $AVAILABLE_SPACE KB"
 
-    # Überprüfen, ob genug Platz vorhanden ist
-    if [ "$AVAILABLE_SPACE" -lt "$FILE_SIZE" ]; then
-        echo "Not enough space in $BACKUP_DIR. Please try another directory!"
-    else
-        echo "Sufficient space available in $BACKUP_DIR."
-        NEXT=1  # Exit the loop
-    fi
+  # Überprüfen, ob genug Platz vorhanden ist
+  if [ "$AVAILABLE_SPACE" -lt "$FILE_SIZE" ]; then
+    echo "Not enough space in $BACKUP_DIR. Please try another directory!"
+  else
+    echo "Sufficient space available in $BACKUP_DIR."
+    NEXT=1 # Exit the loop
+  fi
 done
 
 BACKUP_DIR="$BACKUP_DIR/tmp"
@@ -145,7 +152,7 @@ for zst_file in "${ZST_FILES[@]}"; do
 
   # Entpackte Datei mit btrfs receive einspielen
   echo "Sending $TEMP_FILE"
-  btrfs receive /mnt/ < "$TEMP_FILE"
+  btrfs receive /mnt/@ <"$TEMP_FILE"
 
   # Erfolg prüfen
   if [ $? -ne 0 ]; then
@@ -160,7 +167,7 @@ for zst_file in "${ZST_FILES[@]}"; do
 
     echo "$zst_file successfully pushed into the subvolume."
     echo "This process took $runtime seconds."
-    
+
   fi
 done
 
@@ -185,11 +192,11 @@ echo "Do you want to restart now?"
 read -p "y/n: " RESTART
 
 if [[ $RESTART == "y" ]]; then
-    shutdown -r now
+  shutdown -r now
 elif [[ $RESTART == "n" ]]; then
-    echo "okay"
-    exit 1
-else 
-    echo "You may want to restart manual"
-    exit 1
+  echo "okay"
+  exit 1
+else
+  echo "You may want to restart manual"
+  exit 1
 fi
