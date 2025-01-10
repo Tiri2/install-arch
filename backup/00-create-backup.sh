@@ -30,15 +30,13 @@ rm -rf "*"
 
 # Create the rootfs (@) snapshot
 echo "creating snapshot rootfs" | tee -a "$LOGFILE"
-btrfs subvolume snapshot / "$BACKUP_DIR/rootfs" 2>>"$LOGFILE"
-rm -r "$BACKUP_DIR/rootfs/$BACKUP_DIR"
-btrfs property set -ts "$path" ro true
+btrfs subvolume snapshot -r "/" "$BACKUP_DIR/rootfs" 2>>"$LOGFILE"
 
 start=$(date +%s)
 
 # Compress the rootfs subvolume to rootfs.btrfs.zst
 echo "Compress subvolume and save it to rootfs.btrfs.zst" | tee -a "$LOGFILE"
-btrfs send "$BACKUP_DIR/rootfs" 2>>"$LOGFILE" | zstd -9 -o "$BACKUP_DIR/"roofs.btrfs.zst 2>>"$LOGFILE"
+btrfs send "$BACKUP_DIR/rootfs" 2>>"$LOGFILE" | zstd -9 -o "$BACKUP_DIR/roofs".btrfs.zst 2>>"$LOGFILE"
 
 end=$(date +%s)
 runtime=$((end - start))
