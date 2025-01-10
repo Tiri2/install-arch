@@ -230,7 +230,7 @@ for zst_file in "${ZST_FILES[@]}"; do
     # Temporäre Datei entfernen
     rm -f "$TEMP_FILE"
 
-    if [ "$zst_file" ==  "rootfs.btrfs.zst"]; then
+    if [ "$zst_file" ==  "rootfs.btrfs.zst" ]; then
       btrfs property set -ts "/mnt/@" ro false 
       # 2>> "$LOGFILE"
       echo "SET READONLY FALSE"
