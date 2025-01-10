@@ -230,8 +230,11 @@ for zst_file in "${ZST_FILES[@]}"; do
     # Temporäre Datei entfernen
     rm -f "$TEMP_FILE"
 
-    btrfs property set -ts "$TARGET_SUBVOL" ro false 2>> "$LOGFILE"
-
+    if [ "$zst_file" ==  "rootfs.btrfs.zst"]; then
+      btrfs property set -ts "/mnt/@" ro false 
+      # 2>> "$LOGFILE"
+      echo "SET READONLY FALSE"
+    fi
 
     echo "$zst_file successfully pushed into the subvolume."
     echo "This process took $runtime seconds."
