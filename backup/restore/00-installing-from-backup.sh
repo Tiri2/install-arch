@@ -189,13 +189,16 @@ for zst_file in "${ZST_FILES[@]}"; do
     TARGET_SUBVOL="/mnt"
     ;;
   *home.btrfs.zst)
-    TARGET_SUBVOL="/mnt/@/home"
+    #TARGET_SUBVOL="/mnt/@/home"
+    TARGET_SUBVOL="/mnt/@"
     ;;
   *root.btrfs.zst)
-    TARGET_SUBVOL="/mnt/@/root"
+    #TARGET_SUBVOL="/mnt/@/root"
+    TARGET_SUBVOL="/mnt/@"
     ;;
   *srv.btrfs.zst)
-    TARGET_SUBVOL="/mnt/@/srv"
+    #TARGET_SUBVOL="/mnt/@/srv"
+    TARGET_SUBVOL="/mnt/@"
     ;;
   *)
     echo "Unkown datatype: $zst_file, skipping..."
@@ -203,11 +206,12 @@ for zst_file in "${ZST_FILES[@]}"; do
     ;;
   esac
 
+  rm -r "$TARGET_SUBVOL"
   mkdir -p "$TARGET_SUBVOL"
 
   # Entpackte Datei mit btrfs receive einspielen
   echo "Sending $TEMP_FILE"
-  btrfs receive "/mnt/@" <"$TEMP_FILE" 2>> "$LOGFILE"
+  btrfs receive "$TARGET_SUBVOL" <"$TEMP_FILE" 2>> "$LOGFILE"
 
   # Erfolg prüfen
   if [ $? -ne 0 ]; then
