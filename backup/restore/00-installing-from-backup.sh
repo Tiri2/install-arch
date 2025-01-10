@@ -129,7 +129,7 @@ echo "Archiv erfolgreich entpackt nach $BACKUP_DIR/raw."
 # Sortiere ZST_FILES, sodass rootfs zuerst kommt
 ZST_FILES=($(find "$BACKUP_DIR/raw" -type f -name "*.zst"))
 
-echo "${ZST_FILES[@}"
+echo "${ZST_FILES[@]}"
 
 # Break point to check if everything is all right
 echo "CTRL + C to abort - Enter to continue"
