@@ -191,14 +191,17 @@ for zst_file in "${ZST_FILES[@]}"; do
   *home.btrfs.zst)
     #TARGET_SUBVOL="/mnt/@/home"
     TARGET_SUBVOL="/mnt/@"
+    rm -r "$TARGET_SUBVOL/home"
     ;;
   *root.btrfs.zst)
     #TARGET_SUBVOL="/mnt/@/root"
     TARGET_SUBVOL="/mnt/@"
+    rm -r "$TARGET_SUBVOL/root"
     ;;
   *srv.btrfs.zst)
     #TARGET_SUBVOL="/mnt/@/srv"
     TARGET_SUBVOL="/mnt/@"
+    rm -r "$TARGET_SUBVOL/srv"
     ;;
   *)
     echo "Unkown datatype: $zst_file, skipping..."
@@ -206,7 +209,7 @@ for zst_file in "${ZST_FILES[@]}"; do
     ;;
   esac
 
-  rm -r "$TARGET_SUBVOL"
+  # rm -r "$TARGET_SUBVOL"
   mkdir -p "$TARGET_SUBVOL"
 
   # Entpackte Datei mit btrfs receive einspielen
@@ -227,14 +230,13 @@ for zst_file in "${ZST_FILES[@]}"; do
     # Temporäre Datei entfernen
     rm -f "$TEMP_FILE"
 
+    btrfs property set -ts "$TARGET_SUBVOL" ro false 2>> "$LOGFILE"
+
+
     echo "$zst_file successfully pushed into the subvolume."
     echo "This process took $runtime seconds."
 
   fi
-done
-
-for subvol in /mnt/*; do
-  btrfs property set -ts "$subvol" ro false 2>> "$LOGFILE"
 done
 
 # @ dir rename to /mnt/
