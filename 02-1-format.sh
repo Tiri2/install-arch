@@ -15,8 +15,9 @@ while [[ $# -gt 0 ]]; do
         exit 1
         ;;
     esac
-    shift
 done
+
+echo "$EXCLUDES"
 
 if [ -z "$BTRFS" ]; then
     read -r -p "Please choose the partition to format to BTRFS: " BTRFS
