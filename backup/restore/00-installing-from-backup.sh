@@ -91,7 +91,6 @@ while [ $NEXT -eq 0 ]; do
   fi
 done
 
-LOGFILE="$BACKUP_DIR/mkrestore.log"
 
 NEXT=0
 
@@ -123,8 +122,10 @@ while [ $NEXT -eq 0 ]; do
 done
 
 BACKUP_DIR="$BACKUP_DIR/tmp"
+LOGFILE="$BACKUP_DIR/mkrestore.log"
 
 mkdir -p "$BACKUP_DIR/raw"
+touch "$LOGFILE"
 
 start=$(date +%s)
 
