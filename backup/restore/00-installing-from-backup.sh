@@ -45,10 +45,10 @@ if ! formatted; then
 #  umount /mnt/root
 #  umount /mnt/srv
 
-  btrfs subvolume delete /mnt/@
-  btrfs subvolume delete /mnt/@/root
-  btrfs subvolume delete /mnt/@/srv
-  btrfs subvolume delete /mnt/@/home
+  btrfs subvolume delete /mnt/
+  btrfs subvolume delete /mnt/root
+  btrfs subvolume delete /mnt/srv
+  btrfs subvolume delete /mnt/home
 
 
 else
