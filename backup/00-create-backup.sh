@@ -8,7 +8,7 @@ SUBVOLS=(
   "/"
 )
 
-BACKUP_DIR="/srv/backup/backup-$(date +%a-%y%m%d)"
+BACKUP_DIR="/var/mkbackup/backup-$(date +%a-%y%m%d)"
 LOGFILE="${BACKUP_DIR}/mkbackup.log"
 
 if [ -d "$BACKUP_DIR" ]; then
@@ -18,6 +18,16 @@ fi
 
 mkdir -p "$BACKUP_DIR"
 touch "$LOGFILE"
+
+cd "$BACKUP_DIR"
+cd ..
+echo "current dir: $(pwd)"
+
+# Break point to check if everything is all right
+echo "CTRL + C to abort - Enter to continue"
+read -p "Continue?"
+
+rm -rf "*"
 
 for subvol in "${SUBVOLS[@]}"; do
   # create snapshot readonly
