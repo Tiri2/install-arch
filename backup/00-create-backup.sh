@@ -42,7 +42,7 @@ end=$(date +%s)
 runtime=$((end - start))
 echo "Compressing subvolume took $runtime seconds." | tee -a "$LOGFILE"
 
-btrfs subvolume delete "$BACKUP_DIR/rootfs/" 2>>"$LOGFILE"
+btrfs subvolume delete "$BACKUP_DIR/@/" 2>>"$LOGFILE"
 
 for subvol in "${SUBVOLS[@]}"; do
   # create snapshot readonly
