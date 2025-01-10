@@ -36,14 +36,15 @@ for subvol in "${SUBVOLS[@]}"; do
     echo "Error while creating snapshot"
   fi
 
-  if [ "$subvol" == "/" ]; then
-    subvol="/rootfs"
-  fi
-
   start=$(date +%s)
   
   echo "Compress subvolume and save it to ${subvol}.btrfs.zst" | tee -a "$LOGFILE"
-  btrfs send "$path" 2>> "$LOGFILE" | zstd -9 -o "$BACKUP_DIR$subvol".btrfs.zst 2>> "$LOGFILE"
+  if [ "$subvol" == "/" ]; then
+    subvol="/rootfs"
+    btrfs send "$path/" 2>> "$LOGFILE" | zstd -9 -o "$BACKUP_DIR$subvol".btrfs.zst 2>> "$LOGFILE"
+  else 
+    btrfs send "$path" 2>> "$LOGFILE" | zstd -9 -o "$BACKUP_DIR$subvol".btrfs.zst 2>> "$LOGFILE"
+  fi
 
   end=$(date +%s)
   runtime=$((end - start))
