@@ -127,6 +127,7 @@ echo "Archiv erfolgreich entpackt nach $BACKUP_DIR/raw."
 
 # Alle Dateien mit der Endung .zst finden
 # Sortiere ZST_FILES, sodass rootfs zuerst kommt
+ZST_FILES=($(find "$BACKUP_DIR/raw" -type f -name "*.zst"))
 ZST_FILES=($(printf "%s\n" "${ZST_FILES[@]}" | sort -f | grep "rootfs.btrfs.zst"))
 REST_FILES=($(printf "%s\n" "${ZST_FILES[@]}" | grep -v "rootfs.btrfs.zst"))
 ZST_FILES=("${ZST_FILES[@]}" "${REST_FILES[@]}")
