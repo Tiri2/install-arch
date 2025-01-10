@@ -38,10 +38,10 @@ if ! formatted; then
   touch "$HOME/.formatted"
   echo "The System was setup correctly. Now copying the old subvolumes into the new ones"
 
-  btrfs subvolume delete /mnt/@
-  btrfs subvolume delete /mnt/@/root
-  btrfs subvolume delete /mnt/@/srv
-  btrfs subvolume delete /mnt/@/home
+  btrfs subvolume delete /mnt/
+  btrfs subvolume delete /mnt/root
+  btrfs subvolume delete /mnt/srv
+  btrfs subvolume delete /mnt/home
 
 
 else
