@@ -302,6 +302,8 @@ sync
 echo "waiting 5 sec"
 sleep 5
 
+rm -r /mnt/@/.snapshots
+
 umount /mnt
 
 echo "Mounting the newly created subvolumes."
@@ -326,10 +328,14 @@ mount $BOOT_PART /mnt/boot/efi
 echo "Installing grub on the new system to boot up"
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 CURRENT_DIR=$(pwd)
+echo "$CURRENT_DIR"
+echo "$SCRIPT_DIR"
 
 if [[ "$SCRIPT_DIR" != "$CURRENT_DIR" ]]; then
   cd "$SCRIPT_DIR"
 fi
+
+pacstrap /mnt base base-devel linux-lts linux-firmware
 
 # Coping files into chroot to execute them
 cp ../../03-01-install-grub.sh /mnt/var/install-grub.sh
