@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-if [ "$1" == "full" ]
+if [ "$1" == "full" ]; then
   zsh /var/system/scripts/backup-full.sh
 elif [ "$1" == "service" ]
   zsh /var/system/scripts/backup-daily.sh > /var/system/backup/backup-$(date +'%a')
