@@ -3,4 +3,4 @@ Description=Daily Backup
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/zsh /var/system/scripts/backup.sh service
+ExecStart=/usr/bin/sh -c "/var/system/scripts/backup.sh service"
