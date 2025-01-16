@@ -2,7 +2,7 @@
 
 if [ "$1" == "full" ]; then
   zsh /var/system/scripts/backup-full.sh
-elif [ "$1" == "service" ]
+elif [ "$1" == "service" ]; then
   zsh /var/system/scripts/backup-daily.sh > /var/system/backup/backup-$(date +'%a')
 else
   zsh /var/system/scripts/backup-daily.sh
