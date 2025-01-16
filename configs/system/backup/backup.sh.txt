@@ -1,3 +1,5 @@
+#!/usr/bin/bash
+
 if [ "$1" == "full" ]
   zsh /var/system/scripts/backup-full.sh
 elif [ "$1" == "service" ]
