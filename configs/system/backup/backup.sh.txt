@@ -1,41 +1,7 @@
-#!/bin/zsh
-
-roption=(
-        --create
-        --file=-
-        --xattrs
-        --absolute-names
-        --use-compress-program=zstd
-)
-
-foption=(
-        -newer /root/packages.list
-        \( -type f -o -type l \)
-        ! -path "/boot/*"
-        ! -path "/proc/*"
-        ! -path "/sys/*"
-        ! -path "/run/*"
-        ! -path "/dev/*"
-        ! -path "/tmp/*"
-        ! -path "/var/cache/*"
-        ! -path "/var/lib/*"
-        ! -path "/var/log/*"
-        ! -path "/var/spool/*"
-        ! -path "/var/system/backup/*"
-        ! -path "/srv/smb/share/*"
-        ! -path "/home/gui/.config/*"
-        ! -name "lost+found"
-        ! -name "*.bak"
-        ! -name "*.cache"
-        ! -name "*.updated"
-        ! -empty
-)
-
-if [ "$1" = "full" ]; then 
-        zsh /var/system/scripts/backup-full.sh
+if [ "$1" == "full" ]
+  zsh /var/system/scripts/backup-full.sh
+elif [ "$1" == "service" ]
+  zsh /var/system/scripts/backup-daily.sh > /var/system/backup/backup-$(date +'%a')
 else
-        tar "${roption[@]}" --files-from=/var/system/backup.include $(find /srv/tasks/CURRENT/ -iname "*.db")
+  zsh /var/system/scripts/backup-daily.sh
 fi
-
-
-
