@@ -3,7 +3,7 @@
 # create dir /tmp/log/
 mkdir -p /tmp/log/ready
 chown -R flex:beer /tmp/log/
-chmod -R 664 /tmp/log
+chmod -R 774 /tmp/log
 
 # Creating config.json and/or updating jar file
 /usr/bin/java -Dlog4j2.Script.enableLanguages=groovy -Dlog4j.configurationFile=/var/system/tools/configurator/log4j2.xml -jar /var/system/tools/configurator/configurator.jar boot
