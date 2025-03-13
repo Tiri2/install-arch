@@ -1,3 +1,27 @@
+#!/usr/bin/zsh
+
+has_physical_monitor=false
+
+for output_dir in /sys/class/drm/card*-*; do
+    if echo "$output_dir" | grep -i -qE "virtual|headless"; then
+        continue
+    fi
+
+    edid_file="$output_dir/edid"
+    if [ -f "$edid_file" ] && [ -s "$edid_file" ]; then
+        has_physical_monitor=true
+        break
+    fi
+done
+
+# setup a fake monitor
+if [ "$has_physical_monitor" = false ]; then
+    export WLR_BACKENDS=headless
+    export WLR_HEADLESS_OUTPUTS=1
+    export WLR_HEADLESS_WIDTH=1920
+    export WLR_HEADLESS_HEIGHT=1080
+fi
+
 if [ -z "$DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ]; then
     echo "[$(date)] [INFO] starting sway and chromium" >> /var/log/gui/init.log
 
@@ -22,5 +46,4 @@ if [ -z "$DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ]; then
 
     echo "[$(date)] [INFO] starting wayvnc" >> /var/log/gui/vnc.log
     /usr/bin/wayvnc --config /home/gui/.config/wayvnc/config &>> /var/log/gui/vnc.log
-
 fi
