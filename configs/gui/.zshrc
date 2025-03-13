@@ -1,21 +1,9 @@
 #!/usr/bin/zsh
 
-has_physical_monitor=false
-
-for output_dir in /sys/class/drm/card*-*; do
-    if echo "$output_dir" | grep -i -qE "virtual|headless"; then
-        continue
-    fi
-
-    edid_file="$output_dir/edid"
-    if [ -f "$edid_file" ] && [ -s "$edid_file" ]; then
-        has_physical_monitor=true
-        break
-    fi
-done
+DEBUG_FILE=/home/gui/.debug
 
 # setup a fake monitor
-if [ "$has_physical_monitor" = false ]; then
+if [ -e "$DEBUG_FILE" ]; then
     export WLR_BACKENDS=headless
     export WLR_HEADLESS_OUTPUTS=1
     export WLR_HEADLESS_WIDTH=1920
