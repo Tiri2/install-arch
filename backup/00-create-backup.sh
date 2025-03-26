@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/bash
 
 # Define which subvolumes to backup
 SUBVOLS=(
