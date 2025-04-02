@@ -1,34 +1,52 @@
 #!/bin/zsh
 
-# Zwei parallel laufende Prozesse starten (P1: flexLogMove ; P2: flexLogDelete)
+log_file="/var/log/system/logger.log"
+
+log() {
+  print -r -- "[$(date '+%Y-%m-%d %H:%M:%S')] $1" >> "$log_file"
+}
+
+# Prozess 1: Komprimiert *.log-Dateien aus /tmp/log/ready/
 (
-    while true
-        do
-        files=(/tmp/log/ready/*.log(N))
+  while true; do
+    files=(/tmp/log/ready/*.log(N))  # Ignoriere leere Globs
+    sleep 2
 
-        sleep 2
-        for file in $files
-            do
-            /usr/bin/zstdmt -f --rm --no-progress --output-dir-flat=/var/log/tasks "$file"
-        done
-        sleep 60
+    for file in $files; do
+      if [[ -f $file ]]; then
+        /usr/bin/zstdmt -f --rm --no-progress --output-dir-flat=/var/log/tasks "$file" && \
+        log "Compressed and moved: $file" || \
+        log "Error compressing: $file"
+      fi
     done
-) & (
-    while true
-        do
-        if [ $(df /var/log/tasks --output=pcent --sync | awk 'NR > 1 {print 0+$1}') -gt 80 ]
-            then
-            file=`ls /var/log/tasks/*.zst -1t | tail -n1`
 
-            if [ "${file: -7}" != ".mq.zst" ]
-                then
-                if [ $(zstdgrep --count 'MQ_PUB\[' $file) -gt 0 ]
-                    then
-                    zstdgrep 'MQ_PUB\[' $file | zstd - -o "${file%*.zst}.mq.zst" --no-progress
-                fi
-            fi
-            rm $file
+    sleep 60
+  done
+) &
+
+# Prozess 2: Löscht alte Dateien aus /var/log/tasks/, wenn zu viel Speicherplatz verwendet wird
+(
+  while true; do
+    used_pct=$(df /var/log/tasks --output=pcent --sync | awk 'NR > 1 {gsub(/%/, ""); print $1}')
+    
+    if [[ $used_pct -gt 80 ]]; then
+      file=$(ls -1t /var/log/tasks/*.zst(N) | tail -n1)
+      
+      if [[ -n "$file" && "${file[-7,-1]}" != ".mq.zst" && -f $file ]]; then
+        if zstdgrep -q 'MQ_PUB\[' "$file"; then
+          zstdgrep 'MQ_PUB\[' "$file" | zstd -o "${file}.mq.zst" --no-progress && \
+          log "Extracted MQ_PUB from $file to ${file}.mq.zst" || \
+          log "Failed to extract MQ_PUB from $file"
         fi
-        sleep 0.5
-    done
-) & wait
+
+        rm -- "$file" && \
+        log "Deleted old log: $file" || \
+        log "Failed to delete: $file"
+      fi
+    fi
+
+    sleep 0.5
+  done
+) &
+
+wait
