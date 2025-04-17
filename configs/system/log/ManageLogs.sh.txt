@@ -6,6 +6,20 @@ log() {
   print -r -- "[$(date '+%Y-%m-%d %H:%M:%S')] $1" >> "$log_file"
 }
 
+human_readable() {
+    local size=$1
+    if [ "$size" -ge 1073741824 ]; then
+        # größer als 1 GiB
+        awk "BEGIN {printf \"%.2f GiB\", $size/1073741824}"
+    elif [ "$size" -ge 1048576 ]; then
+        awk "BEGIN {printf \"%.2f MiB\", $size/1048576}"
+    elif [ "$size" -ge 1024 ]; then
+        awk "BEGIN {printf \"%.2f KiB\", $size/1024}"
+    else
+        printf "%d B" "$size"
+    fi
+}
+
 # Prozess 1: Komprimiert *.log-Dateien aus /tmp/log/ready/
 (
   while true; do
@@ -14,6 +28,8 @@ log() {
 
     for file in $files; do
       if [[ -f $file ]]; then
+        size=$(stat -c %s "$file")
+        log "Size is ${SIZE} $(human_readable "$size")"
         /usr/bin/zstdmt -f --rm --no-progress --output-dir-flat=/var/log/tasks "$file" && \
         log "Compressed and moved: $file" || \
         log "Error compressing: $file"
