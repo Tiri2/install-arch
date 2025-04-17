@@ -42,10 +42,17 @@ human_readable() {
 
 # Prozess 2: Löscht alte Dateien aus /var/log/tasks/, wenn zu viel Speicherplatz verwendet wird
 (
+
+  MAX_FILES=$(read -r < /var/log/tasks/.max_files)
+  if [[ -z "$MAX_FILES" ]]; then
+    MAX_FILES=100
+  fi
+
   while true; do
     used_pct=$(df /var/log/tasks --output=pcent --sync | awk 'NR > 1 {gsub(/%/, ""); print $1}')
-    
-    if [[ $used_pct -gt 80 ]]; then
+    count=$(find /var/log/tasks -maxdepth 1 -type f | wc -l)
+
+    if [[ $count -gt $MAX_FILES ]]; then
       file=$(ls -1t /var/log/tasks/*.zst(N) | tail -n1)
       
       if [[ -n "$file" && -f $file ]]; then
