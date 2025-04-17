@@ -48,12 +48,14 @@ human_readable() {
     if [[ $used_pct -gt 80 ]]; then
       file=$(ls -1t /var/log/tasks/*.zst(N) | tail -n1)
       
-      if [[ -n "$file" && "${file[-7,-1]}" != ".mq.zst" && -f $file ]]; then
-        if zstdgrep -q 'MQ_PUB\[' "$file"; then
-          zstdgrep 'MQ_PUB\[' "$file" | zstd -o "${file}.mq.zst" --no-progress && \
-          log "Extracted MQ_PUB from $file to ${file}.mq.zst" || \
-          log "Failed to extract MQ_PUB from $file"
-        fi
+      if [[ -n "$file" && -f $file ]]; then
+        if [ "${file[-7,-1]}" != ".mq.zst" ]; then 
+          if zstdgrep -q 'MQ_PUB\[' "$file"; then
+            zstdgrep 'MQ_PUB\[' "$file" | zstd -o "${file}.mq.zst" --no-progress && \
+            log "Extracted MQ_PUB from $file to ${file}.mq.zst" || \
+            log "Failed to extract MQ_PUB from $file"
+          fi
+        fi;
 
         rm -- "$file" && \
         log "Deleted old log: $file" || \
