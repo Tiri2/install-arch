@@ -68,7 +68,7 @@ source "$ZINIT_HOME/zinit.zsh"
 
 # zsh plugins
 if [[ $LOAD_PLUGINS == "yes" ]]; then
-  zinit ice wait"1" # Lazy Loading
+  zinit ice wait"1" silent # Lazy Loading
   zinit light zsh-users/zsh-syntax-highlighting
   zinit light zsh-users/zsh-completions
   #zinit light zsh-users/zsh-autosuggestions
