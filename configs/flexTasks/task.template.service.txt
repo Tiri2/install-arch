@@ -11,7 +11,7 @@ Environment="TASKNAME=<name>"
 
 Type=simple
 EnvironmentFile=/srv/tasks/CURRENT/.config/flexTasks.conf
-StandardOutput=null
+StandardOutput=journal
 StandardError=journal
 TimeoutStopSec=10
 Restart=always

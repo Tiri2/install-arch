@@ -3,7 +3,7 @@ Description=Manage Flex Logs
 
 [Service]
 Type=exec
-ExecStart=/var/system/scripts/ManageLogs.sh
+ExecStart=/var/system/scripts/manageLogs.sh
 WorkingDirectory=/tmp
 
 [Install]

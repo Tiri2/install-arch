@@ -42,10 +42,6 @@ systemctl enable getty@tty1.service
 # installing sway for gui user
 pacman -S --noconfirm sway xorg-xwayland tigervnc chromium libinput evtest
 
-# not working
-# cat configs/gui/systemd/x0vncserver.service.txt > /etc/systemd/system/system.x0vncserver.service
-# systemctl enable system.x0vncserver.service
-
 # Break point to check if everything is all right
 echo "Everything looking fine?"
 echo "CTRL + C to abort - Enter to continue"
@@ -86,7 +82,7 @@ touch /var/log/system/boot.log
 
 # LogManage
 cat configs/system/log/ManageLogs.service.txt > /etc/systemd/system/system.manageLogs.service
-cat configs/system/log/ManageLogs.sh.txt > /var/system/scripts/ManageLogs.sh
+cat configs/system/log/ManageLogs.sh.txt > /var/system/scripts/manageLogs.sh
 
 # Configurator
 echo "Setting up configurator"

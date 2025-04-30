@@ -142,7 +142,7 @@ bindkey -- "^[[C"         forward-char                              # right
 
 alias ll="lsd -al --icon=never --color=auto"
 alias ls="lsd --icon=never --color=auto"
-alias cd="z"
+# alias cd="z"
 alias fzf="fzf --preview='cat {}'"
 alias shutdown="sudo systemctl shutdown"
 alias reboot="sudo systemctl reboot"
