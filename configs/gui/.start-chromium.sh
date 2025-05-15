@@ -53,4 +53,4 @@ choption=(
 )
 
 echo "================================================" >> /var/log/gui/chromium.log
-nice -n 10 /usr/bin/chromium --app=file:///srv/http/gui/connecting/index.html "${choption[@]}" &>> /var/log/gui/chromium.log
+nice -n 10 /usr/bin/chromium --app=file:"///srv/http/gui/connecting/index.html?auto=1&retry=30" "${choption[@]}" &>> /var/log/gui/chromium.log
