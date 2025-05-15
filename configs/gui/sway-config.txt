@@ -57,7 +57,7 @@ output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
 # Read `man 5 sway-input` for more information about this section.
 
 input "type:touch" {
-    calibration_matrix 1, 0, 0, 0, 1, 0, 0, 0, 1
+    calibration_matrix 1 0 0 0 1 0
     tap enabled
 }
 
