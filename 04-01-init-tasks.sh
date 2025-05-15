@@ -20,7 +20,10 @@ echo "creating user gui"
 useradd -m gui
 cp configs/gui/.zshrc /home/gui
 cp configs/gui/.start-chromium.sh /home/gui
+cp configs/gui/.start-firefox.sh /home/gui
 chsh -s /usr/bin/zsh gui
+
+cat "chromium" > /home/gui/.browser
 
 mkdir -p /var/log/gui
 touch /var/log/gui/init.log
@@ -34,6 +37,9 @@ cp configs/gui/sway-config.txt /home/gui/.config/sway/config
 
 mkdir -p /home/gui/.config/wayvnc
 cp configs/gui/vnc/wayvnc-config.txt /home/gui/.config/wayvnc/config
+
+mkidr -p /home/gui/.config/firefox/
+cp configs/gui/firefox/user.js /home/gui/.config/firefox/user.js
 
 mkdir -p /etc/systemd/system/getty@tty1.service.d
 cat configs/gui/systemd/getty@tty1.service.txt > /etc/systemd/system/getty@tty1.service.d/override.conf.disabled
