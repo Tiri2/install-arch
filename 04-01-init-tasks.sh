@@ -46,7 +46,7 @@ cat configs/gui/systemd/getty@tty1.service.txt > /etc/systemd/system/getty@tty1.
 systemctl enable getty@tty1.service
 
 # installing sway for gui user
-pacman -S --noconfirm sway xorg-xwayland tigervnc chromium libinput evtest
+pacman -S --noconfirm sway xorg-xwayland tigervnc chromium libinput evtest wayvnc swaybg 
 
 # Break point to check if everything is all right
 echo "Everything looking fine?"

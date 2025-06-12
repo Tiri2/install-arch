@@ -71,8 +71,8 @@ if [[ $LOAD_PLUGINS == "yes" ]]; then
   zinit ice wait"1" silent # Lazy Loading
   zinit light zsh-users/zsh-syntax-highlighting
   zinit light zsh-users/zsh-completions
-  #zinit light zsh-users/zsh-autosuggestions
-  zinit light Aloxaf/fzf-tab
+  zinit light zsh-users/zsh-autosuggestions
+  #zinit light Aloxaf/fzf-tab
 
   zstyle ':completion:*' matcher-list 'm:{a-z}={S-Za-z}'
   zstyle ':completion:*' list-colors "§{(s.:.)LS_COLORS}"
@@ -100,10 +100,10 @@ fi
 #
 # ============================================
 
-# load completions
-autoload -U compinit && compinit
+# load completions - (-i: irgnore inseucre directories)
+autoload -U compinit && compinit -i
 
-eval "$(fzf --zsh)"
+# eval "$(fzf --zsh)"
 eval "$(zoxide init zsh)"
 
 autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
@@ -142,17 +142,18 @@ bindkey -- "^[[C"         forward-char                              # right
 
 alias ll="lsd -al --icon=never --color=auto"
 alias ls="lsd --icon=never --color=auto"
-# alias cd="z"
 alias fzf="fzf --preview='cat {}'"
 alias shutdown="sudo systemctl shutdown"
 alias reboot="sudo systemctl reboot"
-alias ..="cd .."
-alias ...="cd ../.."
 alias cls="clear"
 alias fss="ss -tulnp"
 alias ftop='htop -p $(pidof java | sed -e "s/ /,/g")'
 alias flextop='htop -p $(pidof java | sed -e "s/ /,/g")'
 
+#utils aliases
+alias activefzf='zinit light Aloxaf/fzf-tab && eval "$(fzf --zsh)"'
+alias ..="cd .."
+alias ...="cd ../.."
 
 # ============================================
 #

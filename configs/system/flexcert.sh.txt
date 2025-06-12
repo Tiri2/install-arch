@@ -10,7 +10,7 @@ case "$1" in
 			# Datei überprüfen
 			if [ -f "$3" ]
 				then
-				certutil -d sql:/var/gui/.pki/nssdb -A -t "CT,C,C" -n "$2" -i "$3" && exit
+				certutil -d sql:/home/gui/.pki/nssdb -A -t "CT,C,C" -n "$2" -i "$3" && exit
 			else
 				echo "Es wurde keine Datei gefunden!"
 			fi
@@ -26,7 +26,7 @@ case "$1" in
 			# Datei überprüfen
 			if [ -f "$3" ]
 				then
-				certutil -d sql:/var/gui/.pki/nssdb -A -t "P,," -n "$2" -i "$3" && exit
+				certutil -d sql:/home/gui/.pki/nssdb -A -t "P,," -n "$2" -i "$3" && exit
 			else
 				echo "Es wurde keine Datei gefunden!"
 			fi
@@ -39,12 +39,12 @@ case "$1" in
 			then
 			echo "Es wurde kein Name angegeben!"
 		else
-			certutil -d sql:/var/gui/.pki/nssdb -D -n "$2" && exit
+			certutil -d sql:/home/gui/.pki/nssdb -D -n "$2" && exit
 		fi
 		;;
 
 	l|list)
-		certutil -d sql:/var/gui/.pki/nssdb -L && exit
+		certutil -d sql:/home/gui/.pki/nssdb -L && exit
 		;;
 esac
 

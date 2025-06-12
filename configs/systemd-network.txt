@@ -13,3 +13,6 @@ DHCP=yes
 #Gateway=10.200.0.1
 #NTP=10.200.0.1
 #DNS=10.2.1.11
+
+[Link]
+MTUBytes=1500

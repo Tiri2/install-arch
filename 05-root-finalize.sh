@@ -48,7 +48,7 @@ if [[ $USER == "root" ]]; then
 fi
 
 echo "Installing missing packages"
-pacman -Sy --noconfirm htop btop ripgrep less curl iputils net-tools bind rsync tcpdump wget zstd jq polkit
+pacman -Sy --noconfirm htop btop ripgrep less curl iputils net-tools bind rsync tcpdump wget zstd jq polkit 7zip
 
 echo "Setting up postgres"
 # Setting up postgres
