@@ -230,10 +230,6 @@ bar {
     }
 }
 
-output * {
-    xcursor_theme Vanilla-DMZ 24
-}
-
 include /etc/sway/config.d/*
 
 exec /usr/bin/sh /home/gui/.start-chromium.sh
