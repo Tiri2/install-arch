@@ -8,12 +8,11 @@ log() {
 
 human_readable() {
     local size=$1
-    if [ "$size" -ge 1073741824 ]; then
-        # größer als 1 GiB
+    if (( size >= 1073741824 )); then
         awk "BEGIN {printf \"%.2f GiB\", $size/1073741824}"
-    elif [ "$size" -ge 1048576 ]; then
+    elif (( size >= 1048576 )); then
         awk "BEGIN {printf \"%.2f MiB\", $size/1048576}"
-    elif [ "$size" -ge 1024 ]; then
+    elif (( size >= 1024 )); then
         awk "BEGIN {printf \"%.2f KiB\", $size/1024}"
     else
         printf "%d B" "$size"
@@ -23,16 +22,19 @@ human_readable() {
 # Prozess 1: Komprimiert *.log-Dateien aus /tmp/log/ready/
 (
   while true; do
-    files=(/tmp/log/ready/*.log(N))  # Ignoriere leere Globs
+    files=(/tmp/log/ready/*.log(N))
     sleep 2
 
     for file in $files; do
       if [[ -f $file ]]; then
         size=$(stat -c %s "$file")
-        log "Size is ${SIZE} $(human_readable "$size")"
-        /usr/bin/zstdmt -f --rm --no-progress --output-dir-flat=/var/log/tasks "$file" && \
-        log "Compressed and moved: $file" || \
-        log "Error compressing: $file"
+        log "Size is $(human_readable "$size") for $file"
+        if /usr/bin/zstdmt -f --rm --no-progress \
+             --output-dir-flat=/var/log/tasks "$file"; then
+          log "Compressed and moved: $file"
+        else
+          log "Error compressing: $file"
+        fi
       fi
     done
 
@@ -40,37 +42,41 @@ human_readable() {
   done
 ) &
 
-# Prozess 2: Löscht alte Dateien aus /var/log/tasks/, wenn zu viel Speicherplatz verwendet wird
+# Prozess 2: Löscht alte Dateien aus /var/log/tasks/, wenn das Gesamtvolumen zu groß ist
 (
-
-  MAX_FILES=$(read -r < /var/log/tasks/.max_files)
-  if [[ -z "$MAX_FILES" ]]; then
-    MAX_FILES=100
+  # .max_size enthält das Limit in Bytes, z.B. "1073741824" für 1 GiB
+  MAX_SIZE=$(< /var/log/tasks/.max_size)
+  if [[ -z "$MAX_SIZE" || ! "$MAX_SIZE" =~ ^[0-9]+$ ]]; then
+    MAX_SIZE=$((5 * 1024**3))  # Default 1 GiB
   fi
 
   while true; do
-    # used_pct=$(df /var/log/tasks --output=pcent --sync | awk 'NR > 1 {gsub(/%/, ""); print $1}')
-    count=$(find /var/log/tasks -maxdepth 1 -type f | wc -l)
-
-    if [[ $count -gt $MAX_FILES ]]; then
-      file=$(ls -1t /var/log/tasks/*.zst(N) | tail -n1)
-      
-      if [[ -n "$file" && -f $file ]]; then
-        if [ "${file[-7,-1]}" != ".mq.zst" ]; then 
-          if zstdgrep -q 'MQ_PUB\[' "$file"; then
-            zstdgrep 'MQ_PUB\[' "$file" | zstd -o "${file}.mq.zst" --no-progress && \
-            log "Extracted MQ_PUB from $file to ${file}.mq.zst" || \
-            log "Failed to extract MQ_PUB from $file"
+    # ermittel die Gesamtgröße in Bytes
+    used_size=$(du -sb /var/log/tasks | awk '{print $1}')
+    if (( used_size > MAX_SIZE )); then
+      # älteste .zst-Datei auswählen
+      oldest=$(ls -1t /var/log/tasks/*.zst(N) | tail -n1)
+      if [[ -n "$oldest" && -f $oldest ]]; then
+        # MQ_PUB-Extraktion, falls noch nicht gemacht
+        if [[ "${oldest##*.}" == "zst" && "${oldest: -7}" != ".mq.zst" ]]; then
+          if zstdgrep -q 'MQ_PUB\[' "$oldest"; then
+            if zstdgrep 'MQ_PUB\[' "$oldest" \
+                 | zstd -o "${oldest}.mq.zst" --no-progress; then
+              log "Extracted MQ_PUB from $oldest to ${oldest}.mq.zst"
+            else
+              log "Failed to extract MQ_PUB from $oldest"
+            fi
           fi
-        fi;
-
-        rm -- "$file" && \
-        log "Deleted old log: $file" || \
-        log "Failed to delete: $file"
+        fi
+        # alte Datei löschen
+        if rm -- "$oldest"; then
+          log "Deleted old log: $oldest (was $(human_readable "$used_size"), limit $(human_readable "$MAX_SIZE"))"
+        else
+          log "Failed to delete: $oldest"
+        fi
       fi
     fi
-
-    sleep 0.5
+    sleep 30
   done
 ) &
 
