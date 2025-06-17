@@ -45,9 +45,9 @@ human_readable() {
 # Prozess 2: Löscht alte Dateien aus /var/log/tasks/, wenn das Gesamtvolumen zu groß ist
 (
   # .max_size enthält das Limit in Bytes, z.B. "1073741824" für 1 GiB
-  MAX_SIZE=$(< /var/log/tasks/.max_size)
+  MAX_SIZE=$(grep -E '^[0-9]+' /var/log/tasks/.max_size | head -n1)
   if [[ -z "$MAX_SIZE" || ! "$MAX_SIZE" =~ ^[0-9]+$ ]]; then
-    MAX_SIZE=$((5 * 1024**3))  # Default 1 GiB
+    MAX_SIZE=$((5 * 1024**3))  # Default 5 GiB
   fi
 
   while true; do
