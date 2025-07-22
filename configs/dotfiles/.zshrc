@@ -148,10 +148,10 @@ alias reboot="sudo systemctl reboot"
 alias cls="clear"
 alias fss="ss -tulnp"
 alias ftop='htop -p $(pidof java | sed -e "s/ /,/g")'
-alias flextop='htop -p $(pidof java | sed -e "s/ /,/g")'
+alias flextop='ftop'
 
 #utils aliases
-alias activefzf='zinit light Aloxaf/fzf-tab && eval "$(fzf --zsh)"'
+alias activatefzf='zinit light Aloxaf/fzf-tab && eval "$(fzf --zsh)"'
 alias ..="cd .."
 alias ...="cd ../.."
 
@@ -206,6 +206,14 @@ function list_nics_and_ips() {
     done
 }
 
+function print_flextasks_backup_status() {
+    local flag_file="/var/system/.samehash_flextasks"
+    if [ -f "$flag_file" ]; then
+        echo "${red}flexTask backup wurde seit dem letzten mal verändert."
+        echo " "
+    fi
+}
+
 
 echo " "
 echo "      flexSolution GmbH"
@@ -219,6 +227,7 @@ list_nics_and_ips
 echo " "
 print_smb_usage
 echo " "
+print_flextasks_backup_status
 
 if [ "$USER" = "root" ]; then
   echo "${red}Du bist als root Nutzer angemeldet!"

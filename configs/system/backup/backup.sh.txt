@@ -1,9 +1,47 @@
 #!/usr/bin/bash
 
-if [ "$1" == "full" ]; then
-  zsh /var/system/scripts/backup-full.sh
+# execute fully backup
+if [ "$1" == "fully" ]; then
+  zsh /var/system/scripts/backup-fully.sh
 elif [ "$1" == "service" ]; then
+  FLEXTASK_BACKUP_FILE="/var/system/backup/backup-flextasks"
+  HASH_FILE="/var/system/backup-flextasks.sha512"
+  FLAG_FILE="/var/system/.samehash_flextasks"
+
+  # generate new daily backup
   zsh /var/system/scripts/backup-daily.sh > /var/system/backup/backup-$(date +'%a')
-else
+
+  # read the old hash if it exists
+  if [ -f "$HASH_FILE" ]; then
+    OLD_HASH=$(cut -d' ' -f1 < "$HASH_FILE")
+  else
+    OLD_HASH=""
+  fi
+
+  # create new backup for flextasks
+  zsh /var/system/scripts/backup-flextasks.sh > "$FLEXTASK_BACKUP_FILE"
+
+  # generate new hash
+  NEW_HASH=$(sha512sum "$FLEXTASK_BACKUP_FILE" | awk '{print $1}')
+
+  # 6) Vergleichen und Flag setzen oder löschen
+  if [ "$OLD_HASH" != "$NEW_HASH" ]; then
+    touch "$FLAG_FILE"
+    echo "New flextasks backup created, hash changed."
+  else
+    # rm -f "$FLAG_FILE"
+    echo "Flextasks backup unchanged, hash is the same."
+  fi
+
+  # save new hash
+  echo "${NEW_HASH}  ${FLEXTASK_BACKUP_FILE}" > "$HASH_FILE"
+elif [ "$1" == "flextasks" ]; then
+  # execute flextasks backup
+  zsh /var/system/scripts/backup-flextasks.sh
+elif [ "$1" == "daily" ]; then
+  # execute daily backup
   zsh /var/system/scripts/backup-daily.sh
+else
+  echo "Usage: $0 {fully|daily|service|flextasks}"
+  exit 1
 fi

@@ -68,7 +68,9 @@ cat configs/system/backup/system.backup.timer.txt > /etc/systemd/system/system.b
 cat configs/system/backup/backup.sh.txt > /var/system/scripts/backup.sh
 cat configs/system/backup/backup.include.txt > /var/system/backup.include
 cat configs/system/backup/backup-daily.sh.txt > /var/system/scripts/backup-daily.sh
-cat backup/00-create-backup.sh > /var/system/scripts/backup-full.sh
+cat configs/system/backup/backup-flextasks.sh.txt > /var/system/scripts/backup-flextasks.sh
+cat backup/00-create-backup.sh > /var/system/scripts/backup-fully.sh
+ln -sf /var/system/scripts/backup.sh /usr/bin/flexbackup
 
 # Setup flexcert
 cat configs/system/flexcert.sh.txt > /var/system/scripts/flexcert.sh
