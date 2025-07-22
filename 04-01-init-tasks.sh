@@ -110,7 +110,7 @@ ln -sf /var/system/tools/configurator/linux-configurator-1.0.0-SNAPSHOT.jar /var
 # setting up hourly service
 cat configs/system/hourly/system.hourly.sh > /var/system/scripts/hourly.sh
 cat configs/system/hourly/system.hourly.service > /etc/systemd/system/system.hourly.service
-cat configs/system/hourly/system.hourly.timer.txt > /etc/systemd/system/system.hourly.timer
+cat configs/system/hourly/system.hourly.timer > /etc/systemd/system/system.hourly.timer
 
 # Fully upgrading the system
 echo "Upgrading System"
