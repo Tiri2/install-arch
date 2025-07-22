@@ -1,4 +1,4 @@
 [Unit]
-Description=slice for system utils
+Description=system utils
 
 [Slice]
