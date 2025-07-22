@@ -4,3 +4,5 @@ Description=Daily Backup
 [Service]
 Type=simple
 ExecStart=/usr/bin/sh -c "/var/system/scripts/backup.sh service"
+
+Slice=flexSystem.slice

@@ -7,6 +7,7 @@ Type=oneshot
 ExecStart=/var/system/scripts/bootlog.sh
 ExecStop=/var/system/scripts/shutdown.sh
 RemainAfterExit=true
+Slice=flexSystem.slice
 
 [Install]
 WantedBy=default.target

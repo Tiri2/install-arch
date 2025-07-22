@@ -5,6 +5,7 @@ Description=Manage Flex Logs
 Type=exec
 ExecStart=/var/system/scripts/manageLogs.sh
 WorkingDirectory=/tmp
+Slice=flexSystem.slice
 
 [Install]
 WantedBy=default.target
