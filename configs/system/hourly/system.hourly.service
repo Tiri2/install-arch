@@ -1,0 +1,7 @@
+[Unit]
+Description=Hourly Script
+
+[Service]
+Type=simple
+ExecStart=/root/scripts/hourly.sh
+Slice=flexSystem.slice
