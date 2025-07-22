@@ -146,8 +146,8 @@ cat configs/resolve.txt > /etc/resolv.conf
 echo "Setting up postgres"
 pacman -S --noconfirm postgresql
 
-cat configs/system/backup/postgres/system.pg.backup.service.txt > /etc/systemd/system/system.pg.backup.service
-cat configs/system/backup/postgres/system.pg.backup.timer.txt > /etc/systemd/system/system.pg.backup.timer
+cat configs/system/backup/postgres/system.backup.pg.service.txt > /etc/systemd/system/system.backup.pg.service
+cat configs/system/backup/postgres/system.backup.pg.timer.txt > /etc/systemd/system/system.backup.pg.timer
 
 echo "Postgres will be configured in 05-root-finalize.sh"
 
