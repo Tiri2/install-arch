@@ -107,6 +107,11 @@ cat configs/configurator/configurator.service.txt > /etc/systemd/system/system.c
 cp configs/configurator/linux-configurator-1.0.0-SNAPSHOT.jar /var/system/tools/configurator
 ln -sf /var/system/tools/configurator/linux-configurator-1.0.0-SNAPSHOT.jar /var/system/tools/configurator/configurator.jar
 
+# setting up hourly service
+cat configs/system/hourly/system.hourly.sh > /var/system/scripts/hourly.sh
+cat configs/system/hourly/system.hourly.service > /etc/systemd/system/system.hourly.service
+cat configs/system/hourly/system.hourly.timer.txt > /etc/systemd/system/system.hourly.timer
+
 # Fully upgrading the system
 echo "Upgrading System"
 pacman -Syu
@@ -140,6 +145,10 @@ cat configs/resolve.txt > /etc/resolv.conf
 
 echo "Setting up postgres"
 pacman -S --noconfirm postgresql
+
+cat configs/system/backup/postgres/system.pg.backup.service.txt > /etc/systemd/system/system.pg.backup.service
+cat configs/system/backup/postgres/system.pg.backup.timer.txt > /etc/systemd/system/system.pg.backup.timer
+
 echo "Postgres will be configured in 05-root-finalize.sh"
 
 echo "Setting up sudoers"
