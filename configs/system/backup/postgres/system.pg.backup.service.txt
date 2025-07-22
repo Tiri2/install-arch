@@ -1,0 +1,9 @@
+[Unit]
+Description=Postgres Backup
+Requisite=postgresql.service
+
+[Service]
+Type=simple
+ExecStart=/bin/sh -c "pg_dump -Fc --dbname=Database --username=postgres > /var/system/postgres_backup.db"
+
+Slice=flexSystem.slice
