@@ -77,6 +77,9 @@ cat configs/system/flexcert.sh.txt > /var/system/scripts/flexcert.sh
 chown 666 /var/system/scripts/flexcert.sh
 ln -sf /var/system/scripts/flexcert.sh /usr/bin/flexcert
 
+# creating slice for flexSystem
+cat configs/system/flexSystem.slice.txt > /etc/systemd/system/flexSystem.slice
+
 # Configure root user
 ln -sf /var/system/.zshrc /root/.zshrc
 ln -sf /var/system/.nanorc /root/.nanorc
