@@ -3,6 +3,7 @@ Description=Daily Backup
 
 [Timer]
 OnCalendar=daily
+Slice=flexSystem.slice
 
 [Install]
 WantedBy=timers.target
