@@ -32,7 +32,9 @@ if [[ $INSTALLED == "n" ]]; then
 fi
 
 echo "Resizing partiton 2 to maximum"
-parted $DISK resizepart 2 100%
+partprobe "$DISK"
+parted -s "$DISK" resizepart 2 100%
+partprobe "$DISK"
 
 echo " "
 echo " "

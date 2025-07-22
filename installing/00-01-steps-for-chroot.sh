@@ -29,9 +29,9 @@ else
 fi
 
 # Delete existings snapshots
-sh /var/system/tools/install-arch/installing/01-deleting-snapshots.sh "/" "/.snapshots"
-sh /var/system/tools/install-arch/installing/01-deleting-snapshots.sh "/home" "/home/.snapshots"
-sh /var/system/tools/install-arch/installing/01-deleting-snapshots.sh "/srv" "/srv/.snapshots"
+sh /var/system/tools/install-arch/installing/01-deleting-snapshots.sh "/" "/.snapshots" &>> snapshot_delete.log
+sh /var/system/tools/install-arch/installing/01-deleting-snapshots.sh "/home" "/home/.snapshots" &>> snapshot_delete.log
+sh /var/system/tools/install-arch/installing/01-deleting-snapshots.sh "/srv" "/srv/.snapshots" &>> snapshot_delete.log
 
 snapper -c root create -d "Install Script"
 snapper -c home create -d "Install Script"
@@ -44,7 +44,7 @@ echo "Making initramfs"
 mkinitcpio -P
 
 # Remove config.json because tool should generate a new one
-mv /var/system/config.json /var/system/config.from-master.json
+mv /var/system/config.json /var/system/config.json.from-master.json
 
 # Removing .zsh_history because new host
 rm /home/flex/.zsh_history
