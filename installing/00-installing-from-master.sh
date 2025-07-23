@@ -33,7 +33,7 @@ if [[ $INSTALLED == "n" ]]; then
 
     echo "okay - installing system from master now..."
     echo "Take around 15 minutes"
-    ssh root@"$IP" "dd if=/dev/sda bs=64M | gzip" | pv | gunzip | dd of=$DISK bs=64M
+    ssh root@"$IP" "dd if=/dev/sda bs=64M | gzip" | gunzip | dd of=$DISK bs=64M status=progress
 fi
 
 echo "Resizing partiton 2 to maximum"
