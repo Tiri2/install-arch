@@ -17,6 +17,7 @@ configs=(
   /etc/samba/smb.conf
   /etc/grafana.ini
   /etc/systemd/network/*.network
+  /home/flex/.config/*
 )
 
 # Backup starten:
