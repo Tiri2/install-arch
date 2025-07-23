@@ -3,5 +3,5 @@ Description=Hourly Script
 
 [Service]
 Type=simple
-ExecStart=/root/scripts/hourly.sh
+ExecStart=/var/system/scripts/hourly.sh
 Slice=flexSystem.slice
