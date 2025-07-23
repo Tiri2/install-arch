@@ -69,6 +69,7 @@ cat configs/system/backup/backup.sh.txt > /var/system/scripts/backup.sh
 cat configs/system/backup/backup.include.txt > /var/system/backup.include
 cat configs/system/backup/backup-daily.sh.txt > /var/system/scripts/backup-daily.sh
 cat configs/system/backup/backup-flextasks.sh.txt > /var/system/scripts/backup-flextasks.sh
+cat configs/system/backup/backup-flexsystem.sh > /var/system/scripts/backup-flexsystem.sh
 cat backup/00-create-backup.sh > /var/system/scripts/backup-fully.sh
 ln -sf /var/system/scripts/backup.sh /usr/bin/flexbackup
 
