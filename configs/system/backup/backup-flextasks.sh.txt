@@ -6,7 +6,7 @@ roption=(
         --xattrs
         --absolute-names
         --use-compress-program=zstd
-        --exclude=/srv/tasks/CURRENT/lib*
+        --exclude=/srv/tasks/CURRENT/lib
 )
 
 tar "${roption[@]}" $(find /srv/tasks/CURRENT/ -type f -path "*.jar")
