@@ -101,11 +101,13 @@ cat configs/system/log/ManageLogs.sh.txt > /var/system/scripts/manageLogs.sh
 echo "Setting up configurator"
 mkdir -p /var/system/tools/configurator/
 touch /var/log/system/configurator.log
-cat configs/configurator/log4j2.xml.txt > /var/system/tools/configurator/log4j2.xml
-cat configs/configurator/configurator.path.txt > /etc/systemd/system/system.configurator.path
-cat configs/configurator/configurator.service.txt > /etc/systemd/system/system.configurator.service
-cp configs/configurator/linux-configurator-1.0.0-SNAPSHOT.jar /var/system/tools/configurator
+cat configs/system/configurator/log4j2.xml.txt > /var/system/tools/configurator/log4j2.xml
+cat configs/system/configurator/configurator.path.txt > /etc/systemd/system/system.configurator.path
+cat configs/system/configurator/configurator.service.txt > /etc/systemd/system/system.configurator.service
+cp configs/system/configurator/linux-configurator-1.0.0-SNAPSHOT.jar /var/system/tools/configurator
 ln -sf /var/system/tools/configurator/linux-configurator-1.0.0-SNAPSHOT.jar /var/system/tools/configurator/configurator.jar
+cp configs/system/configurator/configurator /usr/local/bin
+chmod +x /usr/local/bin/configurator
 
 # setting up hourly service
 cat configs/system/hourly/system.hourly.sh > /var/system/scripts/hourly.sh

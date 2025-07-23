@@ -1,0 +1,2 @@
+#!/bin/bash
+/usr/bin/java -Dlog4j2.Script.enableLanguages=groovy -Dlog4j.configurationFile=/var/system/tools/configurator/log4j2.xml -jar /var/system/tools/configurator/configurator.jar
