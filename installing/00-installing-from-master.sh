@@ -32,6 +32,7 @@ if [[ $INSTALLED == "n" ]]; then
 fi
 
 echo "Resizing partiton 2 to maximum"
+sgdisk -e "$DISK"
 partprobe "$DISK"
 parted -s "$DISK" resizepart 2 100%
 partprobe "$DISK"
