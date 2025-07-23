@@ -10,6 +10,8 @@ elif [ "$1" == "service" ]; then
 
   # generate new daily backup
   zsh /var/system/scripts/backup-daily.sh > /var/system/backup/backup-$(date +'%a')
+  # generate new flexsystem backup
+  zsh /var/system/scripts/backup-flexsystem.sh > /var/system/backup/backup-flexsystem
 
   # read the old hash if it exists
   if [ -f "$HASH_FILE" ]; then
