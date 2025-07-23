@@ -2,18 +2,17 @@
 
 echo " "
 mount -a
-lsblk
 
 echo "Resizing btrfs filesystem"
-btrfs filesystem resize max /
+btrfs filesystem resize max / &>> /root/install.log
 
 btrfs filesystem show /
 btrfs filesystem usage /
 
 # Break point to check if everything is all right
-echo "Everything looking fine?"
-echo "CTRL + C to abort - Enter to continue"
-read -p "Continue?"
+#echo "Everything looking fine?"
+#echo "CTRL + C to abort - Enter to continue"
+#read -p "Continue?"
 
 # Cd into Script dir
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
@@ -29,13 +28,13 @@ else
 fi
 
 # Delete existings snapshots
-sh /var/system/tools/install-arch/installing/01-deleting-snapshots.sh "/" "/.snapshots" &>> snapshot_delete.log
-sh /var/system/tools/install-arch/installing/01-deleting-snapshots.sh "/home" "/home/.snapshots" &>> snapshot_delete.log
-sh /var/system/tools/install-arch/installing/01-deleting-snapshots.sh "/srv" "/srv/.snapshots" &>> snapshot_delete.log
+sh /var/system/tools/install-arch/installing/01-deleting-snapshots.sh "/" "/.snapshots" &>> /root/install.log
+sh /var/system/tools/install-arch/installing/01-deleting-snapshots.sh "/home" "/home/.snapshots" &>> /root/install.log
+sh /var/system/tools/install-arch/installing/01-deleting-snapshots.sh "/srv" "/srv/.snapshots" &>> /root/install.log
 
-snapper -c root create -d "Install Script"
-snapper -c home create -d "Install Script"
-snapper -c srv create -d "Install Script"
+snapper -c root create -d "Install Script" &>> /root/install.log
+snapper -c home create -d "Install Script" &>> /root/install.log
+snapper -c srv create -d "Install Script" &>> /root/install.log
 
 # Installing Grub
 sh /var/system/tools/install-arch/03-01-install-grub.sh "$1" ARCH

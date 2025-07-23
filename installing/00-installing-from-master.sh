@@ -14,7 +14,12 @@ lsblk
 # Getting disk from user to write the master disk on
 echo "Please enter a valid disk for write the master on (/dev/sda)"
 read -p "Disk: " DISK
+
 echo " "
+
+# Getting second partiton from user
+echo "Before writing on ${DISK} please provide the second partition to chroot into"
+read -p "the second partiton (/dev/sda2): " PART2
 
 # Reqeust if anything is already installed. If not installing from master
 read -p "Have you already installed the master on this system? (y/n): " INSTALLED
@@ -37,17 +42,6 @@ partprobe "$DISK"
 parted -s "$DISK" resizepart 2 100%
 partprobe "$DISK"
 
-echo " "
-echo " "
-
-lsblk
-
-echo " "
-# Getting second partiton from user
-echo "Before writing on ${DISK} please provide the second partition to chroot into"
-read -p "the second partiton (/dev/sda2): " PART2
-echo " "
-
 # Getting into folder where the script is
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 CURRENT_DIR=$(pwd)
@@ -68,7 +62,7 @@ chmod +x /mnt/root/setup.sh
 # Chroot into and exeute the copied sh script named setup.sh with args $DISK
 arch-chroot /mnt /bin/bash -c "sh /root/setup.sh "$DISK""
 
-echo "Done. Installing succuessfully. - If you want to use a touch display, please read the /root/utils/readme.md file after rebooting."
+echo "Done. Installing succuessfully."
 echo "do you want to restart now?"
 read -p "y/n: " RESTART
 
