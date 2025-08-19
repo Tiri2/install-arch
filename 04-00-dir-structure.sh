@@ -10,6 +10,10 @@ mkdir -p /var/system/backup
 chmod 775 /var/system
 chmod 775 /var/system/*
 
+# to follow the old structure
+mkdir -p /var/flex/
+ln -s /var/log/tasks /var/flex/log
+
 # Create under directories in srv
 mkdir -p /srv/{tasks,http,smb}
 chmod 777 /srv/tasks
