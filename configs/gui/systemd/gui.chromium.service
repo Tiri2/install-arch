@@ -1,0 +1,18 @@
+[Unit]
+Description=Chromium zur Anzeige der HMI
+After=gui.sway.service
+Requires=gui.sway.service
+
+[Service]
+ExecStart=/usr/bin/sh /home/gui/.start-chromium.sh
+WorkingDirectory=/home/gui/
+Type=simple
+StandardOutput=journal+append:/var/log/gui/chromium.log
+StandardError=journal+append:/var/log/gui/chromium.log
+TimeoutStopSec=10
+Restart=always
+RestartSec=30
+#Slice=gui.slice
+
+[Install]
+WantedBy=default.target

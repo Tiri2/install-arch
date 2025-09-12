@@ -155,6 +155,15 @@ alias activatefzf='zinit light Aloxaf/fzf-tab && eval "$(fzf --zsh)"'
 alias ..="cd .."
 alias ...="cd ../.."
 
+# gui cmds
+alias restartchromium='guicmd /usr/bin/systemctl --user restart gui.chromium.service && echo OK'
+alias restartsway='guicmd /usr/bin/systemctl --user restart gui.sway.service && echo OK'
+alias restartvnc='guicmd /usr/bin/systemctl --user restart gui.wayvnc.service && echo OK'
+alias restartgui='restartsway && restartchromium && restartvnc'
+
+# sys alias
+alias rmtaskhash='rm -fv /var/system/.samehash_flextasks'
+
 # ============================================
 #
 #
@@ -210,6 +219,7 @@ function print_flextasks_backup_status() {
     local flag_file="/var/system/.samehash_flextasks"
     if [ -f "$flag_file" ]; then
         echo "${red}flexTask backup wurde seit dem letzten mal verändert."
+        echo "${gray}um die Meldung zu entfernen, führe \`rmtaskhash\` aus"
         echo " "
     fi
 }

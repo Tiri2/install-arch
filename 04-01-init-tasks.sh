@@ -45,8 +45,22 @@ mkdir -p /etc/systemd/system/getty@tty1.service.d
 cat configs/gui/systemd/getty@tty1.service.txt > /etc/systemd/system/getty@tty1.service.d/override.conf.disabled
 systemctl enable getty@tty1.service
 
+mkdir -p /home/gui/.config/systemd/user
+cat configs/gui/systemd/gui.slice > /etc/systemd/system/gui.slice
+cat configs/gui/systemd/gui.sway.service > /home/gui/.config/systemd/user/gui.sway.service
+cat configs/gui/systemd/gui.chromium.service > /home/gui/.config/systemd/user/gui.chromium.service
+cat configs/gui/systemd/gui.wayvnc.service > /home/gui/.config/systemd/user/gui.wayvnc.service
+chown -R gui:gui /home/gui/.config
+
+echo 'sudo machinectl shell gui@ "$@"' > /usr/bin/guicmd
+chmod +x /usr/bin/guicmd
+
+guicmd /usr/bin/systemctl --user enable gui.sway.service
+guicmd /usr/bin/systemctl --user enable gui.chromium.service
+guicmd /usr/bin/systemctl --user enable gui.wayvnc.service
+
 # installing sway for gui user
-pacman -S --noconfirm sway xorg-xwayland tigervnc chromium libinput evtest wayvnc swaybg 
+pacman -S --noconfirm sway xorg-xwayland chromium libinput evtest wayvnc swaybg 
 
 # Break point to check if everything is all right
 echo "Everything looking fine?"

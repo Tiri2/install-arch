@@ -81,7 +81,15 @@ root ALL=(ALL) ALL
 ## Uncomment to allow members of group wheel to execute any command
 %wheel ALL=(ALL) ALL
 
-flex ALL=NOPASSWD: /usr/bin/find, /usr/bin/tar, /usr/bin/tee, /usr/local/sbin/unlock, /usr/bin/systemctl poweroff, /usr/bin/systemctl reboot
+flex ALL=NOPASSWD: \
+  /usr/bin/find, \
+  /usr/bin/tar, \
+  /usr/bin/tee, \
+  /usr/local/sbin/unlock, \
+  /usr/bin/systemctl poweroff, \
+  /usr/bin/systemctl reboot, \
+  /usr/bin/machinectl shell gui@*, \
+  /usr/bin/nano */config.json
 
 ## Same thing without a password
 # %wheel ALL=(ALL) NOPASSWD: ALL

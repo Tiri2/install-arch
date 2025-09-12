@@ -232,4 +232,4 @@ bar {
 
 include /etc/sway/config.d/*
 
-exec /usr/bin/sh /home/gui/.start-chromium.sh
+# exec /usr/bin/sh /home/gui/.start-chromium.sh

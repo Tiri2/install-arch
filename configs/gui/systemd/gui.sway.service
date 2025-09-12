@@ -1,0 +1,16 @@
+[Unit]
+Description=Sway compositor for chromium/wayvnc
+
+[Service]
+WorkingDirectory=/home/gui
+Environment=XDG_RUNTIME_DIR=/run/user/%U
+ExecStart=/usr/bin/sway -c /home/gui/.config/sway/config
+Restart=always
+RestartSec=30
+StandardOutput=journal
+StandardError=journal
+TimeoutStopSec=10
+Type=simple
+
+[Install]
+WantedBy=default.target
