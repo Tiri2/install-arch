@@ -129,6 +129,9 @@ cat configs/system/hourly/system.hourly.sh > /var/system/scripts/hourly.sh
 cat configs/system/hourly/system.hourly.service > /etc/systemd/system/system.hourly.service
 cat configs/system/hourly/system.hourly.timer > /etc/systemd/system/system.hourly.timer
 
+# execute script for hmimachine task
+cp configs/system/execute.sh /var/system/scripts/execute.sh
+
 # Fully upgrading the system
 echo "Upgrading System"
 pacman -Syu
