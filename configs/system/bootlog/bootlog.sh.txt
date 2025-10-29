@@ -38,3 +38,4 @@ if curl -s --head --request GET -k "$REMOTE_URL" | grep -q "200"; then
     else
         rm -f "$TMP_PATH"
     fi
+fi
