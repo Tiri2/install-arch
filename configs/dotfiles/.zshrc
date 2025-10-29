@@ -178,15 +178,41 @@ UPTIME=$(uptime -p)
 
 # Print usage on a given directory
 function print_usage() {
-  local partition=$(df "$1" --output=source | tail -1) # Partition für das Verzeichnis
-  local total_size=$(df "$partition" --output=size | tail -1) # Gesamtgröße der Partition (1K-Blöcke)
-  local used_size=$(du -s "$1" | awk '{print $1}')     # Verwendeter Platz von /srv/smb in 1K-Blöcken
+  local dir="$1"
+  local mode="$2"  # optional: --raw für nur Zahl
+  
+  local partition=$(df "$dir" --output=source | tail -1)
+  local total_size=$(df "$partition" --output=size | tail -1)
+  local used_size=$(du -s "$dir" | awk '{print $1}')
 
   if [[ -n $total_size && -n $used_size ]]; then
     local percentage=$(awk "BEGIN {printf \"%.2f\", ($used_size/$total_size)*100}")
-    echo -e "${white}$1 verbaucht ${cyan}$percentage% ${white}Speicher"
+
+    if [[ "$mode" == "--raw" ]]; then
+      echo "$percentage"
+    else
+      echo -e "${white}$dir verbraucht ${cyan}$percentage% ${white}Speicher"
+    fi
   fi
 }
+
+# Check if usage exceeds limit
+function check_usage() {
+  local dir="$1"
+  local limit="$2"  # z. B. 80 für 80%
+  
+  local percentage
+  percentage=$(print_usage "$dir" --raw)
+
+  if [[ -z "$percentage" ]]; then
+    echo -e "${red}Fehler ($dir) Größe unbekannt."
+  fi
+
+  if awk "BEGIN {exit !($percentage > $limit)}"; then
+    echo -e "${white}$dir ist ${red}über ${white}dem Limit! | SOLL: $limit% - IST:$percentage%"
+  fi
+}
+
 
 function list_nics_and_ips() {
     # Iterate through all network interfaces
@@ -238,7 +264,9 @@ list_nics_and_ips
 echo " "
 print_usage "/srv/smb"
 print_usage "/var/log/tasks"
+check_usage "/var/log/tasks" 80
 print_usage "/var/log/system"
+check_usage "/var/log/tasks" 10
 echo " "
 print_flextasks_backup_status
 
