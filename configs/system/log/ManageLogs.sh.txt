@@ -50,6 +50,9 @@ human_readable() {
     MAX_SIZE=$((5 * 1024**3))  # Default 5 GiB
   fi
 
+  log "using following value for maxsize"
+  log "$(human_readable "$MAX_SIZE")"
+
   while true; do
     # ermittel die Gesamtgröße in Bytes
     used_size=$(du -sb /var/log/tasks | awk '{print $1}')
