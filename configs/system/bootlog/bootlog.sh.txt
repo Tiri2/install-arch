@@ -17,3 +17,24 @@ chmod -R 774 /tmp/log
 
 # Boot Loggen
 echo -e "====================================\nBoot: $(/usr/bin/date)" >> /var/log/system/boot.log
+
+#!/bin/bash
+
+# === Variablen ===
+REMOTE_URL="https://10.3.1.7/fs/utils/cheatsheet.sh"
+LOCAL_PATH="/var/system/scripts/cheatsheet.sh"
+TMP_PATH="/tmp/cheatsheet_remote.sh"
+
+# === Prüfen ob Server erreichbar ist ===
+if curl -s --head --request GET -k "$REMOTE_URL" | grep -q "200"; then
+
+    # Remote-Version herunterladen (still)
+    curl -s -k -o "$TMP_PATH" "$REMOTE_URL"
+
+    # Prüfen, ob sie sich von der lokalen unterscheidet
+    if ! cmp -s "$TMP_PATH" "$LOCAL_PATH"; then
+        mv "$TMP_PATH" "$LOCAL_PATH"
+        chmod +x "$LOCAL_PATH"
+    else
+        rm -f "$TMP_PATH"
+    fi

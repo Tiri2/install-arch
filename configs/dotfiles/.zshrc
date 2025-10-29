@@ -163,6 +163,8 @@ alias restartgui='restartsway && restartchromium && restartvnc'
 
 # sys alias
 alias rmtaskhash='rm -fv /var/system/.samehash_flextasks'
+alias cheatsheet="/var/system/scripts/cheatsheet.sh"
+alias cs="cheatsheet"
 
 # ============================================
 #
@@ -174,16 +176,15 @@ alias rmtaskhash='rm -fv /var/system/.samehash_flextasks'
 
 UPTIME=$(uptime -p)
 
-# Berechnung der Größe von /srv/smb/ in Prozent
-function print_smb_usage() {
-  local smb_path="/srv/smb"
-  local partition=$(df "$smb_path" --output=source | tail -1) # Partition für das Verzeichnis
+# Print usage on a given directory
+function print_usage() {
+  local partition=$(df "$1" --output=source | tail -1) # Partition für das Verzeichnis
   local total_size=$(df "$partition" --output=size | tail -1) # Gesamtgröße der Partition (1K-Blöcke)
-  local used_size=$(du -s "$smb_path" | awk '{print $1}')     # Verwendeter Platz von /srv/smb in 1K-Blöcken
+  local used_size=$(du -s "$1" | awk '{print $1}')     # Verwendeter Platz von /srv/smb in 1K-Blöcken
 
   if [[ -n $total_size && -n $used_size ]]; then
     local percentage=$(awk "BEGIN {printf \"%.2f\", ($used_size/$total_size)*100}")
-    echo -e "${white}/srv/smb verbaucht ${cyan}$percentage% ${white}Speicher"
+    echo -e "${white}$1 verbaucht ${cyan}$percentage% ${white}Speicher"
   fi
 }
 
@@ -235,7 +236,9 @@ echo "${white}Uptime is ${yellow}$UPTIME"
 echo " "
 list_nics_and_ips
 echo " "
-print_smb_usage
+print_usage "/srv/smb"
+print_usage "/var/log/tasks"
+print_usage "/var/log/system"
 echo " "
 print_flextasks_backup_status
 
