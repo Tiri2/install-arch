@@ -8,6 +8,9 @@ chmod -R 774 /tmp/log
 # Creating config.json and/or updating jar file
 /usr/bin/java -Dlog4j2.Script.enableLanguages=groovy -Dlog4j.configurationFile=/var/system/tools/configurator/log4j2.xml -jar /var/system/tools/configurator/configurator.jar boot
 
+# change perms of config.json
+chmod 777 /var/system/config.json
+
 # Get newest changes of install-arch from git
 # if [[ -d "/var/system/tools/install-arch/" ]]; then
 #    git -C /var/system/tools/install-arch/ pull &> /dev/null
