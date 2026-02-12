@@ -23,6 +23,7 @@ cp configs/gui/.start-chromium.sh /home/gui
 cp configs/gui/.start-firefox.sh /home/gui
 chsh -s /usr/bin/zsh gui
 
+touch /home/gui/.browser
 cat "chromium" > /home/gui/.browser
 
 mkdir -p /var/log/gui
@@ -119,10 +120,10 @@ cp configs/system/logging/logDelete.sh /var/system/scripts/logging/logDelete.sh
 
 # LogMove
 cp configs/system/logging/system.logMove.service /etc/systemd/system/system.logMove.service
+cp configs/system/logging/system.logMove.timer /etc/systemd/system/system.logMove.path
 cp configs/system/logging/logMove.sh /var/system/scripts/logging/logMove.sh
 
 # LogShutdown
-cp configs/system/logging/system.LogShutdown.service /etc/systemd/system/system.LogShutdown.service
 cp configs/system/logging/LogShutdown.sh /var/system/scripts/logging/LogShutdown.sh
 
 
