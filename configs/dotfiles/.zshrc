@@ -266,7 +266,7 @@ print_usage "/srv/smb"
 print_usage "/var/log/tasks"
 check_usage "/var/log/tasks" 80
 print_usage "/var/log/system"
-check_usage "/var/log/tasks" 10
+check_usage "/var/log/system" 10
 echo " "
 print_flextasks_backup_status
 
