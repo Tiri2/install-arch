@@ -1,0 +1,8 @@
+[Unit]
+Description=Flex Delete Logs
+
+[Service]
+Type=simple
+ExecStart=/home/flex/scripts/flexLogDelete.sh
+WorkingDirectory=/tmp/log
+

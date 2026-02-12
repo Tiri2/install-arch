@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+source "/var/system/scripts/logging/lib/log.sh";
+
+files=(/tmp/log/*.log(N))
+
+date=`date +"%Y-%m-%d-%H%M%S"`
+
+for file in $files; do
+    nfile="/tmp/log/$(basename ${file} .log)-${date}-halt.log"
+    mv "$file" "$nfile"
+    /usr/bin/zstdmt -f --rm --no-progress --output-dir-flat=/var/flex/log "$nfile"
+done

@@ -71,7 +71,7 @@ read -p "Continue?"
 mkdir -p /home/flex/.config/systemd/user
 mkdir -p /srv/tasks/CURRENT/.config/
 
-cat configs/flexTasks/log4j2.txt > /srv/tasks/CURRENT/default/log4j2.xml
+cat configs/flexTasks/log4j2.xml > /srv/tasks/CURRENT/default/log4j2.xml
 cat configs/flexTasks/flexTasks.conf.txt > /srv/tasks/CURRENT/.config/flexTasks.conf
 cat configs/flexTasks/task.template.service.txt > /home/flex/.config/systemd/user/task.template.service
 cat configs/flexTasks/flexTasks.slice.txt > /home/flex/.config/systemd/user/flexTasks.slice
@@ -108,9 +108,23 @@ cat configs/system/bootlog/bootlog.service.txt > /etc/systemd/system/system.boot
 mkdir -p /var/log/system/
 touch /var/log/system/boot.log
 
-# LogManage
-cat configs/system/log/ManageLogs.service.txt > /etc/systemd/system/system.manageLogs.service
-cat configs/system/log/ManageLogs.sh.txt > /var/system/scripts/manageLogs.sh
+# Logging services
+mkdir -p /var/system/scripts/logging/{lib,config}
+cp configs/system/logging/lib/log.sh /var/system/scripts/logging/lib/log.sh
+cp configs/system/logging/lib/util.sh /var/system/scripts/logging/lib/util.sh
+
+# LogDelete
+cp configs/system/logging/system.logDelete.service /etc/systemd/system/system.logDelete.service
+cp configs/system/logging/logDelete.sh /var/system/scripts/logging/logDelete.sh
+
+# LogMove
+cp configs/system/logging/system.logMove.service /etc/systemd/system/system.logMove.service
+cp configs/system/logging/logMove.sh /var/system/scripts/logging/logMove.sh
+
+# LogShutdown
+cp configs/system/logging/system.LogShutdown.service /etc/systemd/system/system.LogShutdown.service
+cp configs/system/logging/LogShutdown.sh /var/system/scripts/logging/LogShutdown.sh
+
 
 # Configurator
 echo "Setting up configurator"
