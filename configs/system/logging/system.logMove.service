@@ -4,5 +4,5 @@ Wants=flexLogDelete.service flexLogShutdown.service
 
 [Service]
 Type=simple
-ExecStart=/home/flex/scripts/flexLogMove.sh
+ExecStart=/var/system/scripts/logging/logMove.sh
 WorkingDirectory=/tmp/log

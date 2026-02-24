@@ -3,6 +3,6 @@ Description=Flex Delete Logs
 
 [Service]
 Type=simple
-ExecStart=/home/flex/scripts/flexLogDelete.sh
+ExecStart=/var/system/scripts/logging/logDelete.sh
 WorkingDirectory=/tmp/log
 

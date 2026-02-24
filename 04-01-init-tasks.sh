@@ -39,7 +39,7 @@ cp configs/gui/sway-config.txt /home/gui/.config/sway/config
 mkdir -p /home/gui/.config/wayvnc
 cp configs/gui/vnc/wayvnc-config.txt /home/gui/.config/wayvnc/config
 
-mkidr -p /home/gui/.config/firefox/
+mkdir -p /home/gui/.config/firefox/
 cp configs/gui/firefox/user.js /home/gui/.config/firefox/user.js
 
 mkdir -p /etc/systemd/system/getty@tty1.service.d

@@ -4,11 +4,7 @@ files=(/tmp/log/*.log(N))
 
 date=`date +"%Y-%m-%d-%H%M%S"`
 
-for file in $files; do
-	nfile="/tmp/log/$(basename ${file} .log)-${date}-halt.log"
-	mv "$file" "$nfile"
-    /usr/bin/zstdmt -f --rm --no-progress --output-dir-flat=/var/log/tasks "$nfile"
-done
+zsh /var/system/scripts/logging/logShutdown.sh
 
 # Shutdown Loggen
 echo -e "====================================\nShutdown: $(/usr/bin/date)" >> /var/log/system/boot.log
