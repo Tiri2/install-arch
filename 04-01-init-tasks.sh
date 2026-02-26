@@ -124,10 +124,11 @@ cp configs/system/logging/system.logMove.path /etc/systemd/system/system.logMove
 cp configs/system/logging/logMove.sh /var/system/scripts/logging/logMove.sh
 
 # LogShutdown
-cp configs/system/logging/LogShutdown.sh /var/system/scripts/logging/logShutdown.sh
+cp configs/system/logging/logShutdown.sh /var/system/scripts/logging/logShutdown.sh
 
 chmod 755 -R /var/system/scripts/logging/*
 systemctl enable --now system.logMove.path
+systemctl disable --now system.manageLogs.service
 
 
 # Configurator

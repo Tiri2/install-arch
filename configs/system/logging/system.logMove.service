@@ -1,6 +1,6 @@
 [Unit]
 Description=Flex Store Logs
-Wants=flexLogDelete.service flexLogShutdown.service
+Wants=system.logDelete.service
 
 [Service]
 Type=simple
