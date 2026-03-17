@@ -198,3 +198,15 @@ cat configs/sudoers.txt > /etc/sudoers
 echo "installing and setting up sqlite3"
 pacman -S --noconfirm --needed sqlite3
 ln -sf /var/system/.sqliterc /home/flex/.sqliterc
+
+
+# qouta limits
+
+btrfs subvolume create /srv/smb/share
+btrfs subvolume create /srv/smb/customer
+
+btrfs quota enable /srv/smb/share
+btrfs quota enable /srv/smb/customer
+
+btrfs qgroup show -reF /srv/smb/share
+btrfs qgroup show -reF /srv/smb/customer

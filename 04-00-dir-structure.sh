@@ -22,6 +22,7 @@ chmod 777 /srv/smb
 
 # Creating specifc smb folders
 mkdir -p /srv/smb/share
+mkdir -p /srv/smb/customer
 ln -sf /var/system/backup /srv/smb/backup
 
 chmod 775 /srv/smb/*

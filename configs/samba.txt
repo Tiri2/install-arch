@@ -38,6 +38,15 @@ wide links = yes
 	guest ok = yes
 	create mask = 0774
 
+[customer]
+	comment = Customer Directory
+	path = /srv/smb/customer
+	public = yes
+	writable = yes
+	force user = flex
+	guest ok = yes
+	create mask = 0774
+
 [backup]
 	comment = Backup Directory
 	path = /srv/smb/backup
