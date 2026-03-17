@@ -161,22 +161,22 @@ echo "CTRL + C to abort - Enter to continue"
 read -p "Continue?"
 
 echo "installing java openjdk 17 and other related things"
-pacman -S --noconfirm java-runtime-common java-environment-common jdk17-openjdk
+pacman -S --noconfirm --needed java-runtime-common java-environment-common jdk17-openjdk
 
 echo "new installed Java Version: "
 java -version
 
 # Installing needed packages and configure them for our flex tasks
 echo "installing and setuping up mosquitto"
-pacman -S --noconfirm mosquitto
+pacman -S --noconfirm --needed mosquitto
 cat configs/mosquitto.txt > /etc/mosquitto/mosquitto.conf
 
 echo "installing and setting up samba server"
-pacman -S --noconfirm samba
+pacman -S --noconfirm --needed samba
 cat configs/samba.txt > /etc/samba/smb.conf
 
 echo "installing and setting up caddy server"
-pacman -S --noconfirm caddy
+pacman -S --noconfirm --needed caddy
 cat configs/caddyfile.txt > /etc/caddy/Caddyfile
 
 echo "Setting up systemd-networkd and resolve.conf"
@@ -184,7 +184,7 @@ cat configs/systemd-network.txt > /etc/systemd/network/10-ethernet.network
 cat configs/resolve.txt > /etc/resolv.conf
 
 echo "Setting up postgres"
-pacman -S --noconfirm postgresql
+pacman -S --noconfirm --needed postgresql
 
 cat configs/system/backup/postgres/system.backup.pg.service.txt > /etc/systemd/system/system.backup.pg.service
 cat configs/system/backup/postgres/system.backup.pg.timer.txt > /etc/systemd/system/system.backup.pg.timer
@@ -196,8 +196,5 @@ cp /etc/sudoers /etc/sudoers.old
 cat configs/sudoers.txt > /etc/sudoers
 
 echo "installing and setting up sqlite3"
-pacman -S --noconfirm sqlite3
+pacman -S --noconfirm --needed sqlite3
 ln -sf /var/system/.sqliterc /home/flex/.sqliterc
-
-# User Services enablen
-systemctl --user enable default.target
