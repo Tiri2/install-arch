@@ -113,6 +113,7 @@ touch /var/log/system/boot.log
 mkdir -p /var/system/scripts/logging/{lib,config}
 cp configs/system/logging/lib/log.sh /var/system/scripts/logging/lib/log.sh
 cp configs/system/logging/lib/util.sh /var/system/scripts/logging/lib/util.sh
+cp configs/system/logging/lib/config.sh /var/system/scripts/logging/lib/config.sh
 
 # LogDelete
 cp configs/system/logging/system.logDelete.service /etc/systemd/system/system.logDelete.service
