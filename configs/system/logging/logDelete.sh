@@ -6,8 +6,8 @@ source "/var/system/scripts/logging/lib/config.sh"
 
 WATCH_DIR="/var/log/tasks"
 
-START_THRESHOLD_BYTES=$(( $(read_config "flexSystem.logging" "task_logs.start_value") * 1024 * 1024 * 1024 ))
-STOP_THRESHOLD_BYTES=$(( $(read_config "flexSystem.logging" "task_logs.stop_value") * 1024 * 1024 * 1024 ))
+START_THRESHOLD_BYTES=$(( $(read_config "flexSystem.logging" "tasks_logs.start_value") * 1024 * 1024 * 1024 ))
+STOP_THRESHOLD_BYTES=$(( $(read_config "flexSystem.logging" "tasks_logs.stop_value") * 1024 * 1024 * 1024 ))
 DISK_USAGE_START_THRESHOLD_PERCENT=$(read_config "flexSystem.logging" "tasks_logs_fallback_percent.start_value")
 DISK_USAGE_STOP_THRESHOLD_PERCENT=$(read_config "flexSystem.logging" "tasks_logs_fallback_percent.stop_value")
 
@@ -80,6 +80,12 @@ delete_until_within_limit() {
 
   log_info "Cleanup complete. Final size: $(human_readable "$current_size")"
 }
+
+echo "using following values from ${CONFIG_FILE}"
+echo " - Start threshold (bytes): $START_THRESHOLD_BYTES"
+echo " - Stop threshold (bytes): $STOP_THRESHOLD_BYTES"
+echo " - Disk usage start threshold (%): $DISK_USAGE_START_THRESHOLD_PERCENT"
+echo " - Disk usage stop threshold (%): $DISK_USAGE_STOP_THRESHOLD_PERCENT"
 
 delete_until_within_limit
 echo "Done"
