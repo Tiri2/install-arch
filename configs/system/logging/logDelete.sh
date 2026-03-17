@@ -6,10 +6,10 @@ source "/var/system/scripts/logging/lib/config.sh"
 
 WATCH_DIR="/var/log/tasks"
 
-START_THRESHOLD_BYTES=$((15 * 1024 * 1024 * 1024))
-STOP_THRESHOLD_BYTES=$((13 * 1024 * 1024 * 1024))
-DISK_USAGE_START_THRESHOLD_PERCENT=30
-DISK_USAGE_STOP_THRESHOLD_PERCENT=10
+START_THRESHOLD_BYTES=$(( $(read_config "flexSystem.logging" "task_logs.start_value") * 1024 * 1024 * 1024 ))
+STOP_THRESHOLD_BYTES=$(( $(read_config "flexSystem.logging" "task_logs.stop_value") * 1024 * 1024 * 1024 ))
+DISK_USAGE_START_THRESHOLD_PERCENT=$(read_config "flexSystem.logging" "tasks_logs_fallback_percent.start_value")
+DISK_USAGE_STOP_THRESHOLD_PERCENT=$(read_config "flexSystem.logging" "tasks_logs_fallback_percent.stop_value")
 
 # Get directory size in bytes (faster than du -BG)
 get_dir_size_bytes() {
@@ -17,14 +17,13 @@ get_dir_size_bytes() {
 }
 
 get_disk_usage_percent() {
-    local btrfs_output device_size free_estimated percent
-    btrfs_output="$(btrfs filesystem usage -b "$WATCH_DIR" 2>/dev/null)"
-    device_size="$(echo "$btrfs_output" | awk '/[Dd]evice size:/{print $NF}')"
-    # "Free (estimated)" is the most realistic free-space value on btrfs
-    free_estimated="$(echo "$btrfs_output" | awk '/Free \(estimated\):/{print $3}')"
-    percent=$(( (device_size - free_estimated) * 100 / device_size ))
-    echo "current disk usage: $percent% (device size: $(human_readable "$device_size"), free estimated: $(human_readable "$free_estimated"))"
-    return $percent
+  local btrfs_output device_size free_estimated percent
+  btrfs_output="$(btrfs filesystem usage -b "$WATCH_DIR" 2>/dev/null)"
+  device_size="$(echo "$btrfs_output" | awk '/[Dd]evice size:/{print $NF}')"
+  free_estimated="$(echo "$btrfs_output" | awk '/Free \(estimated\):/{print $3}')"
+  percent=$(( (device_size - free_estimated) * 100 / device_size ))
+  log_info "Current disk usage: $percent% (device size: $(human_readable "$device_size"), free estimated: $(human_readable "$free_estimated"))" >&2
+  echo "$percent"
 }
 
 
@@ -32,7 +31,6 @@ delete_until_within_limit() {
   local current_size disk_usage triggered_by
   current_size="$(get_dir_size_bytes)"
   disk_usage="$(get_disk_usage_percent)"
-
 
   log_info "Current directory size: $(human_readable "$current_size")"
   log_info "Current disk usage: ${disk_usage}%"
@@ -56,7 +54,6 @@ delete_until_within_limit() {
     | while IFS= read -r -d '' entry; do
 
         # Stop if we reached target
-        
         if [[ "$triggered_by" == "percentage" ]]; then
           disk_usage="$(get_disk_usage_percent)"
           if (( disk_usage < DISK_USAGE_STOP_THRESHOLD_PERCENT )); then
