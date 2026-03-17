@@ -37,16 +37,15 @@ delete_until_within_limit() {
   log_info "Current directory size: $(human_readable "$current_size")"
   log_info "Current disk usage: ${disk_usage}%"
 
-  # Nothing to do
-  if (( current_size < START_THRESHOLD_BYTES )); then
-    log_info "Directory size below threshold. No deletion needed."
-    return 0
-  # Trigger based on disk usage percentage if above 90%, otherwise based on size
-  elif (( disk_usage >= DISK_USAGE_START_THRESHOLD_PERCENT )); then
+  if (( disk_usage >= DISK_USAGE_START_THRESHOLD_PERCENT )); then
     log_warn "Disk usage critically high (${disk_usage}%)"
     triggered_by="percentage"
-  else 
+  elif (( current_size >= START_THRESHOLD_BYTES )); then
+    log_info "Directory size above threshold $(human_readable "$current_size")"
     triggered_by="size"
+  else
+    log_info "Directory size and disk usage below thresholds. No deletion needed."
+    return 0
   fi
 
   log_info "Starting cleanup..."
