@@ -58,13 +58,13 @@ delete_until_within_limit() {
 
         # Stop if we reached target
         
-        if ((triggered_by == "percentage")); then
+        if [[ "$triggered_by" == "percentage" ]]; then
           disk_usage="$(get_disk_usage_percent)"
           if (( disk_usage < DISK_USAGE_STOP_THRESHOLD_PERCENT )); then
             log_info "Disk usage back to safe levels (${disk_usage}%). Stopping cleanup."
             break
           fi
-        else if ((triggered_by == "size")); then
+        elif [[ "$triggered_by" == "size" ]]; then
           if (( current_size < STOP_THRESHOLD_BYTES )); then
             log_info "Directory size back below stop threshold. Stopping cleanup."
             break
