@@ -61,7 +61,7 @@ guicmd /usr/bin/systemctl --user enable gui.chromium.service
 guicmd /usr/bin/systemctl --user enable gui.wayvnc.service
 
 # installing sway for gui user
-pacman -S --noconfirm sway xorg-xwayland chromium libinput evtest wayvnc swaybg 
+pacman -S --noconfirm --needed sway xorg-xwayland chromium libinput evtest wayvnc swaybg 
 
 # Break point to check if everything is all right
 echo "Everything looking fine?"
@@ -154,7 +154,7 @@ cp configs/system/execute.sh /var/system/scripts/execute.sh
 
 # Fully upgrading the system
 echo "Upgrading System"
-pacman -Syu
+pacman -Syyu --needed --noconfirm
 
 # Break point to check if everything is all right
 echo "CTRL + C to abort - Enter to continue"
