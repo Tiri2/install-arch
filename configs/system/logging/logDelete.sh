@@ -42,7 +42,7 @@ delete_until_within_limit() {
     log_info "Directory size below threshold. No deletion needed."
     return 0
   # Trigger based on disk usage percentage if above 90%, otherwise based on size
-  else if (( disk_usage >= DISK_USAGE_START_THRESHOLD_PERCENT )); then
+  elif (( disk_usage >= DISK_USAGE_START_THRESHOLD_PERCENT )); then
     log_warn "Disk usage critically high (${disk_usage}%)"
     triggered_by="percentage"
   else 
