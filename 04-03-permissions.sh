@@ -24,8 +24,7 @@ chmod 775 /srv/smb
 chmod 775 /srv/tasks
 
 chown -R :beer /srv/
-chmod -R g+rwx /srv/
-chmod -R o+rx /srv/
+chmod 775 -R /srv/smb/*
 
 # For home user specifc
 

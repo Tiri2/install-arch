@@ -25,9 +25,7 @@ import /etc/caddy/conf.d/*
 https:// {
     root * /srv/http
 
-    tls /etc/caddy/https.cert.pem /etc/caddy/https.key.pem {
-        ca_root /etc/caddy/ca.pem
-    }
+    tls /etc/caddy/https.fullchain.pem /etc/caddy/https.key.pem
 
     file_server
 }
