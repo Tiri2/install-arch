@@ -14,6 +14,16 @@ chmod 775 /var/system/*
 mkdir -p /var/flex/
 ln -s /var/log/tasks /var/flex/log
 
+ln -s /srv/smb/share /var/flex/share
+ln -s /srv/smb/customer /var/flex/customer
+
+ln -s /srv/http /var/flex/http
+ln -s /srv/tasks/CURRENT/data /var/flex/tasks
+
+ln -s /var/system/certs /var/flex/.certs
+ln -s /var/system /var/flex/system
+ln -s /var/system/config.json /var/flex/config.json
+
 # Create under directories in srv
 mkdir -p /srv/{tasks,http,smb}
 chmod 777 /srv/tasks

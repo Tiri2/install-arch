@@ -17,6 +17,7 @@ wide links = yes
 	browseable = no
 	writable = yes
 	force user = flex
+	guest ok = yes
 #	valid users = flex
 	create mask = 7764
 
@@ -26,6 +27,17 @@ wide links = yes
 	browseable = no
 	writable = yes
 	force user = flex
+	guest ok = yes
+#	valid users = flex
+	create mask = 7766
+
+[flex]
+	comment = Access flexTasks & Web Data
+	path = /var/flex
+	browseable = no
+	writable = yes
+	force user = flex
+	guest ok = yes
 #	valid users = flex
 	create mask = 7766
 
