@@ -12,17 +12,20 @@ chmod 775 /var/system/*
 
 # to follow the old structure
 mkdir -p /var/flex/
-ln -sf /var/log/tasks /var/flex/log
 
-ln -sf /srv/smb/share /var/flex/share
-ln -sf /srv/smb/customer /var/flex/customer
+cd /var/flex
 
-ln -sf /srv/http /var/flex/http
-ln -sf /srv/tasks/CURRENT/data /var/flex/tasks
+ln -sf /var/log/tasks log
 
-ln -sf /var/system/certs /var/flex/.certs
-ln -sf /var/system /var/flex/system
-ln -sf /var/system/config.json /var/flex/config.json
+ln -sf /srv/smb/share share
+ln -sf /srv/smb/customer customer
+
+ln -sf /srv/http http
+ln -sf /srv/tasks/CURRENT/data tasks
+
+ln -sf /var/system/certs .certs
+ln -sf /var/system .system
+ln -sf /var/system/config.json config.json
 
 # Create under directories in srv
 mkdir -p /srv/{tasks,http,smb}
@@ -31,17 +34,21 @@ chmod 775 /srv/http
 chmod 777 /srv/smb
 
 # Creating specifc smb folders
-ln -sf /var/system/backup /srv/smb/backup
+cd /srv/smb/
+ln -sf /var/system/backup backup
 
 chmod 775 /srv/smb/*
 
 # Creating tasks specifc folders
-mkdir -p /srv/tasks/CORE-2.0.0-SNAPSHOT/
-ln -sf /srv/tasks/CORE-2.0.0-SNAPSHOT/ /srv/tasks/CURRENT
+cd /srv/tasks/
+mkdir -p CORE-2.0.0-SNAPSHOT/
+ln -sf CORE-2.0.0-SNAPSHOT/ CURRENT
 
-mkdir -p /srv/tasks/CURRENT/{default,lib}
-ln -sf /var/system/certs/ /srv/tasks/CURRENT/default/certs
-ln -sf /srv/tasks/CURRENT/lib/ /srv/tasks/CURRENT/default/lib
+mkdir -p ./CURRENT/{default,lib}
+cd ./CURRENT/default
+ln -sf /var/system/certs/ certs
+ln -sf /srv/tasks/CURRENT/lib/ lib
+
 mkdir -p /srv/tasks/CURRENT/data/default/db
 
 echo "File Structure created"
