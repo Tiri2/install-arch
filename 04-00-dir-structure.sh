@@ -12,17 +12,17 @@ chmod 775 /var/system/*
 
 # to follow the old structure
 mkdir -p /var/flex/
-ln -s /var/log/tasks /var/flex/log
+ln -sf /var/log/tasks /var/flex/log
 
-ln -s /srv/smb/share /var/flex/share
-ln -s /srv/smb/customer /var/flex/customer
+ln -sf /srv/smb/share /var/flex/share
+ln -sf /srv/smb/customer /var/flex/customer
 
-ln -s /srv/http /var/flex/http
-ln -s /srv/tasks/CURRENT/data /var/flex/tasks
+ln -sf /srv/http /var/flex/http
+ln -sf /srv/tasks/CURRENT/data /var/flex/tasks
 
-ln -s /var/system/certs /var/flex/.certs
-ln -s /var/system /var/flex/system
-ln -s /var/system/config.json /var/flex/config.json
+ln -sf /var/system/certs /var/flex/.certs
+ln -sf /var/system /var/flex/system
+ln -sf /var/system/config.json /var/flex/config.json
 
 # Create under directories in srv
 mkdir -p /srv/{tasks,http,smb}

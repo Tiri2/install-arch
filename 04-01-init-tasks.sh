@@ -210,3 +210,6 @@ btrfs quota enable /srv/smb/customer
 
 btrfs qgroup show -reF /srv/smb/share
 btrfs qgroup show -reF /srv/smb/customer
+
+chmod 777 /srv/smb/share
+chmod 777 /srv/smb/customer
