@@ -15,17 +15,17 @@ mkdir -p /var/flex/
 
 cd /var/flex
 
-ln -sf /var/log/tasks log
+ln -sfn /var/log/tasks log
 
-ln -sf /srv/smb/share share
-ln -sf /srv/smb/customer customer
+ln -sfn /srv/smb/share share
+ln -sfn /srv/smb/customer customer
 
-ln -sf /srv/http http
-ln -sf /srv/tasks/CURRENT/data tasks
+ln -sfn /srv/http http
+ln -sfn /srv/tasks/CURRENT/data tasks
 
-ln -sf /var/system/certs .certs
-ln -sf /var/system .system
-ln -sf /var/system/config.json config.json
+ln -sfn /var/system/certs .certs
+ln -sfn /var/system .system
+ln -sfn /var/system/config.json config.json
 
 # Create under directories in srv
 mkdir -p /srv/{tasks,http,smb}
